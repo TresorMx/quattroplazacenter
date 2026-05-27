@@ -13,9 +13,9 @@ import { locales, type Locale } from '@/i18n';
 import { getPlazasAsync } from '@/lib/data';
 import '@/styles/globals.css';
 
-// ISR: regenera las páginas en background cada 60 s después de la primera visita.
-// No cuenta como invocación de función — es gratis en Vercel Hobby.
-export const revalidate = 60;
+// force-dynamic: cada visita hace un fetch fresco a Sanity.
+// Garantiza que los cambios del Studio se reflejan de inmediato.
+export const dynamic = 'force-dynamic';
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
