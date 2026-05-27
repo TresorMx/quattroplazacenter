@@ -41,7 +41,7 @@ export async function POST(req: Request) {
   if (!plaza || !unit) {
     return NextResponse.json({ error: 'Plaza or unit not found' }, { status: 404 });
   }
-  const plan = getAvailablePlans(plaza, unit).find((p) => p.code === planCode);
+  const plan = getAvailablePlans(plaza).find((p) => p.code === planCode);
   if (!plan) return NextResponse.json({ error: 'Plan not found' }, { status: 404 });
 
   let computed: QuoteCalc;
