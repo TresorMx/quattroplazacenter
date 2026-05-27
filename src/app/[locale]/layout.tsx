@@ -10,6 +10,7 @@ import Footer from '@/components/Footer';
 import MobileBar from '@/components/MobileBar';
 import Chatbot from '@/components/Chatbot';
 import { locales, type Locale } from '@/i18n';
+import { loadAndCachePlazas } from '@/lib/data';
 import '@/styles/globals.css';
 
 const cormorant = Cormorant_Garamond({
@@ -133,6 +134,9 @@ export default async function LocaleLayout({
 }) {
   const { locale } = await params;
   if (!locales.includes(locale)) notFound();
+
+  // Pre-carga plazas desde Sanity en cada request (cache 1 min en memoria)
+  await loadAndCachePlazas();
 
   const messages = await getMessages();
 
