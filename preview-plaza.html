@@ -1,0 +1,759 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Quattro Long Island — Preview Landing</title>
+<link rel="icon" type="image/svg+xml" href="public/favicon.svg" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Manrope:wght@200;300;400;500;600;700&family=Montserrat:wght@900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+@font-face{font-family:'Javacom';src:url('public/fonts/Javacom.otf') format('opentype');font-weight:normal;font-style:normal;font-display:swap}
+:root{--bg:#FFFFFF;--bg-soft:#FFFFFF;--bg-deep:#0E0E0E;--ink:#0E0E0E;--ink-2:#2A2823;--ink-3:#6B6863;--ink-4:#9A968D;--line:#DDD7CB;--accent:#FAB413;--accent-deep:#C88C00;--green:#5E9A4B;--amber:#D4A23A;--red:#C8543E;--gray:#9A968D;--serif:"Cormorant Garamond",serif;--sans:"Manrope",system-ui,sans-serif;--mono:"JetBrains Mono",monospace;--display:"Javacom","Manrope",sans-serif;--ease:cubic-bezier(0.22,1,0.36,1)}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--sans);background:var(--bg);color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}img,svg{display:block;max-width:100%}
+.container{width:100%;max-width:1680px;margin:0 auto;padding-left:max(24px,5vw);padding-right:max(24px,5vw)}
+.eyebrow{font-size:11px;letter-spacing:0.32em;text-transform:uppercase;font-weight:700;color:var(--ink-3)}
+.eyebrow-accent{color:var(--accent-deep)}
+
+/* HEADER */
+.site-header{position:fixed;top:0;left:0;right:0;z-index:50;background:#fff;padding:12px 0}
+.site-header.scrolled{box-shadow:0 8px 24px rgba(0,0,0,0.05)}
+.site-header-inner{display:flex;align-items:center;justify-content:space-between}
+.site-header .brand img{height:69px;width:150px;display:block}
+.site-nav{display:flex;gap:32px;align-items:center}
+.site-nav>a{font-size:11px;letter-spacing:0.2em;text-transform:uppercase;font-weight:600}
+.site-nav>a:hover{color:var(--accent-deep)}
+.lang-toggle{display:inline-flex;background:#F2F2F0;border-radius:999px;padding:3px}
+.lang-toggle button{border:none;background:transparent;font-family:inherit;cursor:pointer;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;font-weight:600;padding:7px 12px;border-radius:999px;color:var(--ink-3)}
+.lang-toggle button.active{background:var(--ink);color:#fff}
+.cta{background:var(--accent);color:var(--ink);padding:12px 22px;border-radius:999px;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;font-weight:700;transition:all 0.25s var(--ease)}
+.cta:hover{background:var(--accent-deep);color:var(--ink)}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:10px;padding:12px 22px;border-radius:999px;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;font-weight:700;cursor:pointer;border:1px solid transparent;transition:all 0.3s var(--ease);white-space:nowrap;font-family:inherit}
+.btn-lg{padding:16px 28px}
+.btn-primary{background:var(--ink);color:#fff}.btn-primary:hover{background:var(--accent-deep)}
+.btn-outline{border-color:var(--ink);color:var(--ink)}.btn-outline:hover{background:var(--ink);color:#fff}
+.btn-accent{background:var(--accent);color:var(--ink)}.btn-accent:hover{background:var(--accent-deep);color:var(--ink)}
+.btn-ghost{color:var(--ink-3);background:transparent}.btn-ghost:hover{color:var(--ink)}
+
+main{padding-top:93px}
+
+/* HERO PLAZA — fit to height: hero + quickfacts caben en 100svh sin scroll */
+.plaza-hero{position:relative;height:calc(100svh - 104px - 93px);min-height:480px;overflow:hidden;background:var(--bg-deep);color:#fff;margin-top:-93px}
+.plaza-hero .bg{position:absolute;inset:0;background:url('public/renders/long-island/WEB.jpg') center/cover;transform:scale(1.05);animation:zoom 18s var(--ease) forwards}
+@keyframes zoom{to{transform:scale(1)}}
+.plaza-hero::after{content:'';position:absolute;inset:0;background:rgba(0,0,0,0.5)}
+.plaza-hero .container{position:relative;z-index:2;height:100%;display:flex;align-items:center;justify-content:center;padding-top:93px}
+.plaza-hero img.logo-plaza{height:clamp(140px,26vh,260px);width:auto;filter:drop-shadow(0 12px 40px rgba(0,0,0,0.4))}
+
+/* QUICKFACTS — strip compacto, texto en una sola línea */
+.quickfacts{background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line);height:104px;display:flex;align-items:center}
+.quickfacts .container{width:100%}
+.quickfacts .grid{display:grid;grid-template-columns:repeat(4,1fr);align-items:center}
+.quickfacts .item{padding:0 18px;border-right:1px solid var(--line);min-width:0}
+.quickfacts .item:last-child{border-right:none}
+.quickfacts .v{font-family:var(--sans);font-size:clamp(15px,1.4vw,20px);font-weight:400;line-height:1.1;letter-spacing:-0.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.quickfacts .l{margin-top:6px;font-size:10px;letter-spacing:0.22em;text-transform:uppercase;font-weight:600;color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media (max-width:980px){
+  .plaza-hero{height:calc(100svh - 200px - 93px);min-height:420px}
+  .quickfacts{height:auto;padding:20px 0}
+  .quickfacts .v{font-size:14px;white-space:normal}
+}
+
+/* OVERVIEW — El proyecto */
+.overview{padding:96px 0}
+.overview .grid{display:grid;grid-template-columns:1fr 1.4fr;gap:80px}
+.overview h2{margin-top:20px;font-family:var(--serif);font-style:italic;font-weight:300;font-size:clamp(34px,4vw,56px);line-height:1;letter-spacing:-0.02em}
+.overview p{font-size:17px;font-weight:300;color:var(--ink-2);line-height:1.7}
+.overview p+p{margin-top:16px}
+.overview .actions{margin-top:32px;display:flex;flex-wrap:wrap;gap:16px}
+
+/* LOCATION */
+.location{padding:96px 0;border-top:1px solid var(--line)}
+.location .grid{display:grid;grid-template-columns:1fr 1.6fr;gap:64px}
+.location h2{margin-top:20px;font-family:var(--serif);font-style:italic;font-weight:300;font-size:clamp(32px,3.5vw,48px)}
+.location .map{height:480px;border:1px solid var(--line);border-radius:18px;display:flex;align-items:center;justify-content:center;color:var(--ink-3);position:relative;overflow:hidden;background:#F8F8F8}
+.location .map::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(221,215,203,0.4) 1px,transparent 1px),linear-gradient(90deg,rgba(221,215,203,0.4) 1px,transparent 1px);background-size:50px 50px}
+.map-pin{position:absolute;top:48%;left:52%;transform:translate(-50%,-100%);width:44px;height:44px;background:var(--accent);border-radius:50% 50% 50% 0;transform-origin:bottom;rotate:-45deg;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px rgba(0,0,0,0.15)}
+.map-pin::before{content:'';position:absolute;width:14px;height:14px;background:var(--ink);border-radius:50%;rotate:45deg}
+.bullets{margin-top:32px;border-top:1px solid var(--line);padding-top:24px;display:flex;flex-direction:column;gap:14px}
+.bullet{display:flex;align-items:center;gap:14px;font-size:14px;color:var(--ink-2)}
+.bullet-icon{width:36px;height:36px;background:#fff;border:1px solid var(--line);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--ink-2)}
+
+/* GALLERY — imagen full-width + carrusel debajo, alto similar al actual */
+.gallery{padding:96px 0;border-top:1px solid var(--line)}
+.gallery .head{display:flex;justify-content:space-between;align-items:end;margin-bottom:40px}
+.gallery h2{font-family:var(--serif);font-style:italic;font-weight:300;font-size:clamp(32px,3.5vw,52px)}
+.gallery .stage{position:relative;width:100%;aspect-ratio:16/7;max-height:640px;border-radius:18px;overflow:hidden;background:#F8F8F8}
+.gallery .stage img{width:100%;height:100%;object-fit:cover}
+.gallery .nav{position:absolute;top:50%;transform:translateY(-50%);width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,0.9);backdrop-filter:blur(8px);border:0;display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink);transition:all 0.2s;z-index:2}
+.gallery .nav:hover{background:#fff;transform:translateY(-50%) scale(1.05)}
+.gallery .nav.prev{left:20px}
+.gallery .nav.next{right:20px}
+.gallery .counter{position:absolute;bottom:20px;right:20px;background:rgba(0,0,0,0.6);color:#fff;padding:8px 14px;border-radius:999px;font-family:var(--mono);font-size:11px;letter-spacing:0.1em;backdrop-filter:blur(8px);z-index:2}
+.gallery .carousel{margin-top:16px;display:flex;gap:12px;overflow-x:auto;scroll-behavior:smooth;padding:2px;scrollbar-width:none}
+.gallery .carousel::-webkit-scrollbar{display:none}
+.gallery .thumb{flex:0 0 auto;width:140px;aspect-ratio:4/3;border-radius:8px;overflow:hidden;cursor:pointer;border:2px solid transparent;transition:all 0.2s}
+.gallery .thumb img{width:100%;height:100%;object-fit:cover;transition:transform 0.4s var(--ease)}
+.gallery .thumb:hover img{transform:scale(1.05)}
+.gallery .thumb.active{border-color:var(--accent-deep)}
+@media (max-width:640px){.gallery .stage{aspect-ratio:4/3}.gallery .thumb{width:96px}}
+
+/* FLOOR PLANS */
+.fp{padding:96px 0;border-top:1px solid var(--line)}
+.fp .head{display:grid;grid-template-columns:1fr auto;gap:32px;margin-bottom:40px;align-items:end}
+.fp h2{margin-top:14px;font-family:var(--serif);font-style:italic;font-weight:300;font-size:clamp(34px,4vw,56px);line-height:1}
+.fp .sub{margin-top:12px;font-size:15px;color:var(--ink-3);font-weight:300;max-width:52ch}
+.fp-tabs{display:inline-flex;background:#fff;border:1px solid var(--line);border-radius:999px;padding:4px}
+.fp-tabs button{border:none;background:transparent;font-family:inherit;cursor:pointer;padding:9px 20px;border-radius:999px;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;font-weight:600;color:var(--ink-3)}
+.fp-tabs button.active{background:var(--ink);color:#fff}
+.fp .layout{display:grid;grid-template-columns:1.4fr 1fr;gap:24px;align-items:start}
+.fp-canvas{border:1px solid var(--line);border-radius:18px;background:#fff;padding:32px;aspect-ratio:1.4/1;display:flex;align-items:center;justify-content:center;position:relative}
+.fp-canvas svg.plan{width:100%;height:100%}
+.fp-info{border:1px solid var(--line);border-radius:18px;padding:32px;background:#fff}
+.fp-info .label-min{font-size:10.5px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-3)}
+.fp-info .ftitle{margin-top:6px;font-family:var(--serif);font-style:italic;font-weight:300;font-size:32px;line-height:1.05}
+.fp-info .desc{margin-top:14px;font-size:14px;line-height:1.6;color:var(--ink-2)}
+.fp-specs{margin-top:24px;border-top:1px solid var(--line);padding-top:22px;display:flex;flex-direction:column;gap:14px}
+.fp-spec{display:flex;justify-content:space-between;font-size:13px}
+.fp-spec .k{color:var(--ink-3)}
+.fp-spec .v{font-weight:500;font-variant-numeric:tabular-nums}
+
+/* MASTER PLAN (Disponibilidad) */
+.mp{background:#fff;padding:96px 0;border-top:1px solid var(--line)}
+.mp .head{display:grid;grid-template-columns:1fr auto;gap:32px;margin-bottom:48px;align-items:end}
+.mp h2{margin-top:14px;font-family:var(--serif);font-style:italic;font-weight:300;font-size:clamp(34px,4vw,56px);line-height:1}
+.mp .sub{margin-top:12px;font-size:15px;color:var(--ink-3);font-weight:300;max-width:52ch}
+.mp .level-toggle{display:inline-flex;background:#fff;border:1px solid var(--line);border-radius:999px;padding:4px}
+.mp .level-toggle button{border:none;background:transparent;font-family:inherit;cursor:pointer;padding:8px 20px;border-radius:999px;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;font-weight:600;color:var(--ink-3)}
+.mp .level-toggle button.active{background:var(--ink);color:#fff}
+.mp .legend{display:flex;flex-wrap:wrap;gap:12px;margin-bottom:24px}
+.legend-item{display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:999px;background:#fff;font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;cursor:pointer;border:1px solid var(--line);font-family:inherit}
+.legend-item .dot{width:9px;height:9px;border-radius:50%}
+.legend-item.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+.mp .layout{display:grid;grid-template-columns:1.6fr 1fr;gap:20px}
+.mp-canvas{position:relative;background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden;aspect-ratio:16/9}
+.mp-canvas img{width:100%;height:100%;object-fit:contain}
+.mp-canvas svg{position:absolute;inset:0;width:100%;height:100%}
+.mp-canvas circle.pin{cursor:pointer;transition:r 0.2s,stroke-width 0.2s}
+.mp-canvas circle.pin:hover{r:1.6}
+.mp-unit-detail{background:#fff;border:1px solid var(--line);border-radius:18px;padding:28px}
+.mp-unit-detail .head{display:flex;justify-content:space-between;align-items:flex-start;border:0;margin:0;grid-template-columns:none}
+.mp-unit-detail .label-min{font-size:10.5px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-3)}
+.mp-unit-detail .code{font-family:var(--serif);font-style:italic;font-weight:300;font-size:48px;line-height:1}
+.mp-unit-detail .avail{display:inline-flex;align-items:center;gap:8px;font-size:11px;text-transform:uppercase;letter-spacing:0.1em;font-weight:500}
+.mp-unit-detail .avail::before{content:'';width:8px;height:8px;border-radius:50%}
+.avail.disponible::before{background:var(--green)}
+.avail.disponible{color:var(--green)}
+.mp-unit-detail .specs{display:grid;grid-template-columns:1fr 1fr;gap:18px;padding:20px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:20px 0}
+.spec-label{font-size:10.5px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-3)}
+.spec-val{margin-top:6px;font-size:15px;font-weight:500}
+.spec-val.h{color:var(--accent-deep);font-weight:700;font-size:16px}
+.mp-unit-detail .cta-btn{display:flex;align-items:center;justify-content:center;width:100%;padding:14px;background:var(--ink);color:#fff;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;gap:10px;border:0;cursor:pointer;font-family:inherit}
+.mp-unit-detail .cta-btn:hover{background:var(--accent-deep)}
+.mp-list{margin-top:18px;background:#fff;border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.mp-list .list-head{background:#F8F8F8;padding:12px 18px;font-size:10.5px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-3)}
+.mp-list ul{list-style:none;max-height:280px;overflow:auto}
+.mp-list li button{width:100%;display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border:0;background:transparent;text-align:left;border-bottom:1px solid var(--line);cursor:pointer;font-family:inherit}
+.mp-list li:last-child button{border-bottom:0}
+.mp-list li button:hover{background:#F8F8F8}
+.mp-list .lf{display:flex;align-items:center;gap:14px}
+.mp-list .code{font-family:var(--mono);font-size:12px;font-weight:500}
+.mp-list .m2{font-size:12px;color:var(--ink-3)}
+.mp-list .price{font-size:12px;font-family:var(--mono)}
+
+/* APARTA TU LOCAL — con cotizador embebido */
+.reserve-section{padding:96px 0;background:#fff;border-top:1px solid var(--line)}
+.reserve-section .head{text-align:center;margin-bottom:56px}
+.reserve-section h2{margin-top:14px;font-family:var(--serif);font-style:italic;font-weight:300;font-size:clamp(34px,4.5vw,64px);line-height:1.05;max-width:780px;margin-left:auto;margin-right:auto}
+.reserve-section h2 .alt{font-style:normal;font-family:var(--sans);font-weight:200}
+.reserve-section p.subhead{margin-top:18px;color:var(--ink-3);font-weight:300;font-size:15px;max-width:520px;margin-left:auto;margin-right:auto}
+
+/* Stepper del cotizador embebido */
+.q-stepper{display:flex;align-items:center;justify-content:center;gap:24px;margin-bottom:40px}
+.q-step{display:flex;align-items:center;gap:14px}
+.q-step .num{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:var(--ink-3);background:#fff}
+.q-step.done .num{background:var(--ink);color:#fff;border-color:var(--ink)}
+.q-step.current .num{background:#fff;color:var(--ink);border-color:var(--ink);font-weight:700}
+.q-step .lab{font-size:11px;text-transform:uppercase;letter-spacing:0.2em;font-weight:600;color:var(--ink-3)}
+.q-step.current .lab{color:var(--ink)}
+.q-step-sep{width:48px;height:1px;background:var(--line)}
+
+.q-body{display:grid;grid-template-columns:1.5fr 1fr;gap:32px}
+.q-card{background:#fff;border:1px solid var(--line);border-radius:18px;padding:40px}
+.field-label{font-size:10.5px;letter-spacing:0.18em;text-transform:uppercase;font-weight:500;color:var(--ink-3);display:block;margin-bottom:4px}
+.field-input{display:block;width:100%;background:transparent;border:0;border-bottom:1px solid var(--line);padding:12px 0;font-size:15px;color:var(--ink);outline:none;font-family:inherit}
+.field-input:focus{border-bottom-color:var(--ink)}
+
+.unit-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:24px}
+.unit-card{display:flex;flex-direction:column;gap:8px;padding:18px;background:#fff;border:1px solid var(--line);border-radius:10px;cursor:pointer;text-align:left;font-family:inherit}
+.unit-card:hover{border-color:var(--ink)}
+.unit-card.sel{border-color:var(--ink);background:#FAFAF8}
+.unit-card .uh{display:flex;justify-content:space-between;align-items:baseline}
+.unit-card .uc{font-family:var(--serif);font-style:italic;font-weight:300;font-size:24px}
+.unit-card .lev{font-size:10.5px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-3)}
+.unit-card .um2{font-size:12px;color:var(--ink-2)}
+.unit-card .uprice{margin-top:4px;font-size:14px;font-weight:500;font-variant-numeric:tabular-nums}
+
+.plan-list{display:flex;flex-direction:column;gap:12px;margin-top:24px}
+.plan-row{display:flex;justify-content:space-between;align-items:center;padding:20px;background:#fff;border:1px solid var(--line);border-radius:10px;cursor:pointer;font-family:inherit;text-align:left;width:100%}
+.plan-row.sel{border-color:var(--ink);background:#FAFAF8}
+.plan-row .ph{display:flex;flex-direction:column;gap:4px}
+.plan-row .ph .h1{font-family:var(--serif);font-style:italic;font-weight:300;font-size:20px}
+.plan-row .ph .h2{font-size:12.5px;color:var(--ink-2)}
+.plan-row .disc{background:var(--accent);color:var(--ink);padding:6px 12px;border-radius:999px;font-size:10.5px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase}
+
+.q-aside{height:fit-content;background:#fff;border:1px solid var(--line);border-radius:18px;padding:28px}
+.q-aside h3{font-family:var(--serif);font-style:italic;font-weight:300;font-size:24px}
+.q-aside .sel-unit{margin-top:20px;border-bottom:1px solid var(--line);padding-bottom:16px}
+.q-aside .label-mini{font-size:10.5px;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-3)}
+.q-aside .sel-code{margin-top:4px;font-family:var(--serif);font-style:italic;font-weight:300;font-size:32px}
+.q-aside .meta{margin-top:8px;display:flex;flex-wrap:wrap;gap:12px;font-size:11px;color:var(--ink-3)}
+.q-aside .meta span{display:inline-flex;align-items:center;gap:5px}
+.q-aside .row{display:flex;justify-content:space-between;align-items:center;margin-top:12px;font-size:13px}
+.q-aside .row .k{color:var(--ink-3)}
+.q-aside .row .v{font-variant-numeric:tabular-nums}
+.q-aside .row.accent .v{color:var(--accent-deep)}
+.q-aside hr{border:0;border-top:1px solid var(--line);margin:12px 0}
+.q-aside .total{font-family:var(--serif);font-style:italic;font-weight:300;font-size:24px}
+.q-aside .note{margin-top:16px;font-size:11px;line-height:1.5;color:var(--ink-3)}
+
+.q-nav-row{display:flex;justify-content:space-between;margin-top:32px;gap:16px;flex-wrap:wrap}
+
+/* FOOTER */
+.site-footer{background:var(--bg-deep);color:#fff;padding:100px 0 28px;position:relative;overflow:hidden}
+.footer-top{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.2fr;gap:60px;padding-bottom:80px}
+.footer-top .brand img{height:56px;margin-bottom:24px;filter:brightness(0) invert(1)}
+.footer-top .brand p.claim{font-family:var(--serif);font-style:italic;font-weight:300;font-size:22px;line-height:1.25;color:rgba(255,255,255,0.95);max-width:28ch}
+.footer-top .brand p.sub{margin-top:22px;font-size:13px;color:rgba(255,255,255,0.55);max-width:36ch;line-height:1.6}
+.footer-top h4{font-size:11px;letter-spacing:0.32em;text-transform:uppercase;font-weight:500;color:var(--ink-4);margin-bottom:22px}
+.footer-top ul{list-style:none;display:flex;flex-direction:column;gap:11px}
+.footer-top a,.footer-top li{font-size:14px;color:rgba(255,255,255,0.82);transition:color 0.2s}
+.footer-top a:hover{color:var(--accent)}
+.footer-broker{border:1px solid rgba(255,255,255,0.15);padding:28px;border-radius:18px;background:linear-gradient(135deg,rgba(255,255,255,0.04),transparent);display:flex;flex-direction:column;gap:18px}
+.footer-broker .label{font-family:var(--serif);font-style:italic;font-weight:300;font-size:26px;line-height:1.15}
+.footer-broker p{font-size:13px;color:rgba(255,255,255,0.6);line-height:1.55}
+.footer-broker .btn{align-self:flex-start;padding:12px 22px;font-size:11px;letter-spacing:0.2em;font-weight:700;color:var(--ink)}
+.footer-broker .btn:hover{background:var(--accent-deep);color:var(--ink)}
+.footer-bottom{border-top:1px solid rgba(255,255,255,0.1);padding-top:28px;display:flex;justify-content:space-between;align-items:center;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.42);font-weight:600}
+.tresor-mark{display:inline-flex;align-items:center;gap:14px}
+.tresor-mark .luxury-tagline{font-family:var(--display);font-size:10px;letter-spacing:0.14em;color:rgba(255,255,255,0.6);text-transform:none;font-weight:normal}
+.tresor-mark img.tresor-logo{height:36px;width:auto;display:block}
+.footer-wordmark{margin-top:60px;padding:0 20px;user-select:none;pointer-events:none;display:flex;align-items:flex-end;justify-content:center}
+.footer-wordmark svg{width:100%;height:auto;max-width:100%;display:block}
+.footer-wordmark svg text{font-family:"Montserrat",var(--sans);font-weight:900;fill:rgba(255,255,255,0.04);letter-spacing:0.06em}
+
+.chatbot-fab{position:fixed;bottom:24px;right:24px;z-index:60;width:56px;height:56px;border-radius:50%;background:var(--ink);color:var(--bg);display:flex;align-items:center;justify-content:center;box-shadow:0 12px 28px rgba(0,0,0,0.25);cursor:pointer;transition:all 0.25s var(--ease)}
+.chatbot-fab:hover{background:var(--accent-deep);color:#fff}
+
+@media (max-width:980px){
+  .overview .grid,.location .grid{grid-template-columns:1fr;gap:40px}
+  .quickfacts .grid{grid-template-columns:1fr 1fr}
+  .quickfacts .item:nth-child(2){border-right:none}
+  .quickfacts .item:nth-child(1),.quickfacts .item:nth-child(2){border-bottom:1px solid var(--line)}
+  .gallery .grid{grid-template-columns:1fr}
+  .fp .layout,.mp .layout{grid-template-columns:1fr}
+  .mp-canvas{aspect-ratio:4/3}
+  .fp-canvas{aspect-ratio:1.2/1}
+  .q-body{grid-template-columns:1fr}
+  .unit-grid{grid-template-columns:1fr}
+  .q-step .lab{display:none}
+  .site-nav>a:not(.cta){display:none}
+  .lang-toggle{display:none}
+  .footer-top{grid-template-columns:1fr 1fr;gap:40px}
+  .footer-broker{grid-column:span 2}
+  .footer-bottom{flex-direction:column;gap:16px;text-align:center}
+  .site-header .brand img{height:56px;width:auto}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="container site-header-inner">
+    <a href="preview-home.html" class="brand"><img src="public/logos/logo-quattro.svg" alt="Quattro" /></a>
+    <nav class="site-nav">
+      <a href="preview-plaza.html">Long Island</a>
+      <a href="preview-plaza.html">Gardens</a>
+      <a href="preview-brokers-gate.html">Brokers</a>
+      <div class="lang-toggle"><button class="active">ES</button><button>EN</button></div>
+      <a href="#aparta" class="cta">Agenda una visita</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<!-- HERO — solo logo +30% -->
+<section class="plaza-hero">
+  <div class="bg"></div>
+  <div class="container">
+    <img src="public/logos/QuattroLongIslandLogoWhite.svg" alt="Long Island" class="logo-plaza" />
+  </div>
+</section>
+
+<!-- QUICKFACTS — nuevo contenido -->
+<section class="quickfacts">
+  <div class="container">
+    <div class="grid">
+      <div class="item"><div class="v">Cancún, Q. Roo</div><div class="l">Ubicación</div></div>
+      <div class="item"><div class="v">32</div><div class="l">Locales Comerciales</div></div>
+      <div class="item"><div class="v">DIC 2026</div><div class="l">Entrega</div></div>
+      <div class="item"><div class="v">Desde $2,650,000 MXN</div><div class="l">Precios de Preventa</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 1. EL PROYECTO -->
+<section class="overview">
+  <div class="container">
+    <div class="grid">
+      <div>
+        <span class="eyebrow eyebrow-accent">— El proyecto</span>
+        <h2>Mucho más que un<br/>local comercial.</h2>
+      </div>
+      <div>
+        <p>Long Island se ubica en una zona de alta densidad residencial con flujo vehicular y peatonal validado. El diseño arquitectónico de doble altura, las fachadas con vegetación integrada y el cuidadoso mix de tenants generan un ecosistema retail que impulsa la rentabilidad de cada negocio.</p>
+        <p>Cada local cuenta con instalaciones eléctricas, hidráulicas y sanitarias listas para tu giro. Estacionamiento amplio, accesos peatonales y áreas comunes diseñadas para incrementar el tiempo de permanencia.</p>
+        <div class="actions">
+          <a href="#disponibilidad" class="btn btn-outline">Ver disponibilidad</a>
+          <a href="#aparta" class="btn btn-primary">Cotizar un local
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 2. UBICACIÓN -->
+<section class="location">
+  <div class="container">
+    <div class="grid">
+      <div>
+        <span class="eyebrow eyebrow-accent">— Ubicación</span>
+        <h2>Ubicación estratégica</h2>
+        <p style="margin-top:20px;font-size:15px;color:var(--ink-3);font-weight:300">Cancún, Q. Roo, México</p>
+        <div class="bullets">
+          <div class="bullet">
+            <span class="bullet-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+            </span>
+            Alta densidad residencial circundante
+          </div>
+          <div class="bullet">
+            <span class="bullet-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 17h14M5 17a2 2 0 0 1-2-2v-2l2-6h14l2 6v2a2 2 0 0 1-2 2M5 17v2M19 17v2"/><circle cx="7" cy="14" r="1"/><circle cx="17" cy="14" r="1"/></svg>
+            </span>
+            Flujo vehicular validado por estudio de mercado
+          </div>
+          <div class="bullet">
+            <span class="bullet-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            </span>
+            Frente a vialidad primaria
+          </div>
+        </div>
+      </div>
+      <div class="map">
+        <div class="map-pin"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 3. GALERÍA -->
+<section class="gallery">
+  <div class="container">
+    <div class="head">
+      <div>
+        <span class="eyebrow eyebrow-accent">— Galería</span>
+        <h2>Quattro Long Island</h2>
+      </div>
+      <span style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:var(--ink-3);font-weight:600">Renders del proyecto</span>
+    </div>
+    <div class="stage">
+      <img id="gallery-stage" src="public/renders/long-island/01.jpg" alt="Long Island" />
+      <button class="nav prev" aria-label="Anterior">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <button class="nav next" aria-label="Siguiente">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+      <div class="counter"><span id="gallery-current">01</span> / 08</div>
+    </div>
+    <div class="carousel" id="gallery-carousel">
+      <div class="thumb active" data-img="public/renders/long-island/01.jpg"><img src="public/renders/long-island/01.jpg" alt="" /></div>
+      <div class="thumb" data-img="public/renders/long-island/02.jpg"><img src="public/renders/long-island/02.jpg" alt="" /></div>
+      <div class="thumb" data-img="public/renders/long-island/03.jpg"><img src="public/renders/long-island/03.jpg" alt="" /></div>
+      <div class="thumb" data-img="public/renders/long-island/04.jpg"><img src="public/renders/long-island/04.jpg" alt="" /></div>
+      <div class="thumb" data-img="public/renders/long-island/05.jpg"><img src="public/renders/long-island/05.jpg" alt="" /></div>
+      <div class="thumb" data-img="public/renders/long-island/06.jpg"><img src="public/renders/long-island/06.jpg" alt="" /></div>
+      <div class="thumb" data-img="public/renders/long-island/07.jpg"><img src="public/renders/long-island/07.jpg" alt="" /></div>
+      <div class="thumb" data-img="public/renders/long-island/08.jpg"><img src="public/renders/long-island/08.jpg" alt="" /></div>
+    </div>
+  </div>
+</section>
+
+<!-- 4. FLOOR PLANS -->
+<section class="fp" id="floor-plans">
+  <div class="container">
+    <div class="head">
+      <div>
+        <span class="eyebrow eyebrow-accent">— Floor Plans</span>
+        <h2>Tipologías de local</h2>
+        <p class="sub">Plantas arquitectónicas de los tres tipos de local disponibles. Todos incluyen instalaciones hidrosanitarias, eléctricas y aire acondicionado.</p>
+      </div>
+      <div class="fp-tabs">
+        <button class="active" data-fp="standard">Estándar 40 m²</button>
+        <button data-fp="premium">Premium 50 m²</button>
+        <button data-fp="ancla">Ancla 100+ m²</button>
+      </div>
+    </div>
+
+    <div class="layout">
+      <div class="fp-canvas">
+        <!-- Floor plan ilustrativo (SVG) - Estándar 40 m² -->
+        <svg class="plan" id="fp-svg" viewBox="0 0 400 280" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="dots" x="0" y="0" width="6" height="6" patternUnits="userSpaceOnUse">
+              <circle cx="3" cy="3" r="0.5" fill="#DDD7CB" />
+            </pattern>
+          </defs>
+          <!-- contorno -->
+          <rect x="20" y="20" width="360" height="240" fill="url(#dots)" stroke="#0E0E0E" stroke-width="2" rx="2"/>
+          <!-- pared interior baño -->
+          <line x1="280" y1="20" x2="280" y2="120" stroke="#0E0E0E" stroke-width="1.5"/>
+          <line x1="280" y1="120" x2="380" y2="120" stroke="#0E0E0E" stroke-width="1.5"/>
+          <!-- baño -->
+          <rect x="290" y="30" width="80" height="80" fill="#fff" stroke="#0E0E0E" stroke-width="1" rx="1"/>
+          <text x="330" y="75" text-anchor="middle" font-family="Manrope" font-size="9" letter-spacing="1.5" fill="#6B6863">BAÑO</text>
+          <!-- WC -->
+          <rect x="295" y="35" width="20" height="20" fill="none" stroke="#9A968D" stroke-width="0.8" rx="2"/>
+          <!-- lavabo -->
+          <ellipse cx="355" cy="100" rx="12" ry="6" fill="none" stroke="#9A968D" stroke-width="0.8"/>
+          <!-- área comercial -->
+          <text x="140" y="155" text-anchor="middle" font-family="Cormorant Garamond" font-style="italic" font-size="22" fill="#0E0E0E">Local comercial</text>
+          <text x="140" y="178" text-anchor="middle" font-family="Manrope" font-size="11" fill="#6B6863">Área útil 32 m²</text>
+          <!-- entrada -->
+          <line x1="150" y1="260" x2="190" y2="260" stroke="#FAB413" stroke-width="4"/>
+          <text x="170" y="278" text-anchor="middle" font-family="Manrope" font-size="9" letter-spacing="1.5" fill="#C88C00" font-weight="700">ENTRADA</text>
+          <!-- cotas -->
+          <text x="200" y="14" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#6B6863">8.00 m</text>
+          <text x="392" y="144" text-anchor="middle" font-family="JetBrains Mono" font-size="9" fill="#6B6863" transform="rotate(90,392,144)">5.00 m</text>
+        </svg>
+      </div>
+
+      <div class="fp-info">
+        <div class="label-min">Local típico</div>
+        <div class="ftitle" id="fp-title">Estándar — 40 m²</div>
+        <p class="desc" id="fp-desc">Ideal para retail, cafetería boutique, oficina pequeña o concept store. Doble altura, fachada vidriada al frente, baño completo, instalaciones listas para acabar.</p>
+
+        <div class="fp-specs">
+          <!-- Specs dinámicos: campos definidos en plaza.unitSpecsTemplate desde Sanity.
+               Si quitas un campo allá, desaparece aquí automáticamente. -->
+          <div class="fp-spec"><span class="k">Área total</span><span class="v" id="fp-total">40.60 m²</span></div>
+          <div class="fp-spec"><span class="k">Frente</span><span class="v" id="fp-frente">5.00 m</span></div>
+          <div class="fp-spec"><span class="k">Fondo</span><span class="v" id="fp-fondo">8.12 m</span></div>
+        </div>
+
+        <a href="#aparta" style="margin-top:24px;display:inline-flex;align-items:center;gap:10px;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;font-weight:700;color:var(--ink)">
+          Ver disponibilidad de este tipo
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5. DISPONIBILIDAD (Master Plan) -->
+<section class="mp" id="disponibilidad">
+  <div class="container">
+    <div class="head">
+      <div>
+        <span class="eyebrow eyebrow-accent">— Disponibilidad</span>
+        <h2>Master plan en tiempo real</h2>
+        <p class="sub">Selecciona un local para ver su ficha técnica y cotizarlo. La disponibilidad se actualiza en vivo desde el CMS.</p>
+      </div>
+      <div class="level-toggle">
+        <button class="active">Nivel 1</button>
+        <button>Nivel 2</button>
+      </div>
+    </div>
+
+    <div class="legend">
+      <div class="legend-item"><span class="dot" style="background:var(--green)"></span>Disponible (4)</div>
+      <div class="legend-item"><span class="dot" style="background:var(--amber)"></span>Apartado (0)</div>
+      <div class="legend-item"><span class="dot" style="background:var(--red)"></span>Vendido (11)</div>
+      <div class="legend-item"><span class="dot" style="background:var(--gray)"></span>Bloqueado (2)</div>
+    </div>
+
+    <div class="layout">
+      <div class="mp-canvas">
+        <img src="public/master-plans/long-island-n1.png" alt="Master plan" />
+        <svg viewBox="0 0 100 56.25" preserveAspectRatio="none">
+          <circle class="pin" cx="13" cy="32" r="1.4" fill="#9A968D" stroke="#fff" stroke-width="0.3"/>
+          <circle class="pin" cx="20" cy="32" r="1.2" fill="#C8543E" stroke="#fff" stroke-width="0.3"/>
+          <circle class="pin" cx="25" cy="32" r="1.2" fill="#C8543E" stroke="#fff" stroke-width="0.3"/>
+          <circle class="pin" cx="30" cy="32" r="1.2" fill="#C8543E" stroke="#fff" stroke-width="0.3"/>
+          <circle class="pin" cx="35" cy="32" r="1.2" fill="#C8543E" stroke="#fff" stroke-width="0.3"/>
+          <circle class="pin" cx="40" cy="32" r="1.2" fill="#C8543E" stroke="#fff" stroke-width="0.3"/>
+          <circle class="pin" cx="56" cy="32" r="1.2" fill="#C8543E" stroke="#fff" stroke-width="0.3"/>
+          <circle class="pin" cx="61" cy="32" r="1.2" fill="#C8543E" stroke="#fff" stroke-width="0.3"/>
+          <circle class="pin" cx="66" cy="32" r="1.2" fill="#C8543E" stroke="#fff" stroke-width="0.3"/>
+          <circle class="pin" cx="71" cy="32" r="1.6" fill="#5E9A4B" stroke="#fff" stroke-width="0.4"/>
+          <circle cx="71" cy="32" r="2.6" fill="none" stroke="#5E9A4B" stroke-width="0.3" opacity="0.6">
+            <animate attributeName="r" from="1.6" to="3.6" dur="1.4s" repeatCount="indefinite"/>
+            <animate attributeName="opacity" from="0.7" to="0" dur="1.4s" repeatCount="indefinite"/>
+          </circle>
+          <circle class="pin" cx="76" cy="32" r="1.2" fill="#5E9A4B" stroke="#fff" stroke-width="0.3"/>
+          <circle class="pin" cx="81" cy="32" r="1.2" fill="#5E9A4B" stroke="#fff" stroke-width="0.3"/>
+          <circle class="pin" cx="86" cy="32" r="1.4" fill="#9A968D" stroke="#fff" stroke-width="0.3"/>
+        </svg>
+      </div>
+
+      <div>
+        <div class="mp-unit-detail">
+          <div class="head">
+            <div>
+              <div class="label-min">Local</div>
+              <div class="code">209</div>
+            </div>
+            <span class="avail disponible">Disponible</span>
+          </div>
+          <div class="specs">
+            <div><div class="spec-label">Superficie</div><div class="spec-val">40.60 m²</div></div>
+            <div><div class="spec-label">Nivel</div><div class="spec-val">Nivel 2</div></div>
+            <div><div class="spec-label">Entrega</div><div class="spec-val">DIC 2026</div></div>
+            <div><div class="spec-label">Precio + IVA</div><div class="spec-val h">$2,650,000</div></div>
+          </div>
+          <a href="#aparta" class="cta-btn">Cotizar este local
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+        </div>
+
+        <div class="mp-list">
+          <div class="list-head">Lista · Nivel 2 (17)</div>
+          <ul>
+            <li><button><span class="lf"><span class="code">203</span><span class="m2">45.45 m²</span></span><span class="price">$2,850,000</span></button></li>
+            <li><button><span class="lf"><span class="code">205</span><span class="m2">50.75 m²</span></span><span class="price">$3,350,000</span></button></li>
+            <li><button style="background:#FAFAF8"><span class="lf"><span class="code">209</span><span class="m2">40.60 m²</span></span><span class="price">$2,650,000</span></button></li>
+            <li><button><span class="lf"><span class="code">210</span><span class="m2">40.60 m²</span></span><span class="price">$2,750,000</span></button></li>
+            <li><button><span class="lf"><span class="code">212</span><span class="m2">40.60 m²</span></span><span class="price">$2,650,000</span></button></li>
+            <li><button><span class="lf"><span class="code">213</span><span class="m2">40.60 m²</span></span><span class="price">$2,650,000</span></button></li>
+            <li><button><span class="lf"><span class="code">214</span><span class="m2">40.60 m²</span></span><span class="price">$2,650,000</span></button></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6. APARTA TU LOCAL — cotizador embebido -->
+<section class="reserve-section" id="aparta">
+  <div class="container">
+    <div class="head">
+      <span class="eyebrow eyebrow-accent">— Aparta tu local</span>
+      <h2>$50,000 MXN <span class="alt">reembolsables</span>.<br/>Tu local apartado en minutos.</h2>
+      <p class="subhead">Pago seguro con Stripe (tarjeta · OXXO · SPEI). Asesoría legal incluida. Cotiza, descarga el PDF y apartá en una sola sesión.</p>
+    </div>
+
+    <!-- Stepper -->
+    <div class="q-stepper">
+      <div class="q-step done"><span class="num"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="lab">Local</span></div>
+      <div class="q-step-sep"></div>
+      <div class="q-step done"><span class="num"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></span><span class="lab">Datos</span></div>
+      <div class="q-step-sep"></div>
+      <div class="q-step current"><span class="num">3</span><span class="lab">Plan de pago</span></div>
+      <div class="q-step-sep"></div>
+      <div class="q-step"><span class="num">4</span><span class="lab">Resumen</span></div>
+    </div>
+
+    <div class="q-body">
+      <div class="q-card">
+        <span class="eyebrow eyebrow-accent">— Paso 3</span>
+        <h3 style="font-family:var(--serif);font-style:italic;font-weight:300;font-size:32px;margin-top:10px">Tu plan de pago</h3>
+        <p style="margin-top:10px;font-size:14px;color:var(--ink-3)">Elige el esquema que mejor se acomode a tu flujo. Descuentos automáticos por pronto pago.</p>
+
+        <div class="plan-list">
+          <button class="plan-row">
+            <div class="ph"><span class="h1">Esquema A</span><span class="h2">10% enganche + 10% mensualidades + 80% entrega</span></div>
+          </button>
+          <button class="plan-row">
+            <div class="ph"><span class="h1">Esquema B</span><span class="h2">20% enganche + 10% mensualidades + 70% entrega</span></div>
+            <span class="disc">−1%</span>
+          </button>
+          <button class="plan-row sel">
+            <div class="ph"><span class="h1">Esquema C</span><span class="h2">20% enganche + 20% mensualidades + 60% entrega</span></div>
+            <span class="disc">−5%</span>
+          </button>
+          <button class="plan-row">
+            <div class="ph"><span class="h1">Esquema D</span><span class="h2">30% enganche + 20% mensualidades + 50% entrega</span></div>
+            <span class="disc">−7.5%</span>
+          </button>
+        </div>
+
+        <div style="margin-top:24px;padding:18px;background:#fff;border:1px solid var(--line);border-radius:10px">
+          <div class="field-label">Mensualidades</div>
+          <div style="margin-top:10px;display:flex;align-items:center;gap:14px">
+            <input type="range" min="6" max="24" value="12" style="flex:1;accent-color:var(--ink)" />
+            <span style="width:90px;text-align:right;font-family:var(--mono);font-size:14px">12 meses</span>
+          </div>
+        </div>
+
+        <div class="q-nav-row">
+          <button class="btn btn-ghost">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M19 12H5M11 18l-6-6 6-6"/></svg>
+            Atrás
+          </button>
+          <button class="btn btn-primary">
+            Siguiente
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <aside class="q-aside">
+        <h3>Tu selección</h3>
+        <div class="sel-unit">
+          <div class="label-mini">Long Island</div>
+          <div class="sel-code">Local 209</div>
+          <div class="meta">
+            <span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+              40.60 m²
+            </span>
+            <span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><polyline points="3 12 5 12 12 5 19 12 21 12"/><path d="M5 12v9h14v-9"/></svg>
+              Nivel 2
+            </span>
+            <span>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+              DIC 2026
+            </span>
+          </div>
+        </div>
+        <div class="row"><span class="k">Precio de lista</span><span class="v">$2,650,000</span></div>
+        <div class="row accent"><span class="k">Descuento 5%</span><span class="v">− $132,500</span></div>
+        <div class="row"><span class="k">IVA 16%</span><span class="v">$402,800</span></div>
+        <hr/>
+        <div class="row"><span class="k" style="font-weight:600;color:var(--ink)">Total</span><span class="v total">$2,920,300</span></div>
+        <p class="note">Cotización válida 7 días. El apartado de $50,000 MXN es reembolsable.</p>
+      </aside>
+    </div>
+  </div>
+</section>
+</main>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-top">
+      <div class="brand">
+        <img src="public/logos/logo-quattro.svg" alt="Quattro" />
+        <p class="claim">Creamos espacios que hacen crecer negocios.</p>
+        <p class="sub">Un desarrollo de Tresor Real Estate. Más de 25 proyectos en Cancún y la Riviera Maya.</p>
+      </div>
+      <div>
+        <h4>Desarrollos</h4>
+        <ul>
+          <li><a href="preview-plaza.html">Long Island</a></li>
+          <li><a href="preview-plaza.html">Gardens</a></li>
+          <li><a href="preview-home.html#plazas">Tulum · Coming soon</a></li>
+          <li><a href="preview-home.html#plazas">Marina · Coming soon</a></li>
+          <li><a href="preview-home.html#plazas">Huayacán · Coming soon</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contacto</h4>
+        <ul>
+          <li><a href="mailto:ventas@quattroplaza.mx">ventas@quattroplaza.mx</a></li>
+          <li><a href="tel:+529980000000">+52 998 000 0000</a></li>
+          <li>Cancún, Q. Roo · México</li>
+          <li><a href="preview-brokers-gate.html">Acceso Broker</a></li>
+        </ul>
+      </div>
+      <div class="footer-broker">
+        <span class="eyebrow" style="color:var(--accent)">— Acceso Broker</span>
+        <div class="label">¿Eres broker?<br/>Accede al drive de ventas.</div>
+        <p>Presentaciones, precios, master plans, formatos administrativos y materiales de marketing en un solo lugar.</p>
+        <a href="preview-brokers-gate.html" class="btn btn-accent">Acceder ahora →</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Tresor Real Estate · Todos los derechos reservados</span>
+      <div class="tresor-mark">
+        <span class="luxury-tagline">The Art of Luxury Living</span>
+        <img class="tresor-logo" src="public/logos/LogoTresor.svg" alt="Tresor Real Estate" />
+      </div>
+    </div>
+  </div>
+  <div class="footer-wordmark" aria-hidden="true">
+    <svg viewBox="0 0 1000 200" preserveAspectRatio="xMidYMid meet">
+      <text x="500" y="180" text-anchor="middle" font-size="220" textLength="980" lengthAdjust="spacingAndGlyphs">QUATTRO</text>
+    </svg>
+  </div>
+</footer>
+
+<div class="chatbot-fab">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+</div>
+
+<script>
+  // Galería carrusel
+  (function(){
+    const stage = document.getElementById('gallery-stage');
+    const counter = document.getElementById('gallery-current');
+    const carousel = document.getElementById('gallery-carousel');
+    if(!stage||!carousel) return;
+    const thumbs = Array.from(carousel.querySelectorAll('.thumb'));
+    let idx = 0;
+    function setIdx(i){
+      idx = (i + thumbs.length) % thumbs.length;
+      stage.src = thumbs[idx].dataset.img;
+      counter.textContent = String(idx+1).padStart(2,'0');
+      thumbs.forEach((t,k)=>t.classList.toggle('active', k===idx));
+      thumbs[idx].scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});
+    }
+    thumbs.forEach((t,k)=>t.addEventListener('click',()=>setIdx(k)));
+    document.querySelector('.gallery .nav.prev')?.addEventListener('click',()=>setIdx(idx-1));
+    document.querySelector('.gallery .nav.next')?.addEventListener('click',()=>setIdx(idx+1));
+  })();
+
+  document.querySelectorAll('.lang-toggle button, .level-toggle button, .legend-item, .fp-tabs button, .plan-row').forEach(b=>{
+    b.addEventListener('click',()=>{
+      const isPlan = b.classList.contains('plan-row');
+      if (isPlan) {
+        document.querySelectorAll('.plan-row').forEach(s=>s.classList.remove('sel'));
+        b.classList.add('sel');
+      } else {
+        Array.from(b.parentElement.children).forEach(s=>s.classList.remove('active'));
+        b.classList.add('active');
+      }
+    });
+  });
+  // Cambiar contenido de Floor Plans según tab
+  const fpData = {
+    standard:{title:'Estándar — 40 m²',desc:'Ideal para retail, cafetería boutique, oficina pequeña o concept store. Doble altura, fachada vidriada al frente, baño completo, instalaciones listas para acabar.',total:'40.60 m²',area:'32 m²',frente:'5.00 m'},
+    premium:{title:'Premium — 50 m²',desc:'Pensado para restaurantes con cocina, gimnasios boutique o oficinas amplias. Mayor frente, instalación de gas, doble salida de drenaje.',total:'50.75 m²',area:'42 m²',frente:'6.50 m'},
+    ancla:{title:'Ancla — 100+ m²',desc:'Local ancla para supermercado, farmacia, banco o anchor brand. Doble frente, posibilidad de subdivisión, terraza exterior.',total:'151.64 m²',area:'128 m²',frente:'12.00 m'}
+  };
+  document.querySelectorAll('.fp-tabs button').forEach(b=>{
+    b.addEventListener('click',()=>{
+      const key = b.dataset.fp;
+      const d = fpData[key]; if(!d) return;
+      document.getElementById('fp-title').textContent = d.title;
+      document.getElementById('fp-desc').textContent = d.desc;
+      document.getElementById('fp-total').textContent = d.total;
+      document.getElementById('fp-area').textContent = d.area;
+      document.getElementById('fp-frente').textContent = d.frente;
+    });
+  });
+  window.addEventListener('scroll',()=>{
+    document.querySelector('.site-header').classList.toggle('scrolled',window.scrollY>12);
+  });
+</script>
+</body>
+</html>

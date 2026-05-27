@@ -1,0 +1,261 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Hairline borders — override Tailwind default 1px → 0.5px */
+.border   { border-width: 0.5px; }
+.border-t { border-top-width: 0.5px; }
+.border-b { border-bottom-width: 0.5px; }
+.border-l { border-left-width: 0.5px; }
+.border-r { border-right-width: 0.5px; }
+.border-x { border-left-width: 0.5px; border-right-width: 0.5px; }
+.border-y { border-top-width: 0.5px; border-bottom-width: 0.5px; }
+.divide-x > * + * { border-left-width: 0.5px; }
+.divide-y > * + * { border-top-width: 0.5px; }
+
+/* Custom font: Javacom (footer tagline "The Art of Luxury Living") */
+@font-face {
+  font-family: 'Javacom';
+  src: url('/fonts/Javacom.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ─────────────────────────────────────────────
+   Quattro Plaza Center — Editorial Design System
+   ───────────────────────────────────────────── */
+
+@layer base {
+  :root {
+    --gutter: 32px; /* fallback, sobreescrito abajo con clamp dinámico */
+    --ease-soft: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-bg text-ink font-sans antialiased;
+    font-feature-settings: 'ss01', 'cv11';
+    font-size: 16px;
+    line-height: 1.55;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    @apply bg-ink text-bg;
+  }
+
+  img,
+  svg,
+  video {
+    @apply block max-w-full;
+  }
+}
+
+@layer components {
+  /* Eyebrow label — small caps tracking */
+  .eyebrow {
+    @apply font-sans text-[11px] uppercase tracking-eyebrow font-medium text-ink-3;
+  }
+  .eyebrow-accent {
+    @apply text-accent;
+  }
+
+  /* Display headings */
+  .h-display {
+    @apply font-serif font-light italic leading-[0.95] tracking-tight;
+  }
+  .h-sans {
+    @apply font-sans font-light leading-[1.02] tracking-tight;
+  }
+
+  /* Caps small-caps utility */
+  .caps {
+    @apply uppercase tracking-caps text-xs font-medium;
+  }
+
+  /* Layout */
+  .container-wrap {
+    @apply mx-auto max-w-wrap;
+    padding-left: max(24px, 5vw);
+    padding-right: max(24px, 5vw);
+  }
+  .container-wide {
+    @apply mx-auto max-w-wide;
+    padding-left: max(24px, 5vw);
+    padding-right: max(24px, 5vw);
+  }
+
+  /* Hairlines */
+  .hairline {
+    @apply h-px w-full bg-line;
+  }
+  .hairline-dark {
+    @apply h-px w-full bg-white/15;
+  }
+
+  /* Buttons — todos con la misma fuente que el botón del header (11px / tracking 0.2em / bold) */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2.5 rounded-full border border-transparent px-[22px] py-3 font-sans text-[11px] font-bold uppercase tracking-[0.2em] transition-all duration-300 ease-soft hover:-translate-y-px disabled:pointer-events-none disabled:opacity-50;
+  }
+  .btn.w-full, .btn[class*="w-full"] {
+    @apply flex justify-center text-center;
+  }
+  .btn-lg {
+    @apply px-7 py-4;
+  }
+  .btn-primary {
+    @apply bg-ink text-bg hover:bg-ink/80;
+  }
+  .btn-outline {
+    @apply border-ink text-ink hover:bg-ink hover:text-bg;
+  }
+  .btn-accent {
+    @apply bg-accent text-white hover:bg-accent-deep;
+  }
+  .btn-ghost {
+    @apply text-ink hover:bg-bg-soft;
+  }
+  .btn-ghost-light {
+    @apply border-white/40 text-bg hover:border-white hover:bg-white/10;
+  }
+  .btn-sm {
+    @apply px-[18px] py-[11px] text-[11px];
+  }
+
+  /* Tags / Pills */
+  .tag {
+    @apply inline-flex items-center gap-2 rounded-full border border-line bg-bg-card px-3 py-[5px] text-[10.5px] uppercase tracking-caps font-medium text-ink-2;
+  }
+  .tag-live {
+    @apply border-emerald-300 bg-emerald-50 text-emerald-900;
+  }
+  .tag-soon {
+    @apply border-amber-300/60 bg-amber-50 text-accent;
+  }
+  .tag-dark {
+    @apply border-ink bg-ink text-bg;
+  }
+
+  /* Availability dots */
+  .avail {
+    @apply inline-flex items-center gap-2 text-[11px] font-medium uppercase tracking-caps;
+  }
+  .avail::before {
+    content: '';
+    @apply h-2 w-2 rounded-full;
+  }
+  .avail-disponible::before {
+    @apply bg-status-disponible;
+  }
+  .avail-apartado::before {
+    @apply bg-status-apartado;
+  }
+  .avail-vendido::before {
+    @apply bg-status-vendido;
+  }
+  .avail-bloqueado::before {
+    @apply bg-status-bloqueado;
+  }
+
+  /* Field — underline style forms */
+  .field {
+    @apply flex flex-col gap-1.5;
+  }
+  .field-label {
+    @apply text-[10.5px] uppercase tracking-caps font-medium text-ink-3;
+  }
+  .field-input {
+    @apply border-0 border-b border-line bg-transparent px-0 py-3 text-[15px] outline-none transition-colors duration-200 focus:border-ink;
+  }
+  .field-dark .field-input {
+    @apply border-white/20 text-bg placeholder:text-white/40 focus:border-white;
+  }
+
+  /* Reveal on scroll */
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+      opacity 1s var(--ease-out),
+      transform 1s var(--ease-out);
+  }
+  .reveal.in {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  .text-pretty {
+    text-wrap: pretty;
+  }
+  .hyphens-auto {
+    hyphens: auto;
+  }
+
+  /* Grid del portfolio: 3 cols con la 4a card en columna 1 abajo (fiel al diseño previo) */
+  .plaza-grid-4 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(16px, 1.6vw, 24px);
+  }
+  .plaza-grid-4 > :nth-child(4) {
+    grid-column: 1 / span 1;
+  }
+  @media (max-width: 1100px) {
+    .plaza-grid-4 {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .plaza-grid-4 > :nth-child(4) {
+      grid-column: auto;
+    }
+  }
+  @media (max-width: 640px) {
+    .plaza-grid-4 {
+      grid-template-columns: 1fr;
+    }
+  }
+}
+
+/* Hero image: blur → focus + slow zoom */
+@keyframes heroImgReveal {
+  0%   { filter: blur(18px); transform: scale(1.08); opacity: 0; }
+  20%  { opacity: 1; }
+  100% { filter: blur(0px); transform: scale(1.0); opacity: 1; }
+}
+.hero-img-reveal {
+  animation: heroImgReveal 2.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Scroll-driven hero line animation */
+@keyframes scroll-line {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+.scroll-line {
+  animation: scroll-line 2.4s ease-in-out infinite;
+  background: linear-gradient(to bottom, currentColor, transparent);
+}
+
+/* Hide scrollbar but keep functionality */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

@@ -1,0 +1,908 @@
+{
+  "$comment": "Seed data extraído de los PDFs originales el 22 May 2026. Este JSON se importa a Sanity con `pnpm seed`. Después se edita desde Sanity Studio.",
+  "plazas": [
+    {
+      "slug": "long-island",
+      "name": "Quattro Plaza Center Long Island",
+      "shortName": "Long Island",
+      "tagline": "El nuevo corazón comercial de Cancún",
+      "status": "preventa",
+      "city": "Cancún",
+      "state": "Quintana Roo",
+      "country": "México",
+      "deliveryWindow": "DIC 2026 — MAR 2027",
+      "totalUnits": 30,
+      "soldUnits": 15,
+      "reservedUnits": 1,
+      "availableUnits": 11,
+      "blockedUnits": 7,
+      "developer": "Tresor Real Estate",
+      "heroRender": "/renders/long-island/WEB.jpg",
+      "logoWhite": "/logos/QuattroLongIslandLogoWhite.svg",
+      "logoDark": "/logos/long-island.svg",
+      "masterPlanImage": "/master-plans/long-island-n1.png",
+      "location": {
+        "lat": 21.0405,
+        "lng": -86.8745,
+        "address": "Cancún, Q. Roo, México"
+      },
+      "highlights": [
+        {
+          "label": "Frente Comercial",
+          "value": "120m lineales"
+        },
+        {
+          "label": "Niveles",
+          "value": "2 plantas"
+        },
+        {
+          "label": "Estacionamientos",
+          "value": "+80 cajones"
+        },
+        {
+          "label": "Locales",
+          "value": "30 unidades"
+        }
+      ],
+      "paymentPlans": [
+        {
+          "code": "plan-a",
+          "label": "Plan A — Recomendado",
+          "tagline": "Mejor balance descuento + financiamiento",
+          "down": 30,
+          "monthly": 60,
+          "delivery": 10,
+          "discount": 8,
+          "defaultMonths": 12,
+          "isDefault": true,
+          "order": 1
+        },
+        {
+          "code": "contado",
+          "label": "Contado",
+          "tagline": "Máximo descuento",
+          "down": 100,
+          "monthly": 0,
+          "delivery": 0,
+          "discount": 15,
+          "defaultMonths": 0,
+          "isDefault": false,
+          "order": 2
+        },
+        {
+          "code": "plan-b",
+          "label": "Plan B — Flexible",
+          "tagline": "Mensualidades extendidas",
+          "down": 20,
+          "monthly": 70,
+          "delivery": 10,
+          "discount": 5,
+          "defaultMonths": 18,
+          "isDefault": false,
+          "order": 3
+        }
+      ],
+      "units": [
+        {
+          "id": "LI-101",
+          "code": "101",
+          "level": 1,
+          "price": 19163625,
+          "delivery": "DIC 2026",
+          "status": "bloqueado",
+          "isAnchor": true,
+          "specs": {
+            "areaTotal": 195.03
+          }
+        },
+        {
+          "id": "LI-105",
+          "code": "105",
+          "level": 1,
+          "status": "vendido",
+          "specs": {
+            "areaTotal": 50.75
+          }
+        },
+        {
+          "id": "LI-106",
+          "code": "106",
+          "level": 1,
+          "status": "vendido",
+          "specs": {
+            "areaTotal": 40.6
+          }
+        },
+        {
+          "id": "LI-107",
+          "code": "107",
+          "level": 1,
+          "status": "vendido",
+          "specs": {
+            "areaTotal": 40.6
+          }
+        },
+        {
+          "id": "LI-108",
+          "code": "108",
+          "level": 1,
+          "status": "vendido",
+          "specs": {
+            "areaTotal": 40.6
+          }
+        },
+        {
+          "id": "LI-109",
+          "code": "109",
+          "level": 1,
+          "status": "vendido",
+          "specs": {
+            "areaTotal": 40.6
+          }
+        },
+        {
+          "id": "LI-110",
+          "code": "110",
+          "level": 1,
+          "status": "vendido",
+          "specs": {
+            "areaTotal": 40.6
+          }
+        },
+        {
+          "id": "LI-111",
+          "code": "111",
+          "level": 1,
+          "status": "vendido",
+          "specs": {
+            "areaTotal": 40.6
+          }
+        },
+        {
+          "id": "LI-112",
+          "code": "112",
+          "level": 1,
+          "status": "vendido",
+          "specs": {
+            "areaTotal": 40.6
+          }
+        },
+        {
+          "id": "LI-113",
+          "code": "113",
+          "level": 1,
+          "status": "vendido",
+          "specs": {
+            "areaTotal": 40.6
+          }
+        },
+        {
+          "id": "LI-114",
+          "code": "114",
+          "level": 1,
+          "status": "vendido",
+          "specs": {
+            "areaTotal": 40.6
+          }
+        },
+        {
+          "id": "LI-115",
+          "code": "115",
+          "level": 1,
+          "status": "vendido",
+          "specs": {
+            "areaTotal": 40.6
+          }
+        },
+        {
+          "id": "LI-116",
+          "code": "116",
+          "level": 1,
+          "price": 14962500,
+          "delivery": "MAR 2027",
+          "status": "bloqueado",
+          "isAnchor": true,
+          "specs": {
+            "areaTotal": 151.64
+          }
+        },
+        {
+          "id": "LI-201",
+          "code": "201",
+          "level": 2,
+          "price": 6483513.51,
+          "delivery": "DIC 2026",
+          "status": "bloqueado",
+          "isAnchor": true,
+          "specs": {
+            "areaTotal": 104.3
+          }
+        },
+        {
+          "id": "LI-202",
+          "code": "202",
+          "level": 2,
+          "status": "vendido",
+          "specs": {
+            "areaTotal": 50.0
+          }
+        },
+        {
+          "id": "LI-203",
+          "code": "203",
+          "level": 2,
+          "price": 2850000,
+          "delivery": "DIC 2026",
+          "status": "disponible",
+          "specs": {
+            "areaTotal": 45.45
+          }
+        },
+        {
+          "id": "LI-205",
+          "code": "205",
+          "level": 2,
+          "price": 3350000,
+          "delivery": "DIC 2026",
+          "status": "disponible",
+          "specs": {
+            "areaTotal": 50.75
+          }
+        },
+        {
+          "id": "LI-206",
+          "code": "206",
+          "level": 2,
+          "status": "vendido",
+          "specs": {
+            "areaTotal": 40.6
+          }
+        },
+        {
+          "id": "LI-207",
+          "code": "207",
+          "level": 2,
+          "status": "vendido",
+          "specs": {
+            "areaTotal": 40.6
+          }
+        },
+        {
+          "id": "LI-208",
+          "code": "208",
+          "level": 2,
+          "status": "vendido",
+          "specs": {
+            "areaTotal": 40.6
+          }
+        },
+        {
+          "id": "LI-209",
+          "code": "209",
+          "level": 2,
+          "price": 2650000,
+          "delivery": "DIC 2026",
+          "status": "disponible",
+          "specs": {
+            "areaTotal": 40.6
+          }
+        },
+        {
+          "id": "LI-210",
+          "code": "210",
+          "level": 2,
+          "price": 2750000,
+          "delivery": "DIC 2026",
+          "status": "disponible",
+          "specs": {
+            "areaTotal": 40.6
+          }
+        },
+        {
+          "id": "LI-211",
+          "code": "211",
+          "level": 2,
+          "status": "vendido",
+          "specs": {
+            "areaTotal": 40.6
+          }
+        },
+        {
+          "id": "LI-212",
+          "code": "212",
+          "level": 2,
+          "price": 2650000,
+          "delivery": "MAR 2027",
+          "status": "disponible",
+          "specs": {
+            "areaTotal": 40.6
+          }
+        },
+        {
+          "id": "LI-213",
+          "code": "213",
+          "level": 2,
+          "price": 2650000,
+          "delivery": "MAR 2027",
+          "status": "disponible",
+          "specs": {
+            "areaTotal": 40.6
+          }
+        },
+        {
+          "id": "LI-214",
+          "code": "214",
+          "level": 2,
+          "price": 2650000,
+          "delivery": "MAR 2027",
+          "status": "disponible",
+          "specs": {
+            "areaTotal": 40.6
+          }
+        },
+        {
+          "id": "LI-215",
+          "code": "215",
+          "level": 2,
+          "price": 2650000,
+          "delivery": "MAR 2027",
+          "status": "bloqueado",
+          "specs": {
+            "areaTotal": 40.6
+          }
+        },
+        {
+          "id": "LI-216",
+          "code": "216",
+          "level": 2,
+          "price": 3350000,
+          "delivery": "MAR 2027",
+          "status": "bloqueado",
+          "specs": {
+            "areaTotal": 50.75
+          }
+        },
+        {
+          "id": "LI-217",
+          "code": "217",
+          "level": 2,
+          "price": 6900000,
+          "delivery": "MAR 2027",
+          "status": "bloqueado",
+          "isAnchor": true,
+          "specs": {
+            "areaTotal": 102.26
+          }
+        }
+      ],
+      "unitSpecsTemplate": [
+        {
+          "key": "areaTotal",
+          "label": "Área total",
+          "labelEn": "Total area",
+          "unit": "m²",
+          "type": "number",
+          "order": 1
+        },
+        {
+          "key": "frente",
+          "label": "Frente",
+          "labelEn": "Frontage",
+          "unit": "m",
+          "type": "number",
+          "order": 2
+        },
+        {
+          "key": "fondo",
+          "label": "Fondo",
+          "labelEn": "Depth",
+          "unit": "m",
+          "type": "number",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "slug": "gardens",
+      "name": "Quattro Plaza Center Gardens",
+      "shortName": "Gardens",
+      "tagline": "Vegetación, retail premium y arquitectura biofílica",
+      "status": "lanzamiento",
+      "city": "Cancún",
+      "state": "Quintana Roo",
+      "country": "México",
+      "deliveryWindow": "JUN — SEP 2027",
+      "totalUnits": 32,
+      "soldUnits": 8,
+      "reservedUnits": 2,
+      "availableUnits": 18,
+      "blockedUnits": 4,
+      "developer": "Tresor Real Estate",
+      "heroRender": "/renders/gardens/01.jpg",
+      "logoWhite": "/logos/QuattroGardensLogoWhite.svg",
+      "logoDark": "/logos/gardens.svg",
+      "masterPlanImage": "/master-plans/gardens-n1.png",
+      "location": {
+        "lat": 21.13,
+        "lng": -86.855,
+        "address": "Cancún, Q. Roo, México"
+      },
+      "highlights": [
+        {
+          "label": "Concepto",
+          "value": "Biofílico"
+        },
+        {
+          "label": "Niveles",
+          "value": "2 plantas"
+        },
+        {
+          "label": "Áreas Verdes",
+          "value": "40% del terreno"
+        },
+        {
+          "label": "Locales",
+          "value": "32 unidades"
+        }
+      ],
+      "paymentPlans": [
+        {
+          "code": "plan-a",
+          "label": "Plan A — Recomendado",
+          "tagline": "Mejor balance descuento + financiamiento",
+          "down": 30,
+          "monthly": 60,
+          "delivery": 10,
+          "discount": 8,
+          "defaultMonths": 12,
+          "isDefault": true,
+          "order": 1
+        },
+        {
+          "code": "contado",
+          "label": "Contado",
+          "tagline": "Máximo descuento",
+          "down": 100,
+          "monthly": 0,
+          "delivery": 0,
+          "discount": 15,
+          "defaultMonths": 0,
+          "isDefault": false,
+          "order": 2
+        },
+        {
+          "code": "plan-b",
+          "label": "Plan B — Flexible",
+          "tagline": "Mensualidades extendidas",
+          "down": 20,
+          "monthly": 70,
+          "delivery": 10,
+          "discount": 5,
+          "defaultMonths": 18,
+          "isDefault": false,
+          "order": 3
+        }
+      ],
+      "units": [
+        {
+          "id": "G-101",
+          "code": "101",
+          "level": 1,
+          "price": 8685927.97,
+          "delivery": "JUN 2027",
+          "status": "bloqueado",
+          "isAnchor": true,
+          "specs": {
+            "areaTotal": 119.03
+          }
+        },
+        {
+          "id": "G-102",
+          "code": "102",
+          "level": 1,
+          "price": 2650000,
+          "delivery": "JUN 2027",
+          "status": "bloqueado",
+          "specs": {
+            "areaTotal": 32.58
+          }
+        },
+        {
+          "id": "G-103",
+          "code": "103",
+          "level": 1,
+          "delivery": "JUN 2027",
+          "status": "vendido",
+          "specs": {
+            "areaTotal": 32.6
+          }
+        },
+        {
+          "id": "G-104",
+          "code": "104",
+          "level": 1,
+          "delivery": "JUN 2027",
+          "status": "apartado",
+          "specs": {
+            "areaTotal": 32.6
+          }
+        },
+        {
+          "id": "G-105",
+          "code": "105",
+          "level": 1,
+          "delivery": "JUN 2027",
+          "status": "vendido",
+          "specs": {
+            "areaTotal": 32.55
+          }
+        },
+        {
+          "id": "G-106",
+          "code": "106",
+          "level": 1,
+          "delivery": "JUN 2027",
+          "status": "vendido",
+          "specs": {
+            "areaTotal": 40.74
+          }
+        },
+        {
+          "id": "G-107",
+          "code": "107",
+          "level": 1,
+          "delivery": "JUN 2027",
+          "status": "vendido",
+          "specs": {
+            "areaTotal": 40.75
+          }
+        },
+        {
+          "id": "G-108",
+          "code": "108",
+          "level": 1,
+          "delivery": "JUN 2027",
+          "status": "vendido",
+          "specs": {
+            "areaTotal": 41.36
+          }
+        },
+        {
+          "id": "G-109",
+          "code": "109",
+          "level": 1,
+          "price": 3350000,
+          "delivery": "SEP 2027",
+          "status": "disponible",
+          "specs": {
+            "areaTotal": 41.36
+          }
+        },
+        {
+          "id": "G-110",
+          "code": "110",
+          "level": 1,
+          "price": 3250000,
+          "delivery": "SEP 2027",
+          "status": "disponible",
+          "specs": {
+            "areaTotal": 40.75
+          }
+        },
+        {
+          "id": "G-111",
+          "code": "111",
+          "level": 1,
+          "price": 3250000,
+          "delivery": "SEP 2027",
+          "status": "disponible",
+          "specs": {
+            "areaTotal": 40.96
+          }
+        },
+        {
+          "id": "G-112",
+          "code": "112",
+          "level": 1,
+          "price": 2650000,
+          "delivery": "SEP 2027",
+          "status": "disponible",
+          "specs": {
+            "areaTotal": 32.81
+          }
+        },
+        {
+          "id": "G-113",
+          "code": "113",
+          "level": 1,
+          "price": 2650000,
+          "delivery": "SEP 2027",
+          "status": "disponible",
+          "specs": {
+            "areaTotal": 32.6
+          }
+        },
+        {
+          "id": "G-114",
+          "code": "114",
+          "level": 1,
+          "price": 2650000,
+          "delivery": "SEP 2027",
+          "status": "disponible",
+          "specs": {
+            "areaTotal": 32.6
+          }
+        },
+        {
+          "id": "G-115",
+          "code": "115",
+          "level": 1,
+          "price": 2650000,
+          "delivery": "SEP 2027",
+          "status": "bloqueado",
+          "specs": {
+            "areaTotal": 32.58
+          }
+        },
+        {
+          "id": "G-116",
+          "code": "116",
+          "level": 1,
+          "price": 8950000,
+          "delivery": "SEP 2027",
+          "status": "bloqueado",
+          "isAnchor": true,
+          "specs": {
+            "areaTotal": 119.2
+          }
+        },
+        {
+          "id": "G-201",
+          "code": "201",
+          "level": 2,
+          "price": 6765405.41,
+          "delivery": "JUN 2027",
+          "status": "disponible",
+          "isAnchor": true,
+          "specs": {
+            "areaTotal": 119.2
+          }
+        },
+        {
+          "id": "G-202",
+          "code": "202",
+          "level": 2,
+          "delivery": "JUN 2027",
+          "status": "apartado",
+          "specs": {
+            "areaTotal": 32.58
+          }
+        },
+        {
+          "id": "G-203",
+          "code": "203",
+          "level": 2,
+          "delivery": "JUN 2027",
+          "status": "vendido",
+          "specs": {
+            "areaTotal": 32.6
+          }
+        },
+        {
+          "id": "G-204",
+          "code": "204",
+          "level": 2,
+          "price": 1968600,
+          "delivery": "JUN 2027",
+          "status": "disponible",
+          "specs": {
+            "areaTotal": 32.6
+          }
+        },
+        {
+          "id": "G-205",
+          "code": "205",
+          "level": 2,
+          "delivery": "JUN 2027",
+          "status": "disponible",
+          "specs": {
+            "areaTotal": 32.81
+          }
+        },
+        {
+          "id": "G-206",
+          "code": "206",
+          "level": 2,
+          "price": 2375000,
+          "delivery": "JUN 2027",
+          "status": "disponible",
+          "specs": {
+            "areaTotal": 40.96
+          }
+        },
+        {
+          "id": "G-207",
+          "code": "207",
+          "level": 2,
+          "price": 2375000,
+          "delivery": "JUN 2027",
+          "status": "disponible",
+          "specs": {
+            "areaTotal": 40.75
+          }
+        },
+        {
+          "id": "G-208",
+          "code": "208",
+          "level": 2,
+          "price": 2475000,
+          "delivery": "JUN 2027",
+          "status": "disponible",
+          "specs": {
+            "areaTotal": 41.36
+          }
+        },
+        {
+          "id": "G-209",
+          "code": "209",
+          "level": 2,
+          "price": 2475000,
+          "delivery": "SEP 2027",
+          "status": "disponible",
+          "specs": {
+            "areaTotal": 41.36
+          }
+        },
+        {
+          "id": "G-210",
+          "code": "210",
+          "level": 2,
+          "price": 2375000,
+          "delivery": "SEP 2027",
+          "status": "disponible",
+          "specs": {
+            "areaTotal": 40.75
+          }
+        },
+        {
+          "id": "G-211",
+          "code": "211",
+          "level": 2,
+          "price": 2375000,
+          "delivery": "SEP 2027",
+          "status": "disponible",
+          "specs": {
+            "areaTotal": 40.96
+          }
+        },
+        {
+          "id": "G-212",
+          "code": "212",
+          "level": 2,
+          "price": 1968600,
+          "delivery": "SEP 2027",
+          "status": "disponible",
+          "specs": {
+            "areaTotal": 32.81
+          }
+        },
+        {
+          "id": "G-213",
+          "code": "213",
+          "level": 2,
+          "price": 1968600,
+          "delivery": "SEP 2027",
+          "status": "disponible",
+          "specs": {
+            "areaTotal": 32.6
+          }
+        },
+        {
+          "id": "G-214",
+          "code": "214",
+          "level": 2,
+          "price": 1968600,
+          "delivery": "SEP 2027",
+          "status": "disponible",
+          "specs": {
+            "areaTotal": 32.6
+          }
+        },
+        {
+          "id": "G-215",
+          "code": "215",
+          "level": 2,
+          "price": 1968600,
+          "delivery": "SEP 2027",
+          "status": "disponible",
+          "specs": {
+            "areaTotal": 32.58
+          }
+        },
+        {
+          "id": "G-216",
+          "code": "216",
+          "level": 2,
+          "price": 6950000,
+          "delivery": "SEP 2027",
+          "status": "disponible",
+          "isAnchor": true,
+          "specs": {
+            "areaTotal": 119.2
+          }
+        }
+      ],
+      "unitSpecsTemplate": [
+        {
+          "key": "areaTotal",
+          "label": "Área total",
+          "labelEn": "Total area",
+          "unit": "m²",
+          "type": "number",
+          "order": 1
+        },
+        {
+          "key": "frente",
+          "label": "Frente",
+          "labelEn": "Frontage",
+          "unit": "m",
+          "type": "number",
+          "order": 2
+        },
+        {
+          "key": "fondo",
+          "label": "Fondo",
+          "labelEn": "Depth",
+          "unit": "m",
+          "type": "number",
+          "order": 3
+        }
+      ]
+    },
+    {
+      "slug": "tulum",
+      "name": "Quattro Plaza Center Tulum",
+      "shortName": "Tulum",
+      "tagline": "Próximamente en el corazón de la Riviera Maya",
+      "status": "coming-soon",
+      "city": "Tulum",
+      "state": "Quintana Roo",
+      "country": "México",
+      "deliveryWindow": "Por anunciar",
+      "developer": "Tresor Real Estate",
+      "heroRender": "/renders/long-island/06.jpg",
+      "logoWhite": "/logos/quattrotulum.svg",
+      "comingSoon": true
+    },
+    {
+      "slug": "marina",
+      "name": "Quattro Plaza Center Marina",
+      "shortName": "Marina",
+      "tagline": "Próximamente sobre la zona hotelera",
+      "status": "coming-soon",
+      "city": "Cancún",
+      "state": "Quintana Roo",
+      "country": "México",
+      "deliveryWindow": "Por anunciar",
+      "developer": "Tresor Real Estate",
+      "heroRender": "/renders/gardens/02.jpg",
+      "logoWhite": "/logos/quattromarina.svg",
+      "comingSoon": true
+    },
+    {
+      "slug": "huayacan",
+      "name": "Quattro Plaza Center Huayacán",
+      "shortName": "Huayacán",
+      "tagline": "Próximamente en una de las zonas más vibrantes de Cancún",
+      "status": "coming-soon",
+      "city": "Cancún",
+      "state": "Quintana Roo",
+      "country": "México",
+      "deliveryWindow": "Por anunciar",
+      "developer": "Tresor Real Estate",
+      "heroRender": "/renders/long-island/02.jpg",
+      "logoWhite": "/logos/quattrohuayacan.svg",
+      "comingSoon": true
+    }
+  ]
+}

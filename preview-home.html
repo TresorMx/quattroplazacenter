@@ -1,0 +1,725 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Quattro Plaza Center — Preview Home</title>
+<link rel="icon" type="image/svg+xml" href="public/favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Manrope:wght@200;300;400;500;600;700&family=Montserrat:wght@600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  /* Custom font Javacom para el footer */
+  @font-face {
+    font-family: 'Javacom';
+    src: url('public/fonts/Javacom.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  :root {
+    --bg: #FFFFFF;
+    --bg-card: #FFFFFF;
+    --bg-deep: #0E0E0E;
+    --bg-soft: #FFFFFF;
+    --ink: #0E0E0E;
+    --ink-2: #2A2823;
+    --ink-3: #6B6863;
+    --ink-4: #9A968D;
+    --line: #DDD7CB;
+    --accent: #FAB413;
+    --accent-deep: #C88C00;
+    --serif: "Cormorant Garamond", serif;
+    --sans: "Manrope", system-ui, sans-serif;
+    --mono: "JetBrains Mono", monospace;
+    --display: "Javacom", "Manrope", sans-serif;
+    --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-decoration: none; }
+  img, svg { display: block; max-width: 100%; }
+  /* Container al 90% del viewport — más aire a los lados */
+  .container {
+    width: 100%;
+    max-width: 1680px;
+    margin: 0 auto;
+    padding-left: max(24px, 5vw);
+    padding-right: max(24px, 5vw);
+  }
+  .eyebrow { font-size: 11px; letter-spacing: 0.32em; text-transform: uppercase; font-weight: 700; color: var(--ink-3); }
+  .eyebrow-accent { color: var(--accent-deep); }
+
+  /* ───── Header (sin border-bottom, contenido al 90%) ───── */
+  .site-header {
+    position: fixed; inset: 0 0 auto 0; z-index: 50;
+    background: #fff; padding: 12px 0;
+  }
+  .site-header-inner {
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .site-header.scrolled { box-shadow: 0 8px 24px rgba(0,0,0,0.05); }
+  .site-header .brand img { height: 69px; width: 150px; display: block; }
+  .site-nav { display: flex; gap: 32px; align-items: center; }
+  .site-nav a { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600; }
+  .site-nav a:hover { color: var(--accent-deep); }
+
+  /* #3 Toggle de idioma moderno (pill) */
+  .lang-toggle {
+    display: inline-flex; align-items: center;
+    background: var(--bg-soft);
+    border-radius: 999px;
+    padding: 3px;
+    gap: 1px;
+  }
+  .lang-toggle button {
+    appearance: none; border: none; background: transparent;
+    font-family: inherit; cursor: pointer;
+    font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 600;
+    padding: 7px 12px;
+    border-radius: 999px;
+    color: var(--ink-3);
+    transition: all 0.2s var(--ease);
+  }
+  .lang-toggle button.active {
+    background: var(--ink); color: var(--bg);
+  }
+  .lang-toggle button:not(.active):hover { color: var(--ink); }
+
+  /* #4 Botones todos con tamaño de fuente del botón del header (11px) */
+  .btn, .site-nav .cta {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 12px 22px; border-radius: 999px;
+    font-family: inherit;
+    font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+    font-weight: 700; cursor: pointer; border: 1px solid transparent;
+    transition: all 0.3s var(--ease); white-space: nowrap;
+  }
+  .btn-primary { background: var(--ink); color: var(--bg); }
+  .btn-primary:hover { background: var(--accent-deep); color: #fff; }
+  .btn-accent, .site-nav .cta {
+    background: var(--accent); color: var(--ink);
+  }
+  .btn-accent:hover, .site-nav .cta:hover {
+    background: var(--accent-deep); color: var(--ink);
+  }
+  .btn-lg { padding: 16px 28px; }
+
+  /* ───── Hero ───── */
+  .hero {
+    position: relative; height: 100vh; min-height: 720px;
+    overflow: hidden; background: var(--bg-deep); color: #fff;
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background: url('public/renders/long-island/WEB.jpg') center/cover no-repeat;
+    transform: scale(1.05);
+    animation: heroZoom 18s var(--ease) forwards;
+  }
+  @keyframes heroZoom { to { transform: scale(1); } }
+  .hero::after {
+    content: ''; position: absolute; inset: 0;
+    background: rgba(0,0,0,0.5);
+  }
+  .hero-content {
+    position: relative; z-index: 2; height: 100%;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 80px 32px;
+  }
+  /* #1 Hero PNG reducido un 10% (920 → 828) */
+  .hero-mark {
+    width: 100%; max-width: 828px; height: auto; display: block;
+    opacity: 0; animation: fadeUp 1.4s var(--ease) 0.3s forwards;
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: none; }
+  }
+  .scroll-hint {
+    position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
+    font-size: 10px; letter-spacing: 0.32em; text-transform: uppercase;
+    display: flex; flex-direction: column; align-items: center; gap: 14px;
+    color: rgba(255,255,255,0.7); z-index: 2;
+  }
+  .scroll-hint .line {
+    width: 1px; height: 40px;
+    background: linear-gradient(to bottom, currentColor, transparent);
+    animation: scrollLine 2.4s ease-in-out infinite;
+  }
+  @keyframes scrollLine { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+
+  /* ───── Portfolio ───── */
+  .portfolio { padding: clamp(72px, 9vw, 140px) 0; background: #FFFFFF; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .portfolio-header {
+    display: grid; grid-template-columns: 1fr auto;
+    align-items: end; margin-bottom: 64px; gap: 40px;
+  }
+  .portfolio h2 {
+    font-family: var(--serif); font-style: italic; font-weight: 300;
+    font-size: clamp(40px, 5vw, 80px); line-height: 0.96;
+    letter-spacing: -0.02em; margin-top: 16px;
+  }
+  .portfolio .toolbar {
+    font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--ink-3); font-weight: 600;
+  }
+
+  /* Grid 3 columnas (acepta 4 o 5 cards naturalmente) */
+  .plaza-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(16px, 1.6vw, 24px);
+  }
+  @media (max-width: 1100px) {
+    .plaza-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .plaza-grid { grid-template-columns: 1fr; }
+  }
+
+  .plaza-card {
+    position: relative; display: block; overflow: hidden;
+    border-radius: 18px; background: var(--bg-deep); color: #fff;
+    aspect-ratio: 4 / 5; cursor: pointer;
+    transition: transform 0.5s var(--ease);
+  }
+  .plaza-card:hover { transform: translateY(-4px); }
+  .plaza-card .cover { position: absolute; inset: 0; overflow: hidden; }
+  .plaza-card .cover img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform 0.9s var(--ease);
+  }
+  .plaza-card:hover .cover img { transform: scale(1.04); }
+  .plaza-card .cover::after {
+    content: ''; position: absolute; inset: 0;
+    background: rgba(0,0,0,0.55);
+  }
+  .plaza-card .badge {
+    position: absolute; top: 22px; left: 22px; z-index: 2;
+    font-size: 10px; letter-spacing: 0.32em; text-transform: uppercase;
+    font-weight: 700; color: var(--accent);
+    display: inline-flex; align-items: center; gap: 12px;
+  }
+  .plaza-card .badge::before {
+    content: ''; display: inline-block; width: 24px; height: 1px;
+    background: currentColor;
+  }
+  .plaza-card .badge.coming { color: rgba(255,255,255,0.7); }
+  .plaza-card .body {
+    position: absolute; inset: 0; z-index: 2;
+    display: flex; align-items: center; justify-content: center;
+    padding: 32px; text-align: center;
+  }
+  .plaza-card .plaza-logo {
+    height: clamp(108px, 12vw, 165px); width: auto;
+    filter: drop-shadow(0 8px 32px rgba(0,0,0,0.3));
+  }
+  /* Marina viene con partes oscuras — fuerza a blanco */
+  .plaza-card .plaza-logo.force-white {
+    filter: brightness(0) invert(1) drop-shadow(0 8px 32px rgba(0,0,0,0.3));
+  }
+  .plaza-card .meta {
+    position: absolute; bottom: 26px; left: 26px; right: 26px; z-index: 2;
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
+    font-size: 10.5px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: rgba(255,255,255,0.85); font-weight: 600;
+  }
+  /* #7 Icono de ubicación a la izquierda del texto de ciudad */
+  .plaza-card .meta .location {
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .plaza-card .meta .location svg {
+    width: 14px; height: 14px; flex-shrink: 0;
+  }
+  .plaza-card .arrow {
+    width: 40px; height: 40px; border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.6);
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.3s, color 0.3s;
+  }
+  .plaza-card:hover .arrow { background: #fff; color: var(--ink); border-color: #fff; }
+
+  /* ───── Approach (dark) ───── */
+  .approach {
+    background: var(--ink); color: var(--bg);
+    padding: clamp(96px, 12vw, 180px) 0;
+    position: relative; overflow: hidden;
+  }
+  .approach::before {
+    content: ''; position: absolute; top: -120px; right: -80px;
+    width: 480px; height: 480px;
+    background: radial-gradient(circle, rgba(250,180,19,0.28) 0%, transparent 70%);
+  }
+  .approach-head {
+    position: relative; z-index: 2;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 60px; align-items: end; margin-bottom: 80px;
+  }
+  .approach h3 {
+    font-family: var(--sans); font-weight: 200;
+    font-size: clamp(40px, 5vw, 80px); letter-spacing: -0.03em;
+    line-height: 0.96; margin-top: 24px;
+  }
+  .approach h3 em {
+    font-family: var(--serif); font-style: italic; font-weight: 300; color: var(--accent);
+  }
+  .approach .desc {
+    color: rgba(255,255,255,0.72);
+    font-size: clamp(15px, 1.2vw, 18px); line-height: 1.6;
+    font-weight: 500; max-width: 48ch;
+  }
+  .approach .desc strong { color: var(--bg); font-weight: 500; }
+  .pillars {
+    position: relative; z-index: 2;
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    border-top: 1px solid rgba(255,255,255,0.15);
+  }
+  .pillar {
+    padding: 36px 28px;
+    border-right: 1px solid rgba(255,255,255,0.15);
+    display: flex; flex-direction: column; gap: 22px;
+  }
+  .pillar:last-child { border-right: none; }
+  .pillar .n {
+    font-family: var(--mono); font-size: 11px;
+    letter-spacing: 0.22em; color: var(--accent); font-weight: 500;
+  }
+  .pillar h4 {
+    font-family: var(--serif); font-style: italic; font-weight: 300;
+    font-size: clamp(24px, 2.4vw, 32px); line-height: 1.1;
+    letter-spacing: -0.015em;
+  }
+  .pillar p {
+    font-size: 14px; line-height: 1.6; color: rgba(255,255,255,0.7); font-weight: 300;
+  }
+
+  /* ───── Broker strip ───── */
+  .broker-strip {
+    background: #fff;
+    padding: 80px 0;
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid var(--line);
+  }
+  .broker-strip .row {
+    display: grid; grid-template-columns: auto 1fr auto;
+    gap: 40px; align-items: center;
+  }
+  .broker-strip .lock {
+    width: 56px; height: 56px; border-radius: 50%;
+    background: var(--ink); color: var(--bg);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .broker-strip h3 {
+    font-family: var(--serif); font-style: italic; font-weight: 300;
+    font-size: clamp(28px, 3vw, 44px); line-height: 1.1;
+  }
+  .broker-strip p {
+    color: var(--ink-3); font-size: 14px; margin-top: 6px; max-width: 56ch;
+  }
+
+  /* ───── Footer ───── */
+  footer {
+    background: var(--bg-deep); color: var(--bg);
+    padding: 100px 0 28px;
+    position: relative; overflow: hidden;
+  }
+  .footer-top {
+    display: grid; grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
+    gap: 60px; padding-bottom: 80px;
+  }
+  .footer-top .brand img {
+    height: 56px; margin-bottom: 24px;
+    filter: brightness(0) invert(1);
+  }
+  .footer-top .brand p.claim {
+    font-family: var(--serif); font-style: italic; font-weight: 300;
+    font-size: 22px; line-height: 1.25;
+    color: rgba(255,255,255,0.95); max-width: 28ch;
+  }
+  .footer-top .brand p.sub {
+    margin-top: 22px; font-size: 13px;
+    color: rgba(255,255,255,0.55); max-width: 36ch; line-height: 1.6;
+  }
+  .footer-top h4 {
+    font-size: 11px; letter-spacing: 0.32em; text-transform: uppercase;
+    font-weight: 500; color: var(--ink-4); margin-bottom: 22px;
+  }
+  .footer-top ul { list-style: none; display: flex; flex-direction: column; gap: 11px; }
+  .footer-top a, .footer-top li {
+    font-size: 14px; color: rgba(255,255,255,0.82);
+    transition: color 0.2s;
+  }
+  .footer-top a:hover { color: var(--accent); }
+  .footer-broker {
+    border: 1px solid rgba(255,255,255,0.15);
+    padding: 28px; border-radius: 18px;
+    background: linear-gradient(135deg, rgba(255,255,255,0.04), transparent);
+    display: flex; flex-direction: column; gap: 18px;
+  }
+  .footer-broker .label {
+    font-family: var(--serif); font-style: italic; font-weight: 300;
+    font-size: 26px; line-height: 1.15;
+  }
+  .footer-broker p {
+    font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.55;
+  }
+  .footer-broker .btn {
+    background: var(--accent); color: var(--ink);
+    padding: 12px 22px; align-self: flex-start;
+    font-size: 11px; letter-spacing: 0.2em; font-weight: 700;
+  }
+  .footer-broker .btn:hover { background: var(--accent-deep); color: var(--ink); }
+
+  /* #9 Footer bottom con The Art of Luxury Living + LogoTresor */
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.1); padding-top: 28px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: rgba(255,255,255,0.42); font-weight: 600;
+  }
+  .tresor-mark {
+    display: inline-flex; align-items: center; gap: 14px;
+  }
+  .tresor-mark .luxury-tagline {
+    font-family: var(--display);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    color: rgba(255,255,255,0.6);
+    text-transform: none;
+    font-weight: normal;
+  }
+  .tresor-mark img.tresor-logo {
+    height: 36px; width: auto; display: block;
+  }
+
+  /* #8 Wordmark QUATTRO completo via SVG (no se corta nunca) */
+  .footer-wordmark {
+    margin-top: 60px; padding: 0 20px;
+    user-select: none; pointer-events: none;
+    display: flex; align-items: flex-end; justify-content: center;
+  }
+  .footer-wordmark svg {
+    width: 100%; height: auto; max-width: 100%;
+    display: block;
+  }
+  .footer-wordmark svg text {
+    font-family: "Montserrat", var(--sans);
+    font-weight: 900;
+    fill: rgba(255,255,255,0.04);
+    letter-spacing: 0.06em;
+  }
+
+  /* ───── Chatbot button (visual only) ───── */
+  .chatbot-fab {
+    position: fixed; bottom: 24px; right: 24px; z-index: 60;
+    width: 56px; height: 56px; border-radius: 50%;
+    background: var(--ink); color: var(--bg);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.25);
+    cursor: pointer; transition: all 0.25s var(--ease);
+  }
+  .chatbot-fab:hover { background: var(--accent-deep); color: #fff; }
+
+  /* Responsive */
+  @media (max-width: 880px) {
+    .portfolio-header { grid-template-columns: 1fr; }
+    .approach-head { grid-template-columns: 1fr; gap: 28px; }
+    .pillars { grid-template-columns: 1fr 1fr; }
+    .pillar:nth-child(2) { border-right: none; }
+    .pillar:nth-child(1), .pillar:nth-child(2) { border-bottom: 1px solid rgba(255,255,255,0.15); }
+    .broker-strip .row { grid-template-columns: 1fr; gap: 24px; }
+    .footer-top { grid-template-columns: 1fr 1fr; gap: 40px; }
+    .footer-broker { grid-column: span 2; }
+    .footer-bottom { flex-direction: column; gap: 16px; text-align: center; }
+    .site-header .brand img { height: 56px; width: auto; }
+  }
+  @media (max-width: 540px) {
+    .pillars { grid-template-columns: 1fr; }
+    .pillar { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.15); }
+    .pillar:last-child { border-bottom: none; }
+    .footer-top { grid-template-columns: 1fr; }
+    .footer-broker { grid-column: auto; }
+    .site-nav a:not(.cta) { display: none; }
+    .lang-toggle { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="container site-header-inner">
+    <a href="preview-home.html" class="brand" aria-label="Quattro Plaza Center">
+      <img src="public/logos/logo-quattro.svg" alt="Quattro" />
+    </a>
+    <nav class="site-nav">
+      <a href="preview-plaza.html">Long Island</a>
+      <a href="preview-plaza.html">Gardens</a>
+      <a href="preview-brokers-gate.html">Brokers</a>
+
+      <div class="lang-toggle" role="group" aria-label="Idioma">
+        <button class="active" aria-pressed="true">ES</button>
+        <button aria-pressed="false">EN</button>
+      </div>
+
+      <a href="#" class="cta">Agenda una visita</a>
+    </nav>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <!-- #1 PNG reducido 10% (max-width: 828px) -->
+    <img class="hero-mark" src="public/brand/perfect-space.png" alt="The Perfect Space for your next business" />
+  </div>
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <span class="line"></span>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section class="portfolio" id="plazas">
+  <div class="container">
+    <div class="portfolio-header">
+      <div>
+        <span class="eyebrow eyebrow-accent">— Proyectos</span>
+        <h2>Descubre Quattro Plaza Center<br/>una experiencia.</h2>
+      </div>
+      <div class="toolbar">Ubicaciones actuales</div>
+    </div>
+
+    <div class="plaza-grid">
+      <!-- 1. Long Island -->
+      <a href="#" class="plaza-card">
+        <div class="cover"><img src="public/renders/long-island/04.jpg" alt="Long Island" /></div>
+        <span class="badge">Preventa</span>
+        <div class="body">
+          <img src="public/logos/QuattroLongIslandLogoWhite.svg" alt="Long Island" class="plaza-logo" />
+        </div>
+        <div class="meta">
+          <span class="location">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Cancún, Q. Roo
+          </span>
+          <span class="arrow">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </span>
+        </div>
+      </a>
+
+      <!-- 2. Gardens -->
+      <a href="#" class="plaza-card">
+        <div class="cover"><img src="public/renders/gardens/01.jpg" alt="Gardens" /></div>
+        <span class="badge">Lanzamiento</span>
+        <div class="body">
+          <img src="public/logos/QuattroGardensLogoWhite.svg" alt="Gardens" class="plaza-logo" />
+        </div>
+        <div class="meta">
+          <span class="location">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Cancún, Q. Roo
+          </span>
+          <span class="arrow">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </span>
+        </div>
+      </a>
+
+      <!-- 3. Tulum coming soon -->
+      <div class="plaza-card">
+        <div class="cover"><img src="public/renders/long-island/06.jpg" alt="Tulum" /></div>
+        <span class="badge coming">Coming Soon</span>
+        <div class="body">
+          <img src="public/logos/quattrotulum.svg" alt="Tulum" class="plaza-logo" />
+        </div>
+        <!-- #6 Sin "Próximamente" en bottom-right -->
+        <div class="meta">
+          <span class="location">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Tulum, Q. Roo
+          </span>
+        </div>
+      </div>
+
+      <!-- 4. Marina coming soon -->
+      <div class="plaza-card">
+        <div class="cover"><img src="public/renders/gardens/02.jpg" alt="Marina" /></div>
+        <span class="badge coming">Coming Soon</span>
+        <div class="body">
+          <img src="public/logos/quattromarina.svg" alt="Marina" class="plaza-logo force-white" />
+        </div>
+        <div class="meta">
+          <span class="location">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Cancún, Q. Roo
+          </span>
+        </div>
+      </div>
+
+      <!-- 5. Huayacán coming soon (#5) -->
+      <div class="plaza-card">
+        <div class="cover"><img src="public/renders/long-island/02.jpg" alt="Huayacán" /></div>
+        <span class="badge coming">Coming Soon</span>
+        <div class="body">
+          <img src="public/logos/quattrohuayacan.svg" alt="Huayacán" class="plaza-logo" />
+        </div>
+        <div class="meta">
+          <span class="location">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Cancún, Q. Roo
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- APPROACH -->
+<section class="approach">
+  <div class="container">
+    <div class="approach-head">
+      <div>
+        <span class="eyebrow" style="color: var(--accent)">— Por qué Quattro</span>
+        <h3>Un desarrollador<br/>con <em>trayectoria,</em><br/>no una promesa.</h3>
+      </div>
+      <p class="desc">
+        Quattro Plaza Center es desarrollado por <strong>Tresor Real Estate</strong>, una empresa líder en el desarrollo inmobiliario del Caribe Mexicano. Más de dos décadas construyendo proyectos en Luxury, Residencial, Comercial, Vacacional y Master Plan.
+      </p>
+    </div>
+    <div class="pillars">
+      <div class="pillar">
+        <div class="n">01 / Ubicación</div>
+        <h4>Locación validada</h4>
+        <p>Zonas con flujo vehicular y peatonal comprobado, rodeadas de alta densidad residencial.</p>
+      </div>
+      <div class="pillar">
+        <div class="n">02 / Diseño</div>
+        <h4>Arquitectura premium</h4>
+        <p>Fachadas de doble altura, vegetación integrada y mix de tenants curado para sinergia.</p>
+      </div>
+      <div class="pillar">
+        <div class="n">03 / Esquemas</div>
+        <h4>Planes flexibles</h4>
+        <p>Desde 10% de enganche, mensualidades hasta entrega y descuentos por pronto pago.</p>
+      </div>
+      <div class="pillar">
+        <div class="n">04 / Apartado</div>
+        <h4>Aparta reembolsable</h4>
+        <p>Asegura tu local con $50,000 MXN completamente reembolsables. Asesoría legal incluida.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BROKER STRIP -->
+<section class="broker-strip" id="brokers">
+  <div class="container">
+    <div class="row">
+      <div class="lock">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 1 1 8 0v4"/></svg>
+      </div>
+      <div>
+        <h3>¿Eres broker o asesor inmobiliario?</h3>
+        <p>Accede al Drive de ventas: presentaciones, listas de precios, master plans, cuentas bancarias, materiales de marketing y formatos administrativos.</p>
+      </div>
+      <a href="#" class="btn btn-primary">
+        Acceso Broker
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="brand">
+        <img src="public/logos/logo-quattro.svg" alt="Quattro" />
+        <p class="claim">Creamos espacios que hacen crecer negocios.</p>
+        <p class="sub">Un desarrollo de Tresor Real Estate. Más de 25 proyectos en Cancún y la Riviera Maya.</p>
+      </div>
+      <div>
+        <h4>Desarrollos</h4>
+        <ul>
+          <li><a href="#">Long Island</a></li>
+          <li><a href="#">Gardens</a></li>
+          <li><a href="#">Tulum · Coming soon</a></li>
+          <li><a href="#">Marina · Coming soon</a></li>
+          <li><a href="#">Huayacán · Coming soon</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contacto</h4>
+        <ul>
+          <li><a href="mailto:ventas@quattroplaza.mx">ventas@quattroplaza.mx</a></li>
+          <li><a href="tel:+529980000000">+52 998 000 0000</a></li>
+          <li>Cancún, Q. Roo · México</li>
+          <li><a href="#brokers">Acceso Broker</a></li>
+        </ul>
+      </div>
+      <div class="footer-broker">
+        <span class="eyebrow" style="color: var(--accent)">— Acceso Broker</span>
+        <div class="label">¿Eres broker?<br/>Accede al drive de ventas.</div>
+        <p>Presentaciones, precios, master plans, formatos administrativos y materiales de marketing en un solo lugar.</p>
+        <a href="#" class="btn btn-accent">Acceder ahora →</a>
+      </div>
+    </div>
+
+    <!-- #9 Footer bottom: copyright a la izquierda, "The Art of Luxury Living" + LogoTresor a la derecha -->
+    <div class="footer-bottom">
+      <span>© 2026 Tresor Real Estate · Todos los derechos reservados</span>
+      <div class="tresor-mark">
+        <span class="luxury-tagline">The Art of Luxury Living</span>
+        <img class="tresor-logo" src="public/logos/LogoTresor.svg" alt="Tresor Real Estate" />
+      </div>
+    </div>
+  </div>
+
+  <!-- #8 Wordmark QUATTRO completo siempre (SVG escalable) -->
+  <div class="footer-wordmark" aria-hidden="true">
+    <svg viewBox="0 0 1000 200" preserveAspectRatio="xMidYMid meet" xmlns="http://www.w3.org/2000/svg">
+      <text x="500" y="180" text-anchor="middle" font-size="220" textLength="980" lengthAdjust="spacingAndGlyphs">QUATTRO</text>
+    </svg>
+  </div>
+</footer>
+
+<!-- Chatbot floating button -->
+<div class="chatbot-fab" title="Asesor Quattro">
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>
+  </svg>
+</div>
+
+<script>
+  // Toggle de idioma (preview)
+  document.querySelectorAll('.lang-toggle button').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('.lang-toggle button').forEach(x => {
+        x.classList.remove('active');
+        x.setAttribute('aria-pressed', 'false');
+      });
+      b.classList.add('active');
+      b.setAttribute('aria-pressed', 'true');
+    });
+  });
+  // Sombra al hacer scroll
+  window.addEventListener('scroll', () => {
+    document.querySelector('.site-header').classList.toggle('scrolled', window.scrollY > 12);
+  });
+</script>
+
+</body>
+</html>
