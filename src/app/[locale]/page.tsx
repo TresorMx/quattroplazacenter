@@ -2,12 +2,12 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight, CalendarDays } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
-import { getAllPlazas } from '@/lib/data';
+import { getPlazasAsync } from '@/lib/data';
 import PlazaCard from '@/components/PlazaCard';
 import RevealOnScroll from '@/components/RevealOnScroll';
 
 export default async function HomePage() {
-  const plazas = getAllPlazas();
+  const plazas = await getPlazasAsync();
   const t = await getTranslations('home');
 
   return (

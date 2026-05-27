@@ -10,8 +10,12 @@ import Footer from '@/components/Footer';
 import MobileBar from '@/components/MobileBar';
 import Chatbot from '@/components/Chatbot';
 import { locales, type Locale } from '@/i18n';
-import { loadAndCachePlazas } from '@/lib/data';
+import { getPlazasAsync } from '@/lib/data';
 import '@/styles/globals.css';
+
+// ISR: regenera las páginas en background cada 60 s después de la primera visita.
+// No cuenta como invocación de función — es gratis en Vercel Hobby.
+export const revalidate = 60;
 
 const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
@@ -135,8 +139,8 @@ export default async function LocaleLayout({
   const { locale } = await params;
   if (!locales.includes(locale)) notFound();
 
-  // Pre-carga plazas desde Sanity en cada request (cache 1 min en memoria)
-  await loadAndCachePlazas();
+  // Carga plazas desde Sanity (deduplicado con React.cache — una sola llamada por request)
+  await getPlazasAsync();
 
   const messages = await getMessages();
 

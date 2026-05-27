@@ -4,6 +4,7 @@
  * de lo contrario usa el JSON estático en /content/data/plazas.json como fallback.
  * La interfaz Plaza[] es estable — los consumidores no cambian.
  */
+import { cache } from 'react';
 import type { Plaza, PlazasData, Unit } from './types';
 
 const USE_SANITY = !!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
@@ -80,4 +81,19 @@ export function getMinAvailablePrice(plaza: Plaza): number | null {
 // ─── API async (úsala en Server Components / layouts) ─────────────────────────
 export async function loadAndCachePlazas(): Promise<Plaza[]> {
   return loadPlazas();
+}
+
+// ─── API async deduplicada con React.cache() ──────────────────────────────────
+// React.cache() garantiza que dentro de un mismo request, loadPlazas() se
+// llama UNA sola vez aunque layout y páginas lo pidan en paralelo.
+export const getPlazasAsync = cache((): Promise<Plaza[]> => loadPlazas());
+
+export async function getPlazaBySlugAsync(slug: string): Promise<Plaza | undefined> {
+  const plazas = await getPlazasAsync();
+  return plazas.find((p) => p.slug === slug);
+}
+
+export async function getActivePlazasAsync(): Promise<Plaza[]> {
+  const plazas = await getPlazasAsync();
+  return plazas.filter((p) => !p.comingSoon);
 }

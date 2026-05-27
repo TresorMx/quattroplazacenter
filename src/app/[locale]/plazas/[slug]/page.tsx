@@ -5,7 +5,7 @@ import type { Metadata } from 'next';
 import { ArrowRight, Building2, Layers, MapPin } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
 
-import { getActivePlazas, getPlazaBySlug, getMinAvailablePrice } from '@/lib/data';
+import { getActivePlazasAsync, getPlazaBySlugAsync, getMinAvailablePrice } from '@/lib/data';
 import { formatMXN } from '@/lib/utils';
 import MasterPlan from '@/components/MasterPlan';
 import Gallery from '@/components/Gallery';
@@ -14,7 +14,8 @@ import LocationMap from '@/components/LocationMap';
 import QuoteWizard from '@/components/QuoteWizard';
 
 export async function generateStaticParams() {
-  return getActivePlazas().map((p) => ({ slug: p.slug }));
+  const plazas = await getActivePlazasAsync();
+  return plazas.map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({
@@ -23,7 +24,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string; locale: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const plaza = getPlazaBySlug(slug);
+  const plaza = await getPlazaBySlugAsync(slug);
   if (!plaza) return {};
 
   const minPrice = getMinAvailablePrice(plaza);
@@ -43,7 +44,7 @@ export async function generateMetadata({
 
 export default async function PlazaPage({ params }: { params: Promise<{ slug: string; locale: string }> }) {
   const { slug } = await params;
-  const plaza = getPlazaBySlug(slug);
+  const plaza = await getPlazaBySlugAsync(slug);
   if (!plaza || plaza.comingSoon) notFound();
 
   const t = await getTranslations('plaza');
