@@ -1,218 +1,157 @@
 import { defineField, defineType } from 'sanity';
 
-/**
- * Plaza — un proyecto comercial de Quattro.
- *
- * Cada plaza define POR SÍ MISMA:
- *  - Qué campos describen sus locales (Área, Frente, Fondo, lo que sea)
- *  - Qué planes de pago ofrece
- *
- * Esto permite que Long Island use solo Área/Frente/Fondo
- * y, por ejemplo, Marina agregue "Altura libre" sin tocar código.
- */
 export default defineType({
   name: 'plaza',
   title: 'Plaza',
   type: 'document',
   groups: [
-    { name: 'basic', title: 'General', default: true },
-    { name: 'media', title: 'Imágenes' },
+    { name: 'basic',    title: 'General',             default: true },
+    { name: 'texts',    title: 'Textos landing' },
+    { name: 'media',    title: 'Imágenes y renders' },
     { name: 'location', title: 'Ubicación' },
-    { name: 'specs', title: 'Campos del local' },
-    { name: 'plans', title: 'Planes de pago' },
-    { name: 'units', title: 'Locales' },
+    { name: 'specs',    title: 'Campos del local' },
+    { name: 'plans',    title: 'Planes de pago' },
+    { name: 'units',    title: 'Locales' },
   ],
   fields: [
-    // ── General ──────────────────────────────────────────────────
+
+    // ── GENERAL ──────────────────────────────────────────────────
+    defineField({ name: 'name',      title: 'Nombre completo',            type: 'string',  group: 'basic', validation: (r) => r.required() }),
+    defineField({ name: 'nameEn',    title: 'Nombre (EN)',                type: 'string',  group: 'basic' }),
+    defineField({ name: 'shortName', title: 'Nombre corto (hero)',        type: 'string',  group: 'basic' }),
+    defineField({ name: 'slug',      title: 'Slug (URL)',                 type: 'slug',    group: 'basic', options: { source: 'name', maxLength: 60 }, validation: (r) => r.required() }),
+    defineField({ name: 'tagline',   title: 'Tagline (ES)',               type: 'string',  group: 'basic' }),
+    defineField({ name: 'taglineEn', title: 'Tagline (EN)',               type: 'string',  group: 'basic' }),
     defineField({
-      name: 'name',
-      title: 'Nombre',
-      type: 'string',
-      group: 'basic',
-      validation: (r) => r.required(),
-    }),
-    defineField({
-      name: 'shortName',
-      title: 'Nombre corto',
-      type: 'string',
-      group: 'basic',
-    }),
-    defineField({
-      name: 'slug',
-      title: 'Slug (URL)',
-      type: 'slug',
-      group: 'basic',
-      options: { source: 'name', maxLength: 60 },
-      validation: (r) => r.required(),
-    }),
-    defineField({
-      name: 'tagline',
-      title: 'Tagline',
-      type: 'string',
-      group: 'basic',
-    }),
-    defineField({
-      name: 'status',
-      title: 'Estatus del proyecto',
-      type: 'string',
-      group: 'basic',
+      name: 'status', title: 'Estatus', type: 'string', group: 'basic',
       options: {
         list: [
-          { title: 'Preventa', value: 'preventa' },
-          { title: 'Lanzamiento', value: 'lanzamiento' },
-          { title: 'Entregado', value: 'entregado' },
+          { title: 'Preventa',     value: 'preventa' },
+          { title: 'Lanzamiento',  value: 'lanzamiento' },
+          { title: 'Entregado',    value: 'entregado' },
           { title: 'Próximamente', value: 'coming-soon' },
         ],
         layout: 'radio',
       },
     }),
+    defineField({ name: 'comingSoon',     title: 'Próximamente (sin landing)',  type: 'boolean', group: 'basic', initialValue: false }),
+    defineField({ name: 'deliveryWindow', title: 'Ventana de entrega',          type: 'string',  group: 'basic', description: 'Ej: "DIC 2026 — MAR 2027"' }),
+    defineField({ name: 'developer',      title: 'Desarrollador',               type: 'string',  group: 'basic', initialValue: 'Tresor Real Estate' }),
+
+    // ── TEXTOS LANDING ───────────────────────────────────────────
+    defineField({ name: 'description',   title: 'Descripción del proyecto (ES)', type: 'text', rows: 4, group: 'texts' }),
+    defineField({ name: 'descriptionEn', title: 'Descripción del proyecto (EN)', type: 'text', rows: 4, group: 'texts' }),
     defineField({
-      name: 'deliveryWindow',
-      title: 'Ventana de entrega',
-      type: 'string',
-      group: 'basic',
-      description: 'Ej: "DIC 2026 — SEP 2027"',
-    }),
-    defineField({
-      name: 'comingSoon',
-      title: 'Próximamente (sin landing)',
-      type: 'boolean',
-      group: 'basic',
-      initialValue: false,
+      name: 'highlights', title: 'Datos clave (quickfacts strip)',
+      description: 'Los 3 primeros se muestran en el strip. El precio se toma automáticamente.',
+      type: 'array', group: 'texts',
+      of: [{
+        type: 'object', name: 'highlight',
+        fields: [
+          { name: 'label', title: 'Etiqueta', type: 'string', validation: (r) => r.required() },
+          { name: 'value', title: 'Valor',    type: 'string', validation: (r) => r.required() },
+        ],
+        preview: { select: { title: 'value', subtitle: 'label' } },
+      }],
     }),
 
-    // ── Imágenes ─────────────────────────────────────────────────
-    defineField({ name: 'heroRender', title: 'Hero (render)', type: 'image', group: 'media' }),
-    defineField({ name: 'logoWhite', title: 'Logo blanco', type: 'image', group: 'media' }),
-    defineField({ name: 'logoDark', title: 'Logo negro', type: 'image', group: 'media' }),
-    defineField({ name: 'masterPlanImage', title: 'Master plan N1', type: 'image', group: 'media' }),
-    defineField({ name: 'masterPlanLevel2', title: 'Master plan N2', type: 'image', group: 'media' }),
-
-    // ── Ubicación ────────────────────────────────────────────────
+    // ── IMÁGENES Y RENDERS ───────────────────────────────────────
+    defineField({ name: 'heroRender',       title: 'Hero (render principal)',  type: 'image', group: 'media', options: { hotspot: true } }),
+    defineField({ name: 'logoWhite',        title: 'Logo blanco (SVG/PNG)',    type: 'image', group: 'media' }),
+    defineField({ name: 'logoDark',         title: 'Logo negro (SVG/PNG)',     type: 'image', group: 'media' }),
+    defineField({ name: 'masterPlanImage',  title: 'Master Plan Nivel 1',      type: 'image', group: 'media' }),
+    defineField({ name: 'masterPlanLevel2', title: 'Master Plan Nivel 2',      type: 'image', group: 'media' }),
     defineField({
-      name: 'location',
-      title: 'Ubicación',
-      type: 'object',
-      group: 'location',
+      name: 'gallery', title: 'Galería de renders',
+      description: 'Imágenes del slider de la landing. Máx 12.',
+      type: 'array', group: 'media',
+      of: [{ type: 'image', options: { hotspot: true } }],
+      validation: (r) => r.max(12),
+    }),
+    defineField({
+      name: 'floorPlans', title: 'Floor plans / tipologías',
+      type: 'array', group: 'media',
+      of: [{
+        type: 'object', name: 'floorPlan',
+        fields: [
+          { name: 'label',   title: 'Nombre tipología (ES)', type: 'string', validation: (r) => r.required() },
+          { name: 'labelEn', title: 'Nombre tipología (EN)', type: 'string' },
+          { name: 'image',   title: 'Imagen',                type: 'image' },
+          { name: 'area',    title: 'Área (m²)',             type: 'string' },
+          { name: 'order',   title: 'Orden',                 type: 'number', initialValue: 1 },
+        ],
+        preview: { select: { title: 'label', subtitle: 'area', media: 'image' }, prepare: ({ title, subtitle, media }: any) => ({ title, subtitle: subtitle ? `${subtitle} m²` : undefined, media }) },
+      }],
+    }),
+
+    // ── UBICACIÓN ────────────────────────────────────────────────
+    defineField({ name: 'city',    title: 'Ciudad',  type: 'string', group: 'location' }),
+    defineField({ name: 'state',   title: 'Estado',  type: 'string', group: 'location' }),
+    defineField({ name: 'country', title: 'País',    type: 'string', group: 'location', initialValue: 'México' }),
+    defineField({
+      name: 'location', title: 'Coordenadas y dirección',
+      type: 'object', group: 'location',
       fields: [
-        { name: 'lat', type: 'number', title: 'Latitud' },
-        { name: 'lng', type: 'number', title: 'Longitud' },
-        { name: 'address', type: 'string', title: 'Dirección' },
+        { name: 'lat',     type: 'number', title: 'Latitud' },
+        { name: 'lng',     type: 'number', title: 'Longitud' },
+        { name: 'address', type: 'string', title: 'Dirección completa' },
       ],
     }),
 
-    // ── Campos del local (DINÁMICO — el admin agrega/quita) ──────
+    // ── CAMPOS DEL LOCAL (DINÁMICO) ──────────────────────────────
     defineField({
-      name: 'unitSpecsTemplate',
-      title: 'Campos editables de cada local',
-      description:
-        'Define qué datos vas a llenar por local en esta plaza. Por ejemplo: Área total, Frente, Fondo. ' +
-        'Puedes agregar o quitar libremente — lo que quites desaparece de la ficha y del PDF.',
-      type: 'array',
-      group: 'specs',
-      of: [
-        {
-          type: 'object',
-          name: 'spec',
-          fields: [
-            {
-              name: 'key',
-              title: 'Llave interna (sin espacios)',
-              type: 'string',
-              description: 'Ej: "areaTotal", "frente", "fondo"',
-              validation: (r) => r.required().regex(/^[a-zA-Z][a-zA-Z0-9_]*$/, 'sin espacios ni caracteres especiales'),
-            },
-            { name: 'label', title: 'Etiqueta (ES)', type: 'string', validation: (r) => r.required() },
-            { name: 'labelEn', title: 'Etiqueta (EN)', type: 'string' },
-            {
-              name: 'unit',
-              title: 'Unidad / sufijo',
-              type: 'string',
-              description: 'Ej: "m²", "m", "kVA"',
-            },
-            {
-              name: 'type',
-              title: 'Tipo',
-              type: 'string',
-              options: {
-                list: [
-                  { title: 'Número', value: 'number' },
-                  { title: 'Texto libre', value: 'text' },
-                ],
-              },
-              initialValue: 'number',
-            },
-            { name: 'order', title: 'Orden', type: 'number', initialValue: 1 },
-          ],
-          preview: {
-            select: { title: 'label', subtitle: 'unit', order: 'order' },
-            prepare: ({ title, subtitle, order }) => ({
-              title: `${order ?? '–'}. ${title}`,
-              subtitle: subtitle ? `(${subtitle})` : undefined,
-            }),
-          },
-        },
-      ],
+      name: 'unitSpecsTemplate', title: 'Campos editables de cada local',
+      description: 'Define qué datos lleva cada local (Área, Frente, Fondo...). Lo que quites desaparece de la ficha y el PDF.',
+      type: 'array', group: 'specs',
+      of: [{
+        type: 'object', name: 'spec',
+        fields: [
+          { name: 'key',     title: 'Llave interna (sin espacios)', type: 'string', validation: (r) => r.required().regex(/^[a-zA-Z][a-zA-Z0-9_]*$/) },
+          { name: 'label',   title: 'Etiqueta (ES)',   type: 'string', validation: (r) => r.required() },
+          { name: 'labelEn', title: 'Etiqueta (EN)',   type: 'string' },
+          { name: 'unit',    title: 'Unidad sufijo',   type: 'string', description: 'Ej: m², m, kVA' },
+          { name: 'type', title: 'Tipo', type: 'string', options: { list: [{ title: 'Número', value: 'number' }, { title: 'Texto', value: 'text' }] }, initialValue: 'number' },
+          { name: 'order', title: 'Orden', type: 'number', initialValue: 1 },
+        ],
+        preview: { select: { title: 'label', subtitle: 'unit', order: 'order' }, prepare: ({ title, subtitle, order }: any) => ({ title: `${order ?? '–'}. ${title}`, subtitle: subtitle ? `(${subtitle})` : undefined }) },
+      }],
     }),
 
-    // ── Planes de pago (DINÁMICO — el admin agrega/quita) ────────
+    // ── PLANES DE PAGO (DINÁMICO) ────────────────────────────────
     defineField({
-      name: 'paymentPlans',
-      title: 'Planes de pago',
-      description:
-        'Cada plaza define sus propios planes. Marca uno como "recomendado" para que aparezca primero en el cotizador.',
-      type: 'array',
-      group: 'plans',
-      of: [
-        {
-          type: 'object',
-          name: 'plan',
-          fields: [
-            {
-              name: 'code',
-              title: 'Código (sin espacios)',
-              type: 'string',
-              description: 'Ej: "plan-a", "contado-15"',
-              validation: (r) => r.required(),
-            },
-            { name: 'label', title: 'Nombre visible', type: 'string', validation: (r) => r.required() },
-            { name: 'tagline', title: 'Subtítulo', type: 'string', description: 'Ej: "Recomendado", "Mejor descuento"' },
-            { name: 'down', title: 'Enganche %', type: 'number', validation: (r) => r.min(0).max(100) },
-            { name: 'monthly', title: 'Mensualidades %', type: 'number', validation: (r) => r.min(0).max(100) },
-            { name: 'delivery', title: 'Contra entrega %', type: 'number', validation: (r) => r.min(0).max(100) },
-            { name: 'discount', title: 'Descuento %', type: 'number', validation: (r) => r.min(0).max(100) },
-            { name: 'defaultMonths', title: 'Meses sugeridos', type: 'number' },
-            { name: 'isDefault', title: 'Recomendado', type: 'boolean', initialValue: false },
-            { name: 'order', title: 'Orden', type: 'number', initialValue: 1 },
-          ],
-          preview: {
-            select: { title: 'label', subtitle: 'tagline', isDefault: 'isDefault' },
-            prepare: ({ title, subtitle, isDefault }) => ({
-              title: isDefault ? `★ ${title}` : title,
-              subtitle,
-            }),
-          },
-          validation: (r) =>
-            r.custom((plan: any) => {
-              if (!plan) return true;
-              const sum = (plan.down ?? 0) + (plan.monthly ?? 0) + (plan.delivery ?? 0);
-              return sum === 100 || `Los porcentajes deben sumar 100% (actualmente: ${sum}%)`;
-            }),
-        },
-      ],
+      name: 'paymentPlans', title: 'Planes de pago',
+      description: 'Marca uno como recomendado (★). Los % deben sumar 100.',
+      type: 'array', group: 'plans',
+      of: [{
+        type: 'object', name: 'plan',
+        fields: [
+          { name: 'code',          title: 'Código',           type: 'string', validation: (r) => r.required() },
+          { name: 'label',         title: 'Nombre visible',   type: 'string', validation: (r) => r.required() },
+          { name: 'tagline',       title: 'Subtítulo',        type: 'string' },
+          { name: 'down',          title: 'Enganche %',       type: 'number', validation: (r) => r.min(0).max(100) },
+          { name: 'monthly',       title: 'Mensualidades %',  type: 'number', validation: (r) => r.min(0).max(100) },
+          { name: 'delivery',      title: 'Contra entrega %', type: 'number', validation: (r) => r.min(0).max(100) },
+          { name: 'discount',      title: 'Descuento %',      type: 'number', validation: (r) => r.min(0).max(100) },
+          { name: 'defaultMonths', title: 'Meses sugeridos',  type: 'number' },
+          { name: 'isDefault',     title: '★ Recomendado',    type: 'boolean', initialValue: false },
+          { name: 'order',         title: 'Orden',            type: 'number', initialValue: 1 },
+        ],
+        preview: { select: { title: 'label', subtitle: 'tagline', isDefault: 'isDefault' }, prepare: ({ title, subtitle, isDefault }: any) => ({ title: isDefault ? `★ ${title}` : title, subtitle }) },
+        validation: (r) => r.custom((plan: any) => {
+          if (!plan) return true;
+          const sum = (plan.down ?? 0) + (plan.monthly ?? 0) + (plan.delivery ?? 0);
+          return sum === 100 || `Los % deben sumar 100 (actual: ${sum}%)`;
+        }),
+      }],
     }),
 
-    // ── Locales (referencias) ────────────────────────────────────
+    // ── LOCALES ──────────────────────────────────────────────────
     defineField({
-      name: 'units',
-      title: 'Locales de esta plaza',
-      type: 'array',
-      group: 'units',
+      name: 'units', title: 'Locales de esta plaza',
+      type: 'array', group: 'units',
       of: [{ type: 'reference', to: [{ type: 'unit' }] }],
     }),
   ],
 
-  preview: {
-    select: { title: 'name', subtitle: 'tagline', media: 'heroRender' },
-  },
+  preview: { select: { title: 'name', subtitle: 'tagline', media: 'heroRender' } },
 });

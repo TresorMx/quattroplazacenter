@@ -1,123 +1,78 @@
 import { defineField, defineType } from 'sanity';
+import { PinPlacer } from '../components/PinPlacer';
 
-/**
- * Unit — un local dentro de una plaza.
- *
- * Los campos descriptivos (Área, Frente, Fondo, etc.) NO están hardcoded.
- * Vienen del template definido en la plaza padre (plaza.unitSpecsTemplate)
- * y se llenan dinámicamente desde el array `specs` de abajo.
- *
- * Cuando agregas o quitas una entrada en `plaza.unitSpecsTemplate`,
- * el admin de cada local refleja el cambio automáticamente.
- */
 export default defineType({
   name: 'unit',
   title: 'Local',
   type: 'document',
   fields: [
     defineField({
-      name: 'code',
-      title: 'Código (ej. A-12, B-05)',
+      name: 'plazaSlug',
+      title: 'Plaza (slug)',
       type: 'string',
+      description: 'Slug de la plaza a la que pertenece. Necesario para el pin visual.',
       validation: (r) => r.required(),
     }),
+    defineField({ name: 'code',  title: 'Código (ej. A-12, 101)', type: 'string', validation: (r) => r.required() }),
     defineField({
-      name: 'level',
-      title: 'Nivel',
-      type: 'number',
-      options: {
-        list: [
-          { title: 'Nivel 1', value: 1 },
-          { title: 'Nivel 2', value: 2 },
-        ],
-      },
+      name: 'level', title: 'Nivel', type: 'number',
+      options: { list: [{ title: 'Nivel 1', value: 1 }, { title: 'Nivel 2', value: 2 }] },
       initialValue: 1,
     }),
+    defineField({ name: 'price', title: 'Precio (MXN, sin IVA)', type: 'number' }),
     defineField({
-      name: 'price',
-      title: 'Precio (MXN, sin IVA)',
-      type: 'number',
-    }),
-    defineField({
-      name: 'status',
-      title: 'Estatus',
-      type: 'string',
+      name: 'status', title: 'Estatus', type: 'string',
       options: {
         list: [
-          { title: 'Disponible', value: 'disponible' },
-          { title: 'Apartado', value: 'apartado' },
-          { title: 'Vendido', value: 'vendido' },
-          { title: 'Bloqueado (no se muestra)', value: 'bloqueado' },
+          { title: '🟢 Disponible', value: 'disponible' },
+          { title: '🟡 Apartado',   value: 'apartado' },
+          { title: '🔴 Vendido',    value: 'vendido' },
+          { title: '⚫ Bloqueado',   value: 'bloqueado' },
         ],
         layout: 'radio',
       },
       initialValue: 'disponible',
     }),
-    defineField({
-      name: 'delivery',
-      title: 'Fecha de entrega (texto libre)',
-      type: 'string',
-      description: 'Override por local. Si está vacío usa el de la plaza.',
-    }),
-    defineField({
-      name: 'isAnchor',
-      title: 'Local ancla',
-      type: 'boolean',
-      initialValue: false,
-    }),
-    defineField({
-      name: 'pin',
-      title: 'Posición en master plan (0–1)',
-      type: 'object',
-      description: 'Coordenadas relativas sobre la imagen del master plan',
-      fields: [
-        { name: 'x', type: 'number', validation: (r) => r.min(0).max(1) },
-        { name: 'y', type: 'number', validation: (r) => r.min(0).max(1) },
-      ],
-    }),
+    defineField({ name: 'delivery', title: 'Entrega (override por local)', type: 'string', description: 'Si está vacío usa la ventana de entrega de la plaza.' }),
+    defineField({ name: 'isAnchor', title: 'Local ancla', type: 'boolean', initialValue: false }),
 
     // ── Specs dinámicas ──────────────────────────────────────────
     defineField({
-      name: 'specs',
-      title: 'Datos del local',
-      description:
-        'Las llaves se controlan desde la plaza (campo "Campos editables de cada local"). ' +
-        'Aquí solo llenas los valores. Si quitas una llave allá, desaparece de la ficha.',
+      name: 'specs', title: 'Datos del local',
+      description: 'Las llaves se controlan desde la plaza. Aquí solo llenas los valores.',
       type: 'array',
-      of: [
-        {
-          type: 'object',
-          name: 'specEntry',
-          fields: [
-            {
-              name: 'key',
-              title: 'Llave (debe coincidir con la plaza)',
-              type: 'string',
-              validation: (r) => r.required(),
-            },
-            {
-              name: 'value',
-              title: 'Valor',
-              type: 'string',
-              description: 'Numérico o texto, según tipo definido en la plaza',
-              validation: (r) => r.required(),
-            },
-          ],
-          preview: {
-            select: { title: 'key', subtitle: 'value' },
-          },
-        },
+      of: [{
+        type: 'object', name: 'specEntry',
+        fields: [
+          { name: 'key',   title: 'Llave (debe coincidir con la plaza)', type: 'string', validation: (r) => r.required() },
+          { name: 'value', title: 'Valor', type: 'string', validation: (r) => r.required() },
+        ],
+        preview: { select: { title: 'key', subtitle: 'value' } },
+      }],
+    }),
+
+    // ── Pin visual ───────────────────────────────────────────────
+    defineField({
+      name: 'pin',
+      title: 'Posición en master plan',
+      description: 'Haz click sobre el master plan para colocar el pin.',
+      type: 'object',
+      components: { input: PinPlacer },
+      fields: [
+        { name: 'x', type: 'number', title: 'X (0–1)', validation: (r) => r.min(0).max(1) },
+        { name: 'y', type: 'number', title: 'Y (0–1)', validation: (r) => r.min(0).max(1) },
       ],
     }),
   ],
 
   preview: {
-    select: { title: 'code', subtitle: 'price', status: 'status' },
-    prepare: ({ title, subtitle, status }) => ({
-      title,
+    select: { title: 'code', subtitle: 'price', status: 'status', plaza: 'plazaSlug' },
+    prepare: ({ title, subtitle, status, plaza }: any) => ({
+      title: `${plaza ? `[${plaza}] ` : ''}${title}`,
       subtitle:
-        (subtitle ? new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN', maximumFractionDigits: 0 }).format(subtitle as number) : '—') +
-        `  ·  ${status ?? ''}`,
+        (subtitle
+          ? new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN', maximumFractionDigits: 0 }).format(subtitle)
+          : '—') + `  ·  ${status ?? ''}`,
     }),
   },
 });
