@@ -8,6 +8,38 @@ import { cn } from '@/lib/utils';
 
 type Message = { role: 'user' | 'assistant'; content: string };
 
+/** Renderiza texto con URLs convertidas en links clickeables */
+function MessageContent({ content, isUser }: { content: string; isUser: boolean }) {
+  const urlRegex = /(https?:\/\/[^\s]+|\/cotizar\/[^\s]+|\/agenda[^\s]*)/g;
+  const parts = content.split(urlRegex);
+  return (
+    <>
+      {parts.map((part, i) => {
+        if (urlRegex.test(part)) {
+          const href = part.startsWith('http') ? part : part;
+          const label = part.includes('/cotizar') ? '👉 Ir al cotizador' : part.includes('/agenda') ? '📅 Agendar visita' : part;
+          return (
+            <a
+              key={i}
+              href={href}
+              target={part.startsWith('http') ? '_blank' : '_self'}
+              rel="noopener noreferrer"
+              className={cn(
+                'block mt-1.5 rounded-lg px-3 py-2 text-center text-[12px] font-semibold transition-colors',
+                isUser ? 'bg-white/20 text-white' : 'bg-ink text-white hover:bg-ink/80',
+              )}
+            >
+              {label}
+            </a>
+          );
+        }
+        urlRegex.lastIndex = 0;
+        return <span key={i}>{part}</span>;
+      })}
+    </>
+  );
+}
+
 export default function Chatbot() {
   const t = useTranslations('chatbot');
   const [open, setOpen] = useState(false);
@@ -145,7 +177,7 @@ export default function Chatbot() {
                       : 'rounded-bl-sm bg-[#F4F2EE] text-ink-2',
                   )}
                 >
-                  {m.content}
+                  <MessageContent content={m.content} isUser={m.role === 'user'} />
                 </div>
               </div>
             ))}
@@ -154,7 +186,8 @@ export default function Chatbot() {
             {messages.length === 1 && !loading && (
               <div className="flex flex-col gap-2 pl-8">
                 {[
-                  'Quiero cotizar un local comercial',
+                  '¿Qué locales tienen disponibles?',
+                  'Quiero cotizar un local',
                   'Quiero agendar una visita',
                 ].map((suggestion) => (
                   <button

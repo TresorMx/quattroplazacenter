@@ -1,120 +1,216 @@
 import { NextResponse } from 'next/server';
 import Anthropic from '@anthropic-ai/sdk';
-import { getAllPlazas, getPlazaBySlug, getAvailableUnits, getMinAvailablePrice } from '@/lib/data';
+import { getPlazasAsync } from '@/lib/data';
+import { sendLeadToGHL } from '@/lib/ghl';
 import type { Plaza } from '@/lib/types';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
 
-const SYSTEM_PROMPT = `Eres el Asesor Virtual de Quattro Plaza Center, un desarrollo de plazas comerciales premium en Cancún de Tresor Real Estate.
+// ─── System prompt dinámico — se construye con datos reales de Sanity ─────────
 
-Tu misión es ayudar a clientes interesados (inversionistas, emprendedores, brokers) a entender el proyecto, ver disponibilidad real, recomendar locales según sus necesidades, y guiarlos a cotizar o agendar visita.
+function buildSystemPrompt(plazas: Plaza[]): string {
+  const active = plazas.filter((p) => !p.comingSoon);
+  const coming = plazas.filter((p) => p.comingSoon);
 
-ESTILO:
-- Tono cálido y profesional. Habla en español mexicano por defecto, cambia a inglés si el usuario escribe en inglés.
-- Respuestas concisas (3-5 oraciones). NO uses bullets ni listas largas, prefiere prosa natural.
-- Si el cliente pide datos específicos (precios, disponibilidad), usa SIEMPRE la tool 'get_availability' o 'get_plaza_details' — no inventes números.
-- Cuando recomiendes locales, sugiere 1-2 opciones concretas con código de local, m² y precio.
-- Para apartar o cotizar, dirige al cliente a /cotizar/[slug del proyecto].
-- Para agendar visita, sugiere "agenda una visita desde el header" o usa el WhatsApp.
+  const activeStr = active
+    .map((p) => {
+      const prices = p.units?.filter((u) => u.price && u.status === 'disponible').map((u) => u.price!) ?? [];
+      const minPrice = prices.length ? Math.min(...prices) : null;
+      return `- ${p.name} (slug: ${p.slug}): ${p.status}, entrega ${p.deliveryWindow ?? 'TBD'}, ${p.availableUnits ?? 0} locales disponibles${minPrice ? `, desde $${minPrice.toLocaleString('es-MX')} MXN` : ''}`;
+    })
+    .join('\n');
 
-QUÉ SABES:
-- Plazas activas: Long Island (preventa, entrega DIC 2026—MAR 2027), Gardens (lanzamiento, entrega JUN—SEP 2027).
-- Coming soon: Tulum, Marina, Huayacán.
-- Cada local tiene precio + IVA, esquemas de pago con enganche/mensualidades/contra entrega y descuentos del 1% al 7.5%.
-- Apartado: $50,000 MXN, 100% reembolsable.
-- Desarrollador: Tresor Real Estate, +25 años, +25 proyectos.
+  const comingStr = coming.map((p) => `- ${p.name}: próximamente`).join('\n');
 
-QUÉ NO HACES:
-- No prometes rentabilidades específicas sin contexto.
-- No negocias precios ni das descuentos no oficiales.
-- Si el cliente pide algo fuera de Quattro (mercado, otras plazas), redirígelo amablemente.`;
+  return `Eres Luis, asesor virtual de Quattro Plaza. Vendes locales comerciales premium en Cancún de Tresor Real Estate.
 
-const TOOLS: Anthropic.Tool[] = [
-  {
-    name: 'get_availability',
-    description: 'Devuelve los locales disponibles de una plaza con precio y specs (campos definidos por plaza: área total, frente, fondo, etc.). Usa esta tool cuando el cliente pregunte por disponibilidad, precios, o quiera comparar opciones.',
-    input_schema: {
-      type: 'object',
-      properties: {
-        plaza_slug: { type: 'string', enum: ['long-island', 'gardens'], description: 'Slug de la plaza' },
-        max_price_mxn: { type: 'number', description: 'Filtro opcional de precio máximo en MXN (sin IVA)' },
-        level: { type: 'number', enum: [1, 2], description: 'Filtro opcional por nivel' },
+OBJETIVO: Capturar nombre + teléfono y llevar al prospecto a cotizar o agendar visita.
+
+ESTILO — MUY IMPORTANTE:
+- Máximo 2 oraciones por respuesta. Sin listas, sin bullets, sin emojis excesivos.
+- Tono como asesor real por WhatsApp: directo, cálido, sin rodeos.
+- Español mexicano por defecto; inglés si el cliente escribe en inglés.
+- Nunca repitas lo que el cliente ya dijo.
+
+PROYECTOS ACTIVOS (datos en vivo — si no aparece aquí no existe):
+${activeStr || '- Sin proyectos activos en este momento'}
+
+PRÓXIMAMENTE:
+${comingStr || '- Sin proyectos próximos'}
+
+FLUJO IDEAL:
+1. Entender qué busca (tamaño, presupuesto, giro comercial).
+2. Mostrar 1-2 opciones concretas con la tool get_availability.
+3. Pedir nombre y teléfono. Cuando los tengas, usar capture_lead.
+4. Dar link del cotizador con la tool get_quote_link.
+5. Si no quiere cotizar: invitar a agendar en /agenda.
+
+REGLAS:
+- NUNCA inventes precios, m² ni disponibilidad — usa las tools siempre.
+- Si el local o plaza no aparece en las tools, no lo menciones.
+- No prometas rentabilidades específicas.
+- No des descuentos no oficiales.
+- Apartado: $50,000 MXN 100% reembolsable.`;
+}
+
+// ─── Tools ────────────────────────────────────────────────────────────────────
+
+function buildTools(plazas: Plaza[]): Anthropic.Tool[] {
+  const activeSlugs = plazas.filter((p) => !p.comingSoon).map((p) => p.slug);
+  const allSlugs = plazas.map((p) => p.slug);
+
+  return [
+    {
+      name: 'get_availability',
+      description:
+        'Locales disponibles de una plaza con precio y specs. Úsala cuando el cliente pregunte por disponibilidad, precios, tamaño o quiera comparar opciones.',
+      input_schema: {
+        type: 'object' as const,
+        properties: {
+          plaza_slug: {
+            type: 'string',
+            enum: activeSlugs.length ? activeSlugs : [''],
+            description: 'Slug de la plaza',
+          },
+          max_price_mxn: { type: 'number', description: 'Precio máximo en MXN (sin IVA)' },
+          min_price_mxn: { type: 'number', description: 'Precio mínimo en MXN (sin IVA)' },
+          level: { type: 'number', enum: [1, 2], description: 'Nivel del local' },
+          max_area: { type: 'number', description: 'Área máxima en m²' },
+          min_area: { type: 'number', description: 'Área mínima en m²' },
+        },
+        required: ['plaza_slug'],
       },
-      required: ['plaza_slug'],
     },
-  },
-  {
-    name: 'get_plaza_details',
-    description: 'Devuelve información general de una plaza: ubicación, ventana de entrega, status, totales y rango de precios. Usa esta tool cuando el cliente pregunte por una plaza en general.',
-    input_schema: {
-      type: 'object',
-      properties: {
-        plaza_slug: { type: 'string', enum: ['long-island', 'gardens', 'tulum', 'marina', 'huayacan'] },
+    {
+      name: 'get_plaza_details',
+      description:
+        'Información general de una plaza: ubicación, entrega, status, resumen de precios. Útil cuando preguntan por un proyecto específico.',
+      input_schema: {
+        type: 'object' as const,
+        properties: {
+          plaza_slug: {
+            type: 'string',
+            enum: allSlugs.length ? allSlugs : [''],
+          },
+        },
+        required: ['plaza_slug'],
       },
-      required: ['plaza_slug'],
     },
-  },
-  {
-    name: 'list_all_plazas',
-    description: 'Lista todas las plazas (activas y coming soon) con nombre y status. Útil cuando el cliente pregunte qué tienen disponible o cuántos proyectos hay.',
-    input_schema: { type: 'object', properties: {} },
-  },
-];
+    {
+      name: 'capture_lead',
+      description:
+        'Guarda el nombre y teléfono del prospecto en el CRM. Úsala en cuanto tengas nombre + teléfono. No pidas el email si el cliente no lo ofrece.',
+      input_schema: {
+        type: 'object' as const,
+        properties: {
+          nombre: { type: 'string' },
+          telefono: { type: 'string' },
+          plaza_interes: { type: 'string', description: 'slug del proyecto de interés (opcional)' },
+          notas: { type: 'string', description: 'Qué busca, presupuesto, giro, etc.' },
+        },
+        required: ['nombre', 'telefono'],
+      },
+    },
+    {
+      name: 'get_quote_link',
+      description:
+        'Genera el link directo al cotizador. Úsala después de capturar el lead para enviar al cliente a cotizar.',
+      input_schema: {
+        type: 'object' as const,
+        properties: {
+          plaza_slug: { type: 'string', enum: activeSlugs.length ? activeSlugs : [''] },
+          unit_id: { type: 'string', description: 'ID del local específico (opcional)' },
+        },
+        required: ['plaza_slug'],
+      },
+    },
+  ];
+}
 
-function runTool(name: string, input: any): any {
+// ─── Tool runner (async para capture_lead) ────────────────────────────────────
+
+async function runTool(name: string, input: any, plazas: Plaza[]): Promise<any> {
   switch (name) {
     case 'get_availability': {
-      const plaza = getPlazaBySlug(input.plaza_slug);
+      const plaza = plazas.find((p) => p.slug === input.plaza_slug);
       if (!plaza) return { error: 'plaza not found' };
-      let units = getAvailableUnits(plaza.slug);
+      let units = (plaza.units ?? []).filter((u) => u.status === 'disponible');
       if (input.max_price_mxn) units = units.filter((u) => u.price && u.price <= input.max_price_mxn);
+      if (input.min_price_mxn) units = units.filter((u) => u.price && u.price >= input.min_price_mxn);
       if (input.level) units = units.filter((u) => u.level === input.level);
+      if (input.max_area) units = units.filter((u) => u.specs?.areaTotal && Number(u.specs.areaTotal) <= input.max_area);
+      if (input.min_area) units = units.filter((u) => u.specs?.areaTotal && Number(u.specs.areaTotal) >= input.min_area);
       return {
         plaza: plaza.shortName,
-        count: units.length,
-        units: units.map((u) => ({
+        disponibles: units.length,
+        locales: units.slice(0, 8).map((u) => ({
+          id: u.id,
           code: u.code,
-          level: u.level,
-          // Specs dinámicas (área total, frente, fondo, lo que la plaza defina)
+          nivel: u.level,
           specs: u.specs ?? {},
-          priceMXN: u.price,
-          deliveryWindow: u.delivery,
+          precioMXN: u.price,
+          entrega: u.delivery,
         })),
       };
     }
     case 'get_plaza_details': {
-      const p = getPlazaBySlug(input.plaza_slug);
+      const p = plazas.find((pl) => pl.slug === input.plaza_slug);
       if (!p) return { error: 'plaza not found' };
-      return summarizePlaza(p);
+      const prices = (p.units ?? []).filter((u) => u.price && u.status === 'disponible').map((u) => u.price!);
+      return {
+        slug: p.slug,
+        nombre: p.name,
+        status: p.status,
+        ciudad: p.city,
+        entrega: p.deliveryWindow,
+        disponibles: p.availableUnits ?? 0,
+        precioDesde: prices.length ? Math.min(...prices) : null,
+        precioHasta: prices.length ? Math.max(...prices) : null,
+        comingSoon: !!p.comingSoon,
+      };
     }
-    case 'list_all_plazas': {
-      return { plazas: getAllPlazas().map(summarizePlaza) };
+    case 'capture_lead': {
+      try {
+        const [first, ...rest] = (input.nombre as string).trim().split(' ');
+        await sendLeadToGHL({
+          firstName: first || input.nombre,
+          lastName: rest.join(' '),
+          phone: input.telefono,
+          source: 'chat',
+          tags: ['chat-bot', input.plaza_interes ? input.plaza_interes : 'sin-plaza'].filter(Boolean),
+          notes: input.notas,
+        });
+        return { ok: true, message: 'Lead guardado correctamente' };
+      } catch (e) {
+        console.error('[capture_lead]', e);
+        return { ok: false, message: 'Error guardando lead, continúa la conversación' };
+      }
     }
+    case 'get_quote_link': {
+      const plaza = plazas.find((p) => p.slug === input.plaza_slug);
+      if (!plaza) return { error: 'plaza not found' };
+      const base = `https://quattroplazacenter.vercel.app/cotizar/${plaza.slug}`;
+      const url = input.unit_id ? `${base}?unit=${input.unit_id}` : base;
+      return { url, plaza: plaza.shortName };
+    }
+    default:
+      return { error: 'unknown tool' };
   }
-  return { error: 'unknown tool' };
 }
 
-function summarizePlaza(p: Plaza) {
-  return {
-    slug: p.slug,
-    name: p.shortName,
-    status: p.status,
-    city: p.city,
-    deliveryWindow: p.deliveryWindow,
-    available: p.availableUnits ?? 0,
-    fromPriceMXN: getMinAvailablePrice(p),
-    isComingSoon: !!p.comingSoon,
-  };
-}
+// ─── POST handler ─────────────────────────────────────────────────────────────
 
-interface ChatMessage { role: 'user' | 'assistant'; content: string }
+interface ChatMessage {
+  role: 'user' | 'assistant';
+  content: string;
+}
 
 export async function POST(req: Request) {
   const apiKey = process.env.ANTHROPIC_API_KEY;
   if (!apiKey) {
     return NextResponse.json({
-      message: 'El asesor virtual está temporalmente desconectado. Mientras tanto puedes contactarnos por WhatsApp o agendar una visita desde el menú superior.',
+      message: 'El asesor está temporalmente fuera. Contáctanos por WhatsApp o agenda una visita.',
     });
   }
 
@@ -125,6 +221,11 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'Invalid body' }, { status: 400 });
   }
 
+  // Datos frescos de Sanity para tools + system prompt
+  const plazas = await getPlazasAsync();
+  const systemPrompt = buildSystemPrompt(plazas);
+  const tools = buildTools(plazas);
+
   const client = new Anthropic({ apiKey });
   const history: Anthropic.MessageParam[] = body.messages
     .filter((m) => m.content?.trim())
@@ -132,32 +233,34 @@ export async function POST(req: Request) {
 
   try {
     let response = await client.messages.create({
-      model: 'claude-sonnet-4-6',
-      max_tokens: 600,
-      system: SYSTEM_PROMPT,
-      tools: TOOLS,
+      model: 'claude-haiku-4-5-20251001',  // más rápido y económico para chat
+      max_tokens: 280,
+      system: systemPrompt,
+      tools,
       messages: history,
     });
 
-    // Agentic loop para tool use
+    // Agentic loop
     let safety = 0;
     while (response.stop_reason === 'tool_use' && safety < 5) {
       safety++;
       const toolUses = response.content.filter((c) => c.type === 'tool_use') as Anthropic.ToolUseBlock[];
-      const toolResults: Anthropic.ToolResultBlockParam[] = toolUses.map((tu) => ({
-        type: 'tool_result',
-        tool_use_id: tu.id,
-        content: JSON.stringify(runTool(tu.name, tu.input)),
-      }));
+      const toolResults: Anthropic.ToolResultBlockParam[] = await Promise.all(
+        toolUses.map(async (tu) => ({
+          type: 'tool_result' as const,
+          tool_use_id: tu.id,
+          content: JSON.stringify(await runTool(tu.name, tu.input, plazas)),
+        }))
+      );
 
       history.push({ role: 'assistant', content: response.content });
       history.push({ role: 'user', content: toolResults });
 
       response = await client.messages.create({
-        model: 'claude-sonnet-4-6',
-        max_tokens: 600,
-        system: SYSTEM_PROMPT,
-        tools: TOOLS,
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 280,
+        system: systemPrompt,
+        tools,
         messages: history,
       });
     }
@@ -168,11 +271,11 @@ export async function POST(req: Request) {
       .join('\n')
       .trim();
 
-    return NextResponse.json({ message: text || 'Cuéntame más, ¿en qué te puedo ayudar?' });
+    return NextResponse.json({ message: text || '¿En qué te puedo ayudar?' });
   } catch (e: any) {
     console.error('[Chat] error', e);
     return NextResponse.json({
-      message: 'Tuve un problema técnico. ¿Puedes intentarlo de nuevo? Si urge, escríbenos por WhatsApp.',
+      message: 'Tuve un problema. ¿Puedes intentarlo de nuevo?',
     });
   }
 }
