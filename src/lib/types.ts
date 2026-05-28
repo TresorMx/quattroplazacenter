@@ -88,7 +88,7 @@ export interface Plaza {
   masterPlanImage?: string;
   masterPlanLevel2?: string;
   location?: { lat: number; lng: number; address: string };
-  highlights?: { label: string; value: string }[];
+  highlights?: { label: string; labelEn?: string; value: string }[];
   /** Campos de local que aplican PARA ESTA PLAZA (definidos en admin) */
   unitSpecsTemplate?: UnitSpecTemplate[];
   /** Planes de pago disponibles PARA ESTA PLAZA (definidos en admin) */

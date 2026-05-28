@@ -39,6 +39,7 @@ export const translateAction: DocumentActionComponent = (props: DocumentActionPr
             bullet2:        doc.bullet2,
             bullet3:        doc.bullet3,
             floorPlansDesc: doc.floorPlansDesc,
+            highlights:     Array.isArray(doc.highlights) ? doc.highlights.map((h: any) => ({ label: h.label })) : [],
           }),
         });
 
@@ -58,6 +59,10 @@ export const translateAction: DocumentActionComponent = (props: DocumentActionPr
           { set: { bullet2En:        t.bullet2En        ?? doc.bullet2En } },
           { set: { bullet3En:        t.bullet3En        ?? doc.bullet3En } },
           { set: { floorPlansDescEn: t.floorPlansDescEn ?? doc.floorPlansDescEn } },
+          // Patch labelEn en cada highlight
+          ...((t.highlights ?? []) as { labelEn: string }[]).map((h, i) => ({
+            set: { [`highlights[${i}].labelEn`]: h.labelEn },
+          })),
         ]);
 
         commit.execute();

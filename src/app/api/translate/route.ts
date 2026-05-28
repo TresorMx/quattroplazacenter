@@ -14,6 +14,7 @@ export async function POST(req: Request) {
     projectTitle, projectBody1, projectBody2,
     bullet1, bullet2, bullet3,
     floorPlansDesc,
+    highlights,
   } = body;
 
   const client = new Anthropic({ apiKey });
@@ -31,7 +32,8 @@ Return ONLY a valid JSON object with exactly these keys (translate only non-empt
   "bullet1En": "",
   "bullet2En": "",
   "bullet3En": "",
-  "floorPlansDescEn": ""
+  "floorPlansDescEn": "",
+  "highlights": [{ "labelEn": "" }]
 }
 
 Source content (Spanish):
@@ -45,6 +47,7 @@ Source content (Spanish):
 - bullet2: ${bullet2 ?? ''}
 - bullet3: ${bullet3 ?? ''}
 - floorPlansDesc: ${floorPlansDesc ?? ''}
+- highlights (array of labels to translate): ${JSON.stringify(highlights ?? [])}
 
 Rules:
 - Keep proper nouns (Cancún, Tresor Real Estate, Quattro Plaza Center) as-is.

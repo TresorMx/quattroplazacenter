@@ -152,7 +152,7 @@ export default async function PlazaPage({ params }: { params: Promise<{ slug: st
                   {h.value}
                 </div>
                 <div className="mt-1.5 truncate text-[10px] font-semibold uppercase tracking-[0.22em] text-ink-3">
-                  {h.label}
+                  {isEs ? h.label : (h.labelEn ?? h.label)}
                 </div>
               </div>
             ))}
