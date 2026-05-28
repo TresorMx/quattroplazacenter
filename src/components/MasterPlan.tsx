@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight, Maximize2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
@@ -35,7 +34,7 @@ export default function MasterPlan({ plaza }: { plaza: Plaza }) {
   const masterPlanImg =
     level === 1
       ? plaza.masterPlanImage ?? `/master-plans/${plaza.slug}-n1.png`
-      : `/master-plans/${plaza.slug}-n2.png`;
+      : plaza.masterPlanLevel2 ?? `/master-plans/${plaza.slug}-n2.png`;
 
   const statusCounts = useMemo(() => {
     const c = { disponible: 0, apartado: 0, vendido: 0, bloqueado: 0 };
@@ -106,18 +105,19 @@ export default function MasterPlan({ plaza }: { plaza: Plaza }) {
         <div className="grid gap-6 md:grid-cols-[1.6fr_1fr]">
           {/* ──── Master plan image with interactive pins ──── */}
           <div className="relative overflow-hidden rounded-lg border border-line bg-white shadow-sm">
-            <div className="relative aspect-[16/9]">
-              <Image
+            {/* Container sin aspect ratio fijo: la imagen determina la altura */}
+            <div className="relative">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
                 src={masterPlanImg}
                 alt={`Master plan ${plaza.shortName} Nivel ${level}`}
-                fill
-                sizes="(max-width: 768px) 100vw, 60vw"
-                className="object-contain"
+                className="block w-full"
+                draggable={false}
               />
 
-              {/* Pins overlay */}
+              {/* Pins overlay — viewBox 0 0 1 1 = coordenadas exactas (0–1) del pin */}
               <svg
-                viewBox="0 0 100 56.25"
+                viewBox="0 0 1 1"
                 className="absolute inset-0 h-full w-full"
                 preserveAspectRatio="none"
               >
@@ -131,23 +131,23 @@ export default function MasterPlan({ plaza }: { plaza: Plaza }) {
                   return (
                     <g key={u.id} onClick={() => setSelectedId(u.id)} className="cursor-pointer">
                       <circle
-                        cx={pin.x * 100}
-                        cy={pin.y * 56.25}
-                        r={isSelected ? 1.6 : 1.2}
+                        cx={pin.x}
+                        cy={pin.y}
+                        r={isSelected ? 0.016 : 0.012}
                         fill={fill}
                         fillOpacity={isClickable ? 0.95 : 0.6}
                         stroke="#fff"
-                        strokeWidth={isSelected ? 0.4 : 0.25}
-                        className="transition-all duration-200 hover:r-[1.6]"
+                        strokeWidth={isSelected ? 0.004 : 0.0025}
+                        className="transition-all duration-200"
                       />
                       {isSelected && (
                         <circle
-                          cx={pin.x * 100}
-                          cy={pin.y * 56.25}
-                          r={2.6}
+                          cx={pin.x}
+                          cy={pin.y}
+                          r={0.026}
                           fill="none"
                           stroke={fill}
-                          strokeWidth={0.3}
+                          strokeWidth={0.003}
                           opacity={0.6}
                           className="animate-ping"
                         />

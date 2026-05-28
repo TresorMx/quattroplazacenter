@@ -29,7 +29,7 @@ export function PinPlacer(props: ObjectInputProps) {
   useEffect(() => {
     if (!plazaSlug) return;
     setLoading(true);
-    const field = level === 2 ? 'masterPlanLevel2' : 'masterPlanImage';
+    const field = Number(level) === 2 ? 'masterPlanLevel2' : 'masterPlanImage';
     client
       .fetch(
         `*[_type == "plaza" && slug.current == $slug][0]{
