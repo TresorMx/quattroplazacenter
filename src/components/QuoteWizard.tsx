@@ -213,7 +213,17 @@ export default function QuoteWizard({ plaza, preselectedUnit }: QuoteWizardProps
                 </div>
               </div>
 
-              {quote && (
+              {/* Pasos 1-2: solo precio de lista */}
+              {unit?.price && step < 3 && (
+                <>
+                  <SumRow label={t('listPrice')} value={formatMXN(unit.price)} />
+                  <p className="mt-4 text-[11px] leading-relaxed text-ink-3">
+                    {t('quoteNote')}
+                  </p>
+                </>
+              )}
+              {/* Paso 3+: desglose completo con descuento del plan elegido */}
+              {quote && step >= 3 && (
                 <>
                   <SumRow label={t('listPrice')} value={formatMXN(quote.basePrice)} />
                   {quote.discount > 0 && (
