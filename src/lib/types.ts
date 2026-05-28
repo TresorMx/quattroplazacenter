@@ -122,7 +122,7 @@ export interface Plaza {
   seoDescriptionEn?: string;
   // gallery / floor plans
   gallery?: string[];
-  floorPlans?: { label: string; labelEn?: string; area?: string; frente?: string; fondo?: string; order?: number; image?: string }[];
+  floorPlans?: { label: string; labelEn?: string; area?: number; frente?: number; fondo?: number; order?: number; image?: string }[];
 }
 
 export interface PlazasData {

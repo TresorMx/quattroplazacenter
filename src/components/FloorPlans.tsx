@@ -156,7 +156,7 @@ export default function FloorPlans({ plaza, floorPlansDesc }: { plaza: Plaza; fl
                       active === i ? 'bg-ink text-bg' : 'text-ink-3 hover:text-ink'
                     }`}
                   >
-                    {fpLabel(fp)}{fp.area ? ` — ${fp.area}` : ''}
+                    {fpLabel(fp)}{fp.area != null ? ` — ${fp.area} m²` : ''}
                   </button>
                 ))}
               </div>
@@ -178,26 +178,26 @@ export default function FloorPlans({ plaza, floorPlansDesc }: { plaza: Plaza; fl
             <div className="rounded-[18px] border border-line bg-white p-8">
               <div className="text-[10.5px] uppercase tracking-[0.18em] text-ink-3">{t('fpTypical')}</div>
               <div className="mt-1.5 font-serif text-[32px] font-light italic leading-tight">
-                {fpLabel(current)}{current.area ? ` — ${current.area}` : ''}
+                {fpLabel(current)}{current.area != null ? ` — ${current.area} m²` : ''}
               </div>
-              {(current.area || current.frente || current.fondo) && (
+              {(current.area != null || current.frente != null || current.fondo != null) && (
                 <div className="mt-4 flex flex-col gap-3 border-t border-line pt-4">
-                  {current.area && (
+                  {current.area != null && (
                     <div className="flex justify-between text-[13px]">
                       <span className="text-ink-3">Área total</span>
-                      <span className="font-medium tabular-nums">{current.area}</span>
+                      <span className="font-medium tabular-nums">{current.area} m²</span>
                     </div>
                   )}
-                  {current.frente && (
+                  {current.frente != null && (
                     <div className="flex justify-between text-[13px]">
                       <span className="text-ink-3">Frente</span>
-                      <span className="font-medium tabular-nums">{current.frente}</span>
+                      <span className="font-medium tabular-nums">{current.frente} m</span>
                     </div>
                   )}
-                  {current.fondo && (
+                  {current.fondo != null && (
                     <div className="flex justify-between text-[13px]">
                       <span className="text-ink-3">Fondo</span>
-                      <span className="font-medium tabular-nums">{current.fondo}</span>
+                      <span className="font-medium tabular-nums">{current.fondo} m</span>
                     </div>
                   )}
                 </div>
