@@ -118,7 +118,7 @@ export default function AgendaPage() {
             </label>
             <label className="field">
               <span className="field-label">{t('phone')}</span>
-              <input required type="tel" className="field-input" placeholder="+52 998 000 0000"
+              <input required type="tel" className="field-input" placeholder="+52 998 404 5602"
                 value={form.phone} onChange={(e) => set('phone', e.target.value)} />
             </label>
           </div>

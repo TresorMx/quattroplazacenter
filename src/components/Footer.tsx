@@ -64,8 +64,8 @@ export default async function Footer() {
               {t('contact')}
             </h4>
             <ul className="flex flex-col gap-3 text-[13px] text-white/85 md:text-[14px]">
-              <li><a href="mailto:ventas@quattroplaza.mx" className="hover:text-accent break-all">ventas@quattroplaza.mx</a></li>
-              <li><a href="tel:+529980000000" className="hover:text-accent">+52 998 000 0000</a></li>
+              <li><a href="mailto:hello@tresor.mx" className="hover:text-accent break-all">hello@tresor.mx</a></li>
+              <li><a href="tel:+529984045602" className="hover:text-accent">+52 998 404 5602</a></li>
               <li className="text-white/70">Cancún, Q. Roo · México</li>
               <li><Link href="/brokers" className="hover:text-accent">{tNav('brokers')}</Link></li>
               <li><Link href="/privacidad" className="hover:text-accent">{t('privacy')}</Link></li>

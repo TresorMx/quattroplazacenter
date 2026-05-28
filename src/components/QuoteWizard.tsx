@@ -365,7 +365,7 @@ function Step2Contact({
             className="field-input"
             value={contact.phone}
             onChange={(e) => setContact({ ...contact, phone: e.target.value })}
-            placeholder="+52 998 000 0000"
+            placeholder="+52 998 404 5602"
           />
         </Field>
         <Field label={t('company')}>

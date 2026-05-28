@@ -142,7 +142,7 @@ function ThanksContent() {
             <Link href="/" className="btn btn-lg" style={{ background: '#FAB413', color: '#0E0E0E' }}>
               Volver al inicio
             </Link>
-            <a href="https://wa.me/529980000000" target="_blank" rel="noopener noreferrer" className="btn btn-lg btn-ghost-light">
+            <a href="https://wa.me/529984045602" target="_blank" rel="noopener noreferrer" className="btn btn-lg btn-ghost-light">
               Hablar por WhatsApp
             </a>
           </div>

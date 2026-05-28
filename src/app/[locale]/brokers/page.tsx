@@ -123,7 +123,7 @@ function BrokerGate({ onAccess }: { onAccess: (s: BrokerSession) => void }) {
             {([
               { k: 'fullName', label: 'Nombre completo *', type: 'text', placeholder: 'Tu nombre completo' },
               { k: 'email', label: 'Email *', type: 'email', placeholder: 'tu@correo.com' },
-              { k: 'phone', label: 'Teléfono *', type: 'tel', placeholder: '+52 998 000 0000' },
+              { k: 'phone', label: 'Teléfono *', type: 'tel', placeholder: '+52 998 404 5602' },
               { k: 'brokerage', label: 'Inmobiliaria', type: 'text', placeholder: 'Opcional' },
             ] as const).map((f) => (
               <label key={f.k} className="field">

@@ -90,7 +90,7 @@ function AgendaGraciasContent() {
 
         {/* WhatsApp */}
         <a
-          href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? '529980000000'}`}
+          href={`https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? '529984045602'}`}
           target="_blank"
           rel="noopener noreferrer"
           className="group flex flex-col items-start gap-5 rounded-lg p-8 text-left transition-all hover:-translate-y-1"

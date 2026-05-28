@@ -7,7 +7,7 @@ import { whatsappURL } from '@/lib/utils';
 
 export default function MobileBar() {
   const t = useTranslations('mobileBar');
-  const phone = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? '+529980000000';
+  const phone = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? '+529984045602';
 
   return (
     <div className="fixed inset-x-0 bottom-0 z-40 flex items-stretch bg-white shadow-[0_-8px_24px_rgba(0,0,0,0.06)] md:hidden">

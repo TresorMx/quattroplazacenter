@@ -85,7 +85,7 @@ export async function POST(req: Request) {
     try {
       const resend = new Resend(process.env.RESEND_API_KEY);
       await resend.emails.send({
-        from: process.env.RESEND_FROM_EMAIL ?? 'ventas@quattroplaza.mx',
+        from: process.env.RESEND_FROM_EMAIL ?? 'hello@tresor.mx',
         to: process.env.LEADS_EMAIL_TO ?? 'david.baena@gmail.com',
         subject: `🔥 Nueva cotización · ${plaza.shortName} Local ${unit.code} · ${contact.fullName}`,
         html: leadEmailHTML({ quoteId, plaza: plaza.name, unit: unit.code, contact, total: computed.total }),
