@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { Resend } from 'resend';
-import { getPlazaBySlug, getUnit } from '@/lib/data';
+import { getPlazaBySlugAsync } from '@/lib/data';
 import { computeQuote, type QuoteCalc } from '@/lib/quote';
 import { quoteStore } from '@/lib/leadStore';
 import { sendLeadToGHL } from '@/lib/ghl';
@@ -36,8 +36,8 @@ export async function POST(req: Request) {
 
   const { quoteId, plazaSlug, unitId, planCode, monthlyTerm, contact } = parsed.data;
 
-  const plaza = getPlazaBySlug(plazaSlug);
-  const unit = getUnit(plazaSlug, unitId);
+  const plaza = await getPlazaBySlugAsync(plazaSlug);
+  const unit = plaza?.units?.find((u) => u.id === unitId);
   if (!plaza || !unit) {
     return NextResponse.json({ error: 'Plaza or unit not found' }, { status: 404 });
   }
