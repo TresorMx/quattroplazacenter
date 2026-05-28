@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { randomUUID } from 'crypto';
 import { Resend } from 'resend';
-import { sendLeadToGHL } from '@/lib/ghl';
+import { sendLeadToGHL, plazaToDesarrollo } from '@/lib/ghl';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -48,13 +48,10 @@ export async function POST(req: NextRequest) {
       email,
       phone,
       source: 'agenda',
-      tags: ['visita', plaza, mode],
+      tags: ['Ads Quattro', 'Cita Quattro'],
       customFields: {
-        agendaId: id,
-        plaza: PLAZA_LABELS[plaza] ?? plaza,
-        modalidad: MODE_LABELS[mode] ?? mode,
-        fechaVisita: date,
-        horaVisita: time,
+        'contact.desarrollo_de_interes': plazaToDesarrollo(plaza),
+        'contact.fuente_de_contacto': 'Digital',
       },
       notes: `Visita agendada · ${PLAZA_LABELS[plaza] ?? plaza} · ${MODE_LABELS[mode] ?? mode} · ${formatDate(date)} ${formatTime(time)}`,
     });

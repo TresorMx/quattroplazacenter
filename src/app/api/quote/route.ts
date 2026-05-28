@@ -4,7 +4,7 @@ import { Resend } from 'resend';
 import { getPlazaBySlugAsync } from '@/lib/data';
 import { computeQuote, type QuoteCalc } from '@/lib/quote';
 import { quoteStore } from '@/lib/leadStore';
-import { sendLeadToGHL } from '@/lib/ghl';
+import { sendLeadToGHL, plazaToDesarrollo } from '@/lib/ghl';
 import { getAvailablePlans } from '@/lib/quote';
 
 export const runtime = 'nodejs';
@@ -69,13 +69,10 @@ export async function POST(req: Request) {
     phone: contact.phone,
     company: contact.company,
     source: 'quote',
-    tags: ['cotizacion', plaza.slug, `local-${unit.code}`, contact.isBroker ? 'broker' : 'cliente'],
+    tags: ['Ads Quattro'],
     customFields: {
-      quoteId,
-      plaza: plaza.name,
-      unitCode: unit.code,
-      totalMXN: Math.round(computed.total),
-      planCode: plan.code,
+      'contact.desarrollo_de_interes': plazaToDesarrollo(plaza.slug),
+      'contact.fuente_de_contacto': 'Digital',
     },
     notes: contact.notes,
   });

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { sendLeadToGHL } from '@/lib/ghl';
+import { sendLeadToGHL, plazaToDesarrollo } from '@/lib/ghl';
 import { Resend } from 'resend';
 
 export async function POST(req: NextRequest) {
@@ -18,8 +18,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Faltan campos requeridos' }, { status: 400 });
     }
 
-    const tags = ['ads', 'gardens', `ads-gardens`, variant === 'brochure' ? 'brochure' : 'asesoria'];
-
     // Send to GHL
     const ghlRes = await sendLeadToGHL({
       firstName,
@@ -27,9 +25,12 @@ export async function POST(req: NextRequest) {
       email,
       phone,
       source: 'agenda',
-      tags,
-      customFields: { uso: uso ?? '' },
-      notes: `Ads Landing — Variant: ${variant} | Uso: ${uso}`,
+      tags: ['Ads Quattro'],
+      customFields: {
+        'contact.desarrollo_de_interes': plazaToDesarrollo('gardens'),
+        'contact.fuente_de_contacto': 'Digital',
+      },
+      notes: `Ads Landing Gardens — Variant: ${variant} | Uso: ${uso}`,
     });
 
     // Notification email to team (only if Resend key is configured)

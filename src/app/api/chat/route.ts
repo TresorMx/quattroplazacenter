@@ -187,7 +187,10 @@ async function runTool(name: string, input: any, plazas: Plaza[]): Promise<any> 
           lastName: rest.join(' '),
           phone: input.telefono,
           source: 'chat',
-          tags: ['chat-bot', input.plaza_interes ? input.plaza_interes : 'sin-plaza'].filter(Boolean),
+          tags: ['Ads Quattro'],
+          customFields: {
+            'contact.fuente_de_contacto': 'Digital',
+          },
           notes: input.notas,
         });
         return { ok: true, message: 'Lead guardado correctamente' };
