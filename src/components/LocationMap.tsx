@@ -43,7 +43,6 @@ export default function LocationMap({
         disableDefaultUI: true,
         zoomControl: true,
         styles: WHITE_EDITORIAL_STYLE,
-        mapId: 'QUATTRO_LIGHT',
       });
       // Pulso animado debajo del pin
       const pulseSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80" width="80" height="80">

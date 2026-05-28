@@ -70,7 +70,7 @@ export default function Gallery({ images, alt }: { images: string[]; alt: string
               onClick={() => setActive(i)}
               className={`relative aspect-[4/3] h-[88px] flex-none overflow-hidden rounded-lg border-2 transition-all duration-300 ${
                 active === i
-                  ? 'border-accent-deep opacity-100 scale-[1.04]'
+                  ? 'border-white/80 opacity-100 scale-[1.04]'
                   : 'border-transparent opacity-55 hover:opacity-80'
               }`}
             >

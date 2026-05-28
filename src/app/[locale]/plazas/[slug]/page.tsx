@@ -79,8 +79,10 @@ export default async function PlazaPage({ params }: { params: Promise<{ slug: st
 
   const minPrice = getMinAvailablePrice(plaza);
 
-  const galleryImages =
-    plaza.slug === 'long-island'
+  // Usa imágenes de Sanity si existen, si no cae al fallback local
+  const galleryImages = plaza.gallery?.length
+    ? plaza.gallery.filter(Boolean)
+    : plaza.slug === 'long-island'
       ? Array.from({ length: 8 }, (_, i) => `/renders/long-island/0${i + 1}.jpg`)
       : Array.from({ length: 6 }, (_, i) => `/renders/gardens/0${i + 1}.jpg`);
 
