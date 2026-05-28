@@ -115,47 +115,39 @@ export default function MasterPlan({ plaza }: { plaza: Plaza }) {
                 draggable={false}
               />
 
-              {/* Pins overlay — viewBox 0 0 1 1 = coordenadas exactas (0–1) del pin */}
-              <svg
-                viewBox="0 0 1 1"
-                className="absolute inset-0 h-full w-full"
-                preserveAspectRatio="none"
-              >
-                {filtered.map((u, i) => {
-                  // Si no hay coordenadas en Sanity, usar grid auto
-                  const pin = u.pin ?? autoPin(u, levelUnits, i);
-                  const isSelected = selectedId === u.id;
-                  const fill = statusColor(u.status);
-                  const isClickable = u.status === 'disponible';
+              {/* Pins overlay — divs absolutos en % para evitar distorsión SVG */}
+              {filtered.map((u) => {
+                // Sin pin en Sanity → no se muestra (no autopin)
+                if (!u.pin) return null;
+                const isSelected = selectedId === u.id;
+                const fill = statusColor(u.status);
+                const isClickable = u.status === 'disponible';
 
-                  return (
-                    <g key={u.id} onClick={() => setSelectedId(u.id)} className="cursor-pointer">
-                      <circle
-                        cx={pin.x}
-                        cy={pin.y}
-                        r={isSelected ? 0.016 : 0.012}
-                        fill={fill}
-                        fillOpacity={isClickable ? 0.95 : 0.6}
-                        stroke="#fff"
-                        strokeWidth={isSelected ? 0.004 : 0.0025}
-                        className="transition-all duration-200"
-                      />
-                      {isSelected && (
-                        <circle
-                          cx={pin.x}
-                          cy={pin.y}
-                          r={0.026}
-                          fill="none"
-                          stroke={fill}
-                          strokeWidth={0.003}
-                          opacity={0.6}
-                          className="animate-ping"
-                        />
-                      )}
-                    </g>
-                  );
-                })}
-              </svg>
+                return (
+                  <div
+                    key={u.id}
+                    onClick={() => setSelectedId(u.id)}
+                    style={{
+                      position: 'absolute',
+                      left: `${u.pin.x * 100}%`,
+                      top: `${u.pin.y * 100}%`,
+                      transform: 'translate(-50%, -50%)',
+                      width: isSelected ? '2.2%' : '1.8%',
+                      aspectRatio: '1',
+                      borderRadius: '50%',
+                      background: fill,
+                      opacity: isClickable ? 0.95 : 0.6,
+                      border: '2px solid white',
+                      boxShadow: isSelected
+                        ? `0 0 0 3px ${fill}55, 0 2px 8px rgba(0,0,0,0.3)`
+                        : '0 1px 4px rgba(0,0,0,0.3)',
+                      cursor: 'pointer',
+                      transition: 'all 0.15s ease',
+                      zIndex: isSelected ? 10 : 1,
+                    }}
+                  />
+                );
+              })}
 
               <button
                 aria-label="Pantalla completa"
@@ -322,15 +314,3 @@ function primarySpec(
   return '';
 }
 
-/** Fallback automático: dispone los pines en grid si no hay coords manuales */
-function autoPin(u: Unit, all: Unit[], idx: number) {
-  const total = all.length;
-  const cols = Math.ceil(Math.sqrt(total * 1.8));
-  const row = Math.floor(idx / cols);
-  const col = idx % cols;
-  const rows = Math.ceil(total / cols);
-  return {
-    x: 0.1 + (col + 0.5) * (0.8 / cols),
-    y: 0.25 + (row + 0.5) * (0.45 / Math.max(rows, 1)),
-  };
-}
