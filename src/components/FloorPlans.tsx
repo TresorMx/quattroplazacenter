@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import type { Plaza, UnitSpecTemplate } from '@/lib/types';
 
 interface Typology {
@@ -121,26 +121,103 @@ function FloorPlanSVG({ width, depth, area }: { width: number; depth: number; ar
 
 export default function FloorPlans({ plaza, floorPlansDesc }: { plaza: Plaza; floorPlansDesc?: string }) {
   const t = useTranslations('plaza');
-  const typologies = buildTypologies(plaza);
+  const locale = useLocale();
+  const isEs = locale !== 'en';
   const [active, setActive] = useState(0);
-  const current = typologies[active];
+
+  const fpLabel = (fp: { label: string; labelEn?: string }) =>
+    isEs ? fp.label : (fp.labelEn ?? fp.label);
+
+  // ── Modo A: imágenes reales de Sanity ──────────────────────────
+  const sanityPlans = (plaza.floorPlans ?? [])
+    .filter((fp) => fp.image)
+    .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+
+  if (sanityPlans.length > 0) {
+    const current = sanityPlans[active];
+    return (
+      <section className="border-t border-line py-20 md:py-28" id="floor-plans">
+        <div className="container-wrap">
+          <div className="mb-10 grid items-end gap-8 md:grid-cols-[1fr_auto]">
+            <div>
+              <span className="eyebrow eyebrow-accent block">{t('fpEyebrow')}</span>
+              <h2 className="mt-4 h-display text-[clamp(34px,4vw,56px)]">{t('fpTitle')}</h2>
+              <p className="mt-3 max-w-[52ch] text-[15px] font-light text-ink-3">
+                {floorPlansDesc ?? t('fpDesc')}
+              </p>
+            </div>
+            {sanityPlans.length > 1 && (
+              <div className="flex items-center gap-1 rounded-full border border-line bg-white p-1">
+                {sanityPlans.map((fp, i) => (
+                  <button
+                    key={fp.label}
+                    onClick={() => setActive(i)}
+                    className={`rounded-full px-5 py-2 text-[11px] font-semibold uppercase tracking-[0.2em] transition-colors ${
+                      active === i ? 'bg-ink text-bg' : 'text-ink-3 hover:text-ink'
+                    }`}
+                  >
+                    {fpLabel(fp)}{fp.area ? ` — ${fp.area}` : ''}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <div className="grid gap-6 md:grid-cols-[1.4fr_1fr]">
+            {/* Imagen del floor plan */}
+            <div className="flex items-center justify-center rounded-[18px] border border-line bg-white overflow-hidden aspect-[1.4/1]">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={current.image!}
+                alt={fpLabel(current)}
+                className="w-full h-full object-contain p-6"
+              />
+            </div>
+
+            {/* Info panel */}
+            <div className="rounded-[18px] border border-line bg-white p-8">
+              <div className="text-[10.5px] uppercase tracking-[0.18em] text-ink-3">{t('fpTypical')}</div>
+              <div className="mt-1.5 font-serif text-[32px] font-light italic leading-tight">
+                {fpLabel(current)}{current.area ? ` — ${current.area}` : ''}
+              </div>
+              {current.area && (
+                <div className="mt-4 flex justify-between border-t border-line pt-4 text-[13px]">
+                  <span className="text-ink-3">Área total</span>
+                  <span className="font-medium tabular-nums">{current.area}</span>
+                </div>
+              )}
+              <Link
+                href="#master-plan"
+                className="mt-6 inline-flex items-center gap-2.5 text-[11px] font-bold uppercase tracking-[0.2em] text-ink transition-colors hover:text-accent"
+              >
+                {t('fpViewAvail')}
+                <ArrowRight size={14} strokeWidth={1.6} />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // ── Modo B: SVG generado a partir de los locales (fallback) ────
+  const typologies = buildTypologies(plaza);
+  const currentTyp = typologies[Math.min(active, typologies.length - 1)];
 
   const specTemplate: UnitSpecTemplate[] = plaza.unitSpecsTemplate ?? [
     { key: 'areaTotal', label: 'Área total', unit: 'm²', order: 1, type: 'number' },
-    { key: 'frente', label: 'Frente', unit: 'm', order: 2, type: 'number' },
-    { key: 'fondo', label: 'Fondo', unit: 'm', order: 3, type: 'number' },
+    { key: 'frente',    label: 'Frente',     unit: 'm',  order: 2, type: 'number' },
+    { key: 'fondo',     label: 'Fondo',      unit: 'm',  order: 3, type: 'number' },
   ];
-
   const specValues: Record<string, string> = {
-    areaTotal: `${current.area.toFixed(2)} m²`,
-    frente: `${current.width.toFixed(2)} m`,
-    fondo: `${current.depth.toFixed(2)} m`,
+    areaTotal: `${currentTyp.area.toFixed(2)} m²`,
+    frente:    `${currentTyp.width.toFixed(2)} m`,
+    fondo:     `${currentTyp.depth.toFixed(2)} m`,
   };
 
   return (
     <section className="border-t border-line py-20 md:py-28" id="floor-plans">
       <div className="container-wrap">
-        {/* Header */}
         <div className="mb-10 grid items-end gap-8 md:grid-cols-[1fr_auto]">
           <div>
             <span className="eyebrow eyebrow-accent block">{t('fpEyebrow')}</span>
@@ -149,8 +226,6 @@ export default function FloorPlans({ plaza, floorPlansDesc }: { plaza: Plaza; fl
               {floorPlansDesc ?? t('fpDesc')}
             </p>
           </div>
-
-          {/* Type tabs */}
           {typologies.length > 1 && (
             <div className="flex items-center gap-1 rounded-full border border-line bg-white p-1">
               {typologies.map((typ, i) => (
@@ -168,37 +243,28 @@ export default function FloorPlans({ plaza, floorPlansDesc }: { plaza: Plaza; fl
           )}
         </div>
 
-        {/* Layout */}
         <div className="grid gap-6 md:grid-cols-[1.4fr_1fr]">
-          {/* SVG floor plan */}
           <div className="flex items-center justify-center rounded-[18px] border border-line bg-white p-8 aspect-[1.4/1]">
-            <FloorPlanSVG width={current.width} depth={current.depth} area={current.area} />
+            <FloorPlanSVG width={currentTyp.width} depth={currentTyp.depth} area={currentTyp.area} />
           </div>
-
-          {/* Info panel */}
           <div className="rounded-[18px] border border-line bg-white p-8">
             <div className="text-[10.5px] uppercase tracking-[0.18em] text-ink-3">{t('fpTypical')}</div>
             <div className="mt-1.5 font-serif text-[32px] font-light italic leading-tight">
-              {current.label} — {current.area.toFixed(0)} m²
+              {currentTyp.label} — {currentTyp.area.toFixed(0)} m²
             </div>
-            <p className="mt-3.5 text-[14px] leading-[1.6] text-ink-2">{current.desc}</p>
-
-            {/* Specs */}
+            <p className="mt-3.5 text-[14px] leading-[1.6] text-ink-2">{currentTyp.desc}</p>
             <div className="mt-6 flex flex-col gap-3.5 border-t border-line pt-5">
-              {specTemplate
-                .sort((a, b) => a.order - b.order)
-                .map((spec) => {
-                  const val = specValues[spec.key];
-                  if (!val) return null;
-                  return (
-                    <div key={spec.key} className="flex justify-between text-[13px]">
-                      <span className="text-ink-3">{spec.label}</span>
-                      <span className="font-medium tabular-nums">{val}</span>
-                    </div>
-                  );
-                })}
+              {specTemplate.sort((a, b) => a.order - b.order).map((spec) => {
+                const val = specValues[spec.key];
+                if (!val) return null;
+                return (
+                  <div key={spec.key} className="flex justify-between text-[13px]">
+                    <span className="text-ink-3">{spec.label}</span>
+                    <span className="font-medium tabular-nums">{val}</span>
+                  </div>
+                );
+              })}
             </div>
-
             <Link
               href="#master-plan"
               className="mt-6 inline-flex items-center gap-2.5 text-[11px] font-bold uppercase tracking-[0.2em] text-ink transition-colors hover:text-accent"
