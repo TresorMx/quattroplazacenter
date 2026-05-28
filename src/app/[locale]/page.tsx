@@ -43,17 +43,18 @@ export default async function HomePage() {
           <span className="scroll-line h-10 w-px" />
         </div>
 
-        {/* Bottom left — Tresor logo + The Art of Luxury Living */}
-        <div className="absolute bottom-7 z-10 flex items-center gap-4" style={{ left: '5%' }}>
+        {/* Bottom — Tresor logo + The Art of Luxury Living */}
+        {/* Mobile: centrado, encima del scroll hint · Desktop: izquierda */}
+        <div className="absolute bottom-20 left-0 right-0 z-10 flex items-center justify-center gap-4 px-6 md:bottom-7 md:right-auto md:justify-start md:pl-[5%]">
           <Image
             src="/logos/LogoTresor.svg"
             alt="Tresor Real Estate"
             width={100}
             height={34}
-            className="h-[38px] w-auto opacity-70"
+            className="h-[32px] w-auto opacity-70 md:h-[38px]"
           />
           <span
-            className="text-[13px] normal-case tracking-[0.16em] text-white/70"
+            className="text-[11px] normal-case tracking-[0.16em] text-white/70 md:text-[13px]"
             style={{ fontFamily: 'Javacom, var(--font-manrope), sans-serif' }}
           >
             The Art of Luxury Living
