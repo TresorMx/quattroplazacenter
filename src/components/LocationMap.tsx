@@ -96,19 +96,28 @@ export default function LocationMap({
   return <div ref={ref} className="h-[420px] w-full rounded-lg overflow-hidden border border-line bg-bg-soft" />;
 }
 
-/** Estilo Google Maps — blanco editorial, casi monocromo */
+/** Estilo Google Maps — gris minimalista, sin pines externos */
 const WHITE_EDITORIAL_STYLE = [
-  { elementType: 'geometry', stylers: [{ color: '#F6F4EF' }] },
-  { elementType: 'labels.icon', stylers: [{ visibility: 'off' }] },
-  { elementType: 'labels.text.fill', stylers: [{ color: '#6B6863' }] },
-  { elementType: 'labels.text.stroke', stylers: [{ color: '#F6F4EF' }] },
-  { featureType: 'administrative', elementType: 'geometry', stylers: [{ color: '#DDD7CB' }] },
-  { featureType: 'poi', stylers: [{ visibility: 'off' }] },
-  { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#FFFFFF' }] },
-  { featureType: 'road', elementType: 'geometry.stroke', stylers: [{ color: '#DDD7CB' }] },
-  { featureType: 'road.highway', elementType: 'geometry', stylers: [{ color: '#EEEAE1' }] },
-  { featureType: 'road.highway', elementType: 'geometry.stroke', stylers: [{ color: '#B8845F' }] },
-  { featureType: 'transit', stylers: [{ visibility: 'off' }] },
-  { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#E6E2D5' }] },
-  { featureType: 'water', elementType: 'labels.text.fill', stylers: [{ color: '#9A968D' }] },
+  // Base gris
+  { elementType: 'geometry',            stylers: [{ color: '#e8e8e8' }] },
+  { elementType: 'labels.icon',         stylers: [{ visibility: 'off' }] },
+  { elementType: 'labels.text.fill',    stylers: [{ color: '#757575' }] },
+  { elementType: 'labels.text.stroke',  stylers: [{ color: '#e8e8e8' }] },
+  // Sin puntos de interés ni íconos de negocios
+  { featureType: 'poi',                 stylers: [{ visibility: 'off' }] },
+  { featureType: 'poi.park',            stylers: [{ visibility: 'off' }] },
+  // Sin transporte
+  { featureType: 'transit',             stylers: [{ visibility: 'off' }] },
+  // Carreteras
+  { featureType: 'road',                elementType: 'geometry',        stylers: [{ color: '#ffffff' }] },
+  { featureType: 'road',                elementType: 'geometry.stroke', stylers: [{ color: '#d0d0d0' }] },
+  { featureType: 'road.highway',        elementType: 'geometry',        stylers: [{ color: '#dadada' }] },
+  { featureType: 'road.highway',        elementType: 'geometry.stroke', stylers: [{ color: '#b8b8b8' }] },
+  { featureType: 'road.highway',        elementType: 'labels.text.fill', stylers: [{ color: '#616161' }] },
+  // Administrativo
+  { featureType: 'administrative',      elementType: 'geometry',        stylers: [{ color: '#c8c8c8' }] },
+  { featureType: 'administrative.land_parcel', elementType: 'labels',  stylers: [{ visibility: 'off' }] },
+  // Agua
+  { featureType: 'water',               elementType: 'geometry',        stylers: [{ color: '#c9c9c9' }] },
+  { featureType: 'water',               elementType: 'labels.text.fill', stylers: [{ color: '#9e9e9e' }] },
 ];
