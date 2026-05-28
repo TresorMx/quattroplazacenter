@@ -29,24 +29,35 @@ export const translateAction: DocumentActionComponent = (props: DocumentActionPr
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            name:        doc.name,
-            tagline:     doc.tagline,
-            description: doc.description,
-            highlights:  doc.highlights,
-            unitSpecsTemplate: doc.unitSpecsTemplate,
-            floorPlans:  doc.floorPlans,
+            name:           doc.name,
+            tagline:        doc.tagline,
+            description:    doc.description,
+            projectTitle:   doc.projectTitle,
+            projectBody1:   doc.projectBody1,
+            projectBody2:   doc.projectBody2,
+            bullet1:        doc.bullet1,
+            bullet2:        doc.bullet2,
+            bullet3:        doc.bullet3,
+            floorPlansDesc: doc.floorPlansDesc,
           }),
         });
 
         if (!res.ok) throw new Error(await res.text());
 
-        const translations = await res.json();
+        const t = await res.json();
 
-        // Patch con los campos traducidos
+        // Patch con todos los campos traducidos
         patch.execute([
-          { set: { nameEn:        translations.nameEn ?? doc.nameEn } },
-          { set: { taglineEn:     translations.taglineEn ?? doc.taglineEn } },
-          { set: { descriptionEn: translations.descriptionEn ?? doc.descriptionEn } },
+          { set: { nameEn:           t.nameEn           ?? doc.nameEn } },
+          { set: { taglineEn:        t.taglineEn        ?? doc.taglineEn } },
+          { set: { descriptionEn:    t.descriptionEn    ?? doc.descriptionEn } },
+          { set: { projectTitleEn:   t.projectTitleEn   ?? doc.projectTitleEn } },
+          { set: { projectBody1En:   t.projectBody1En   ?? doc.projectBody1En } },
+          { set: { projectBody2En:   t.projectBody2En   ?? doc.projectBody2En } },
+          { set: { bullet1En:        t.bullet1En        ?? doc.bullet1En } },
+          { set: { bullet2En:        t.bullet2En        ?? doc.bullet2En } },
+          { set: { bullet3En:        t.bullet3En        ?? doc.bullet3En } },
+          { set: { floorPlansDescEn: t.floorPlansDescEn ?? doc.floorPlansDescEn } },
         ]);
 
         commit.execute();

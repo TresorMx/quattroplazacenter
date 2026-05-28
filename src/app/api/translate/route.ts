@@ -9,28 +9,48 @@ export async function POST(req: Request) {
   if (!apiKey) return NextResponse.json({ error: 'No API key' }, { status: 500 });
 
   const body = await req.json();
-  const { name, tagline, description, highlights, unitSpecsTemplate, floorPlans } = body;
+  const {
+    name, tagline, description,
+    projectTitle, projectBody1, projectBody2,
+    bullet1, bullet2, bullet3,
+    floorPlansDesc,
+  } = body;
 
   const client = new Anthropic({ apiKey });
 
   const prompt = `Translate the following real estate project content from Spanish to English.
-Return ONLY a valid JSON object with these keys (keep the same structure, translate only the text values):
+Return ONLY a valid JSON object with exactly these keys (translate only non-empty values, leave empty strings for fields that have no source):
 
 {
-  "nameEn": "<translated name>",
-  "taglineEn": "<translated tagline>",
-  "descriptionEn": "<translated description>"
+  "nameEn": "",
+  "taglineEn": "",
+  "descriptionEn": "",
+  "projectTitleEn": "",
+  "projectBody1En": "",
+  "projectBody2En": "",
+  "bullet1En": "",
+  "bullet2En": "",
+  "bullet3En": "",
+  "floorPlansDescEn": ""
 }
 
-Source content:
+Source content (Spanish):
 - name: ${name ?? ''}
 - tagline: ${tagline ?? ''}
 - description: ${description ?? ''}
+- projectTitle: ${projectTitle ?? ''}
+- projectBody1: ${projectBody1 ?? ''}
+- projectBody2: ${projectBody2 ?? ''}
+- bullet1: ${bullet1 ?? ''}
+- bullet2: ${bullet2 ?? ''}
+- bullet3: ${bullet3 ?? ''}
+- floorPlansDesc: ${floorPlansDesc ?? ''}
 
 Rules:
 - Keep proper nouns (Cancún, Tresor Real Estate, Quattro Plaza Center) as-is.
 - Keep numbers, symbols, abbreviations (m², MXN, DIC 2026) as-is.
 - Tone: professional real estate, confident, premium.
+- For projectBody1: the site prepends the plaza name, so start with a lowercase verb. E.g. "is located in..."
 - Return ONLY the JSON, no markdown, no explanation.`;
 
   const response = await client.messages.create({
