@@ -5,10 +5,6 @@
  * Uso: npx tsx scripts/fix-null-pins.ts
  */
 import { createClient } from '@sanity/client';
-import * as dotenv from 'dotenv';
-import { resolve } from 'path';
-
-dotenv.config({ path: resolve(process.cwd(), '.env.local') });
 
 const client = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,

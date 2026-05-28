@@ -13,14 +13,7 @@ const UNIT_FIELDS = `
   status,
   isAnchor,
   pin,
-  "specs": select(
-    defined(specs) => {
-      ...(specs[]{
-        "key": key,
-        "value": value
-      }[])
-    }
-  )
+  "specs": specs[]{"key": key, "value": value}
 `;
 
 const PLAZA_FIELDS = `
