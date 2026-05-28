@@ -57,6 +57,11 @@ export default async function PlazaCard({ plaza, large = false }: { plaza: Plaza
         )}>
           {statusLabel}
         </span>
+        {!isComing && plaza.city && (
+          <span className="text-[9px] font-semibold uppercase tracking-caps text-white/50">
+            {plaza.city}
+          </span>
+        )}
       </div>
 
       {/* Centro: logo o nombre */}
