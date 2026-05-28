@@ -3,7 +3,6 @@ import { sendLeadToGHL } from '@/lib/ghl';
 import { Resend } from 'resend';
 
 export async function POST(req: NextRequest) {
-  const resend = new Resend(process.env.RESEND_API_KEY);
   try {
     const body = await req.json();
     const { firstName, lastName, email, phone, uso, variant } = body as {
@@ -33,23 +32,26 @@ export async function POST(req: NextRequest) {
       notes: `Ads Landing — Variant: ${variant} | Uso: ${uso}`,
     });
 
-    // Notification email to team
-    try {
-      await resend.emails.send({
-        from: 'Quattro Plaza <hello@tresor.mx>',
-        to: ['hello@tresor.mx'],
-        subject: `🏬 Nuevo lead Ads Gardens — ${firstName} ${lastName}`,
-        html: `
-          <p><strong>Nombre:</strong> ${firstName} ${lastName}</p>
-          <p><strong>Email:</strong> ${email}</p>
-          <p><strong>Teléfono:</strong> ${phone}</p>
-          <p><strong>Uso:</strong> ${uso}</p>
-          <p><strong>Variante:</strong> ${variant}</p>
-          <p><strong>GHL:</strong> ${ghlRes.ok ? `✅ ${ghlRes.contactId ?? ''}` : `❌ ${ghlRes.error}`}</p>
-        `,
-      });
-    } catch (emailErr) {
-      console.error('[ads-lead] email error', emailErr);
+    // Notification email to team (only if Resend key is configured)
+    if (process.env.RESEND_API_KEY) {
+      try {
+        const resend = new Resend(process.env.RESEND_API_KEY);
+        await resend.emails.send({
+          from: 'Quattro Plaza <hello@tresor.mx>',
+          to: ['hello@tresor.mx'],
+          subject: `🏬 Nuevo lead Ads Gardens — ${firstName} ${lastName}`,
+          html: `
+            <p><strong>Nombre:</strong> ${firstName} ${lastName}</p>
+            <p><strong>Email:</strong> ${email}</p>
+            <p><strong>Teléfono:</strong> ${phone}</p>
+            <p><strong>Uso:</strong> ${uso}</p>
+            <p><strong>Variante:</strong> ${variant}</p>
+            <p><strong>GHL:</strong> ${ghlRes.ok ? `✅ ${ghlRes.contactId ?? ''}` : `❌ ${ghlRes.error}`}</p>
+          `,
+        });
+      } catch (emailErr) {
+        console.error('[ads-lead] email error', emailErr);
+      }
     }
 
     return NextResponse.json({ ok: true });
