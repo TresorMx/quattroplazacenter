@@ -15,24 +15,24 @@ const client = createClient({
 });
 
 async function main() {
-  // Buscar todos los locales donde pin es null
-  const units = await client.fetch<{ _id: string }[]>(
-    `*[_type == "unit" && pin == null]{ _id }`
+  // Borrar pin de TODOS los locales (null o con valor incorrecto del seeder)
+  const units = await client.fetch<{ _id: string; code: string }[]>(
+    `*[_type == "unit" && defined(pin)]{ _id, code }`
   );
 
   if (!units.length) {
-    console.log('✅ No hay locales con pin nulo. Todo limpio.');
+    console.log('✅ No hay locales con pin. Todo limpio.');
     return;
   }
 
-  console.log(`🔧 Limpiando pin nulo en ${units.length} locales...`);
+  console.log(`🔧 Borrando pin de ${units.length} locales...`);
 
   for (const unit of units) {
     await client.patch(unit._id).unset(['pin']).commit();
-    process.stdout.write('.');
+    process.stdout.write(` ${unit.code}`);
   }
 
-  console.log(`\n✅ Listo. ${units.length} locales corregidos.`);
+  console.log(`\n✅ Listo. Ahora coloca los pins desde Studio → cada local → "Posición en master plan".`);
 }
 
 main().catch(console.error);

@@ -16,8 +16,9 @@ import type { ObjectInputProps } from 'sanity';
 export function PinPlacer(props: ObjectInputProps) {
   const { value, onChange } = props;
 
-  // Lee el slug del campo plazaSlug del documento padre
+  // Lee el slug y nivel del documento padre
   const plazaSlug = useFormValue(['plazaSlug']) as string | undefined;
+  const level = useFormValue(['level']) as number | undefined;
 
   const client = useClient({ apiVersion: '2024-01-01' });
   const [masterPlanUrl, setMasterPlanUrl] = useState<string | null>(null);
@@ -28,17 +29,18 @@ export function PinPlacer(props: ObjectInputProps) {
   useEffect(() => {
     if (!plazaSlug) return;
     setLoading(true);
+    const field = level === 2 ? 'masterPlanLevel2' : 'masterPlanImage';
     client
       .fetch(
         `*[_type == "plaza" && slug.current == $slug][0]{
-          "url": masterPlanImage.asset->url
+          "url": ${field}.asset->url
         }`,
         { slug: plazaSlug }
       )
       .then((res: any) => setMasterPlanUrl(res?.url ?? null))
       .catch(() => setMasterPlanUrl(null))
       .finally(() => setLoading(false));
-  }, [plazaSlug, client]);
+  }, [plazaSlug, level, client]);
 
   const handleClick = useCallback(
     (e: React.MouseEvent<HTMLImageElement>) => {
@@ -83,7 +85,7 @@ export function PinPlacer(props: ObjectInputProps) {
     <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
       {/* Instrucción */}
       <p style={{ margin: 0, fontSize: 12, color: '#666' }}>
-        Haz click sobre el master plan para colocar el pin del local.
+        Mostrando <strong>Nivel {level === 2 ? '2' : '1'}</strong> — haz click para colocar el pin.
         {px && py && (
           <span style={{ marginLeft: 8, fontWeight: 600, color: '#0070f3' }}>
             Pin en {px}, {py}
