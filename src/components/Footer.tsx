@@ -1,11 +1,16 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { useTranslations } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 import { ArrowRight } from 'lucide-react';
+import { getPlazasAsync } from '@/lib/data';
 
-export default function Footer() {
-  const t = useTranslations('footer');
-  const tNav = useTranslations('nav');
+export default async function Footer() {
+  const t = await getTranslations('footer');
+  const tNav = await getTranslations('nav');
+  const plazas = await getPlazasAsync();
+
+  const activePlazas = plazas.filter((p) => !p.comingSoon);
+  const comingSoonPlazas = plazas.filter((p) => p.comingSoon);
 
   return (
     <footer className="relative overflow-hidden bg-bg-deep pt-24 text-bg">
@@ -30,17 +35,26 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* Developments */}
+          {/* Developments — dinámico desde Sanity */}
           <div>
             <h4 className="mb-5 text-[11px] uppercase tracking-eyebrow font-medium text-accent">
               {t('developments')}
             </h4>
             <ul className="flex flex-col gap-3 text-[13px] text-white/85 md:text-[14px]">
-              <li><Link href="/plazas/long-island" className="hover:text-accent">Long Island</Link></li>
-              <li><Link href="/plazas/gardens" className="hover:text-accent">Gardens</Link></li>
-              <li><Link href="/#plazas" className="hover:text-accent">Tulum · Coming soon</Link></li>
-              <li><Link href="/#plazas" className="hover:text-accent">Marina · Coming soon</Link></li>
-              <li><Link href="/#plazas" className="hover:text-accent">Huayacán · Coming soon</Link></li>
+              {activePlazas.map((p) => (
+                <li key={p.slug}>
+                  <Link href={`/plazas/${p.slug}`} className="hover:text-accent">
+                    {p.shortName}
+                  </Link>
+                </li>
+              ))}
+              {comingSoonPlazas.map((p) => (
+                <li key={p.slug}>
+                  <Link href="/#plazas" className="hover:text-accent">
+                    {p.shortName} · Coming soon
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
