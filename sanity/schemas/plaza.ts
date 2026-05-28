@@ -43,22 +43,63 @@ export default defineType({
     defineField({ name: 'description',   title: 'Descripción del proyecto (ES)', type: 'text', rows: 4, group: 'texts' }),
     defineField({ name: 'descriptionEn', title: 'Descripción del proyecto (EN)', type: 'text', rows: 4, group: 'texts' }),
 
-    defineField({ name: 'projectTitle',   title: 'Título sección "El Proyecto" (ES)', type: 'string', group: 'texts', description: 'Ej: Mucho más que un local comercial.' }),
-    defineField({ name: 'projectTitleEn', title: 'Título sección "El Proyecto" (EN)', type: 'string', group: 'texts' }),
-    defineField({ name: 'projectBody1',   title: 'Párrafo 1 (ES) — va después del nombre',  type: 'text', rows: 3, group: 'texts' }),
-    defineField({ name: 'projectBody1En', title: 'Párrafo 1 (EN)', type: 'text', rows: 3, group: 'texts' }),
-    defineField({ name: 'projectBody2',   title: 'Párrafo 2 (ES)', type: 'text', rows: 3, group: 'texts' }),
-    defineField({ name: 'projectBody2En', title: 'Párrafo 2 (EN)', type: 'text', rows: 3, group: 'texts' }),
+    // — Sección "El Proyecto" —
+    defineField({
+      name: 'projectTitle', title: '📌 Frase principal del proyecto (ES)',
+      type: 'string', group: 'texts',
+      description: 'Aparece como título grande. Ej: "Mucho más que un local comercial."',
+    }),
+    defineField({
+      name: 'projectTitleEn', title: '📌 Frase principal del proyecto (EN)',
+      type: 'string', group: 'texts',
+    }),
+    defineField({
+      name: 'projectBody1', title: '📝 Descripción de la plaza — qué la hace única (ES)',
+      type: 'text', rows: 3, group: 'texts',
+      description: 'El sitio antepone el nombre de la plaza. Empieza en minúscula. Ej: "se ubica en una zona de alta densidad..."',
+    }),
+    defineField({
+      name: 'projectBody1En', title: '📝 Descripción de la plaza — qué la hace única (EN)',
+      type: 'text', rows: 3, group: 'texts',
+      description: 'The site prepends the plaza name. Start lowercase. E.g. "is located in a high-density area..."',
+    }),
+    defineField({
+      name: 'projectBody2', title: '🔧 Qué incluye cada local (ES)',
+      type: 'text', rows: 3, group: 'texts',
+      description: 'Ej: "Cada local cuenta con instalaciones eléctricas, hidráulicas y sanitarias listas para tu giro."',
+    }),
+    defineField({
+      name: 'projectBody2En', title: '🔧 Qué incluye cada local (EN)',
+      type: 'text', rows: 3, group: 'texts',
+    }),
 
-    defineField({ name: 'bullet1',   title: 'Bullet ubicación 1 (ES)', type: 'string', group: 'texts' }),
-    defineField({ name: 'bullet1En', title: 'Bullet ubicación 1 (EN)', type: 'string', group: 'texts' }),
-    defineField({ name: 'bullet2',   title: 'Bullet ubicación 2 (ES)', type: 'string', group: 'texts' }),
-    defineField({ name: 'bullet2En', title: 'Bullet ubicación 2 (EN)', type: 'string', group: 'texts' }),
-    defineField({ name: 'bullet3',   title: 'Bullet ubicación 3 (ES)', type: 'string', group: 'texts' }),
-    defineField({ name: 'bullet3En', title: 'Bullet ubicación 3 (EN)', type: 'string', group: 'texts' }),
+    // — Sección Ubicación (3 ventajas clave) —
+    defineField({
+      name: 'bullet1', title: '📍 Ventaja de ubicación 1 (ES)',
+      type: 'string', group: 'texts',
+      description: 'Ej: "Alta densidad residencial circundante"',
+    }),
+    defineField({ name: 'bullet1En', title: '📍 Ventaja de ubicación 1 (EN)', type: 'string', group: 'texts' }),
+    defineField({
+      name: 'bullet2', title: '📍 Ventaja de ubicación 2 (ES)',
+      type: 'string', group: 'texts',
+      description: 'Ej: "Flujo vehicular validado por estudio de mercado"',
+    }),
+    defineField({ name: 'bullet2En', title: '📍 Ventaja de ubicación 2 (EN)', type: 'string', group: 'texts' }),
+    defineField({
+      name: 'bullet3', title: '📍 Ventaja de ubicación 3 (ES)',
+      type: 'string', group: 'texts',
+      description: 'Ej: "Frente a vialidad primaria"',
+    }),
+    defineField({ name: 'bullet3En', title: '📍 Ventaja de ubicación 3 (EN)', type: 'string', group: 'texts' }),
 
-    defineField({ name: 'floorPlansDesc',   title: 'Descripción floor plans (ES)', type: 'text', rows: 2, group: 'texts' }),
-    defineField({ name: 'floorPlansDescEn', title: 'Descripción floor plans (EN)', type: 'text', rows: 2, group: 'texts' }),
+    // — Sección Floor Plans —
+    defineField({
+      name: 'floorPlansDesc', title: '🏗️ Texto introductorio de las plantas (ES)',
+      type: 'text', rows: 2, group: 'texts',
+      description: 'Aparece debajo del título "Plantas y tipologías". Ej: "Plantas arquitectónicas de los tipos disponibles. Todos incluyen instalaciones listas."',
+    }),
+    defineField({ name: 'floorPlansDescEn', title: '🏗️ Texto introductorio de las plantas (EN)', type: 'text', rows: 2, group: 'texts' }),
 
     defineField({
       name: 'highlights', title: 'Datos clave (quickfacts strip)',
