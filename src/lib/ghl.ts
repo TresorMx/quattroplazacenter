@@ -10,10 +10,10 @@
 export interface GHLLead {
   firstName: string;
   lastName?: string;
-  email: string;
+  email?: string;
   phone: string;
   company?: string;
-  source: 'quote' | 'chatbot' | 'broker' | 'reservation' | 'agenda';
+  source: 'quote' | 'chatbot' | 'broker' | 'reservation' | 'agenda' | 'chat';
   tags?: string[];
   customFields?: Record<string, string | number | boolean>;
   notes?: string;
@@ -39,7 +39,7 @@ export async function sendLeadToGHL(lead: GHLLead): Promise<{ ok: boolean; conta
       body: JSON.stringify({
         firstName: lead.firstName,
         lastName: lead.lastName ?? '',
-        email: lead.email,
+        ...(lead.email ? { email: lead.email } : {}),
         phone: lead.phone,
         companyName: lead.company,
         locationId,
