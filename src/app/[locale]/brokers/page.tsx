@@ -121,7 +121,7 @@ function BrokerGate({ onAccess }: { onAccess: (s: BrokerSession) => void }) {
 
           <div className="grid gap-5">
             {([
-              { k: 'fullName', label: 'Nombre completo *', type: 'text', placeholder: 'David Baena' },
+              { k: 'fullName', label: 'Nombre completo *', type: 'text', placeholder: 'Tu nombre completo' },
               { k: 'email', label: 'Email *', type: 'email', placeholder: 'tu@correo.com' },
               { k: 'phone', label: 'Teléfono *', type: 'tel', placeholder: '+52 998 000 0000' },
               { k: 'brokerage', label: 'Inmobiliaria', type: 'text', placeholder: 'Opcional' },

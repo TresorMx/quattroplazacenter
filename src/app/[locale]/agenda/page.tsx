@@ -99,12 +99,12 @@ export default function AgendaPage() {
           <div className="grid gap-6 sm:grid-cols-2">
             <label className="field">
               <span className="field-label">{t('firstName')}</span>
-              <input required type="text" className="field-input" placeholder="David"
+              <input required type="text" className="field-input" placeholder="Tu nombre"
                 value={form.firstName} onChange={(e) => set('firstName', e.target.value)} />
             </label>
             <label className="field">
               <span className="field-label">{t('lastName')}</span>
-              <input required type="text" className="field-input" placeholder="Baena"
+              <input required type="text" className="field-input" placeholder="Tu apellido"
                 value={form.lastName} onChange={(e) => set('lastName', e.target.value)} />
             </label>
           </div>

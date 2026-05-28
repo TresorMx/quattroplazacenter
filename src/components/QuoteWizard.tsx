@@ -347,7 +347,7 @@ function Step2Contact({
             className="field-input"
             value={contact.fullName}
             onChange={(e) => setContact({ ...contact, fullName: e.target.value })}
-            placeholder="David Baena"
+            placeholder="Tu nombre"
           />
         </Field>
         <Field label={t('email')}>
