@@ -119,7 +119,7 @@ function FloorPlanSVG({ width, depth, area }: { width: number; depth: number; ar
   );
 }
 
-export default function FloorPlans({ plaza }: { plaza: Plaza }) {
+export default function FloorPlans({ plaza, floorPlansDesc }: { plaza: Plaza; floorPlansDesc?: string }) {
   const t = useTranslations('plaza');
   const typologies = buildTypologies(plaza);
   const [active, setActive] = useState(0);
@@ -146,7 +146,7 @@ export default function FloorPlans({ plaza }: { plaza: Plaza }) {
             <span className="eyebrow eyebrow-accent block">{t('fpEyebrow')}</span>
             <h2 className="mt-4 h-display text-[clamp(34px,4vw,56px)]">{t('fpTitle')}</h2>
             <p className="mt-3 max-w-[52ch] text-[15px] font-light text-ink-3">
-              {t('fpDesc')}
+              {floorPlansDesc ?? t('fpDesc')}
             </p>
           </div>
 

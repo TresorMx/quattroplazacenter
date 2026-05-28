@@ -70,11 +70,12 @@ export async function generateMetadata({
 }
 
 export default async function PlazaPage({ params }: { params: Promise<{ slug: string; locale: string }> }) {
-  const { slug } = await params;
+  const { slug, locale } = await params;
   const plaza = await getPlazaBySlugAsync(slug);
   if (!plaza || plaza.comingSoon) notFound();
 
   const t = await getTranslations('plaza');
+  const isEs = locale !== 'en';
 
   const minPrice = getMinAvailablePrice(plaza);
 
@@ -184,15 +185,15 @@ export default async function PlazaPage({ params }: { params: Promise<{ slug: st
           <div>
             <span className="eyebrow eyebrow-accent block">{t('projectEyebrow')}</span>
             <h2 className="mt-5 h-display text-[clamp(34px,4vw,56px)]">
-              {t('projectTitle')}
+              {isEs ? (plaza.projectTitle ?? t('projectTitle')) : (plaza.projectTitleEn ?? plaza.projectTitle ?? t('projectTitle'))}
             </h2>
           </div>
           <div className="text-[17px] font-light leading-[1.7] text-ink-2">
             <p>
-              {plaza.shortName} {t('projectBody1')}
+              {plaza.shortName} {isEs ? (plaza.projectBody1 ?? t('projectBody1')) : (plaza.projectBody1En ?? plaza.projectBody1 ?? t('projectBody1'))}
             </p>
             <p className="mt-4">
-              {t('projectBody2')}
+              {isEs ? (plaza.projectBody2 ?? t('projectBody2')) : (plaza.projectBody2En ?? plaza.projectBody2 ?? t('projectBody2'))}
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-4">
@@ -218,9 +219,9 @@ export default async function PlazaPage({ params }: { params: Promise<{ slug: st
               {plaza.location?.address ?? `${plaza.city}, ${plaza.state}`}
             </p>
             <div className="mt-8 space-y-3 border-t border-line pt-6">
-              <Bullet icon={<Building2 size={16} strokeWidth={1.5} />} text={t('bullet1')} />
-              <Bullet icon={<Layers size={16} strokeWidth={1.5} />} text={t('bullet2')} />
-              <Bullet icon={<MapPin size={16} strokeWidth={1.5} />} text={t('bullet3')} />
+              <Bullet icon={<Building2 size={16} strokeWidth={1.5} />} text={isEs ? (plaza.bullet1 ?? t('bullet1')) : (plaza.bullet1En ?? plaza.bullet1 ?? t('bullet1'))} />
+              <Bullet icon={<Layers size={16} strokeWidth={1.5} />} text={isEs ? (plaza.bullet2 ?? t('bullet2')) : (plaza.bullet2En ?? plaza.bullet2 ?? t('bullet2'))} />
+              <Bullet icon={<MapPin size={16} strokeWidth={1.5} />} text={isEs ? (plaza.bullet3 ?? t('bullet3')) : (plaza.bullet3En ?? plaza.bullet3 ?? t('bullet3'))} />
             </div>
           </div>
           <div>
@@ -243,7 +244,7 @@ export default async function PlazaPage({ params }: { params: Promise<{ slug: st
       <Gallery images={galleryImages} alt={plaza.shortName} />
 
       {/* ═════ 4. FLOOR PLANS ═════ */}
-      <FloorPlans plaza={plaza} />
+      <FloorPlans plaza={plaza} floorPlansDesc={isEs ? (plaza.floorPlansDesc ?? undefined) : (plaza.floorPlansDescEn ?? plaza.floorPlansDesc ?? undefined)} />
 
       {/* ═════ 5. MASTER PLAN INTERACTIVO ═════ */}
       <div id="master-plan">

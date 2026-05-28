@@ -42,6 +42,24 @@ export default defineType({
     // ── TEXTOS LANDING ───────────────────────────────────────────
     defineField({ name: 'description',   title: 'Descripción del proyecto (ES)', type: 'text', rows: 4, group: 'texts' }),
     defineField({ name: 'descriptionEn', title: 'Descripción del proyecto (EN)', type: 'text', rows: 4, group: 'texts' }),
+
+    defineField({ name: 'projectTitle',   title: 'Título sección "El Proyecto" (ES)', type: 'string', group: 'texts', description: 'Ej: Mucho más que un local comercial.' }),
+    defineField({ name: 'projectTitleEn', title: 'Título sección "El Proyecto" (EN)', type: 'string', group: 'texts' }),
+    defineField({ name: 'projectBody1',   title: 'Párrafo 1 (ES) — va después del nombre',  type: 'text', rows: 3, group: 'texts' }),
+    defineField({ name: 'projectBody1En', title: 'Párrafo 1 (EN)', type: 'text', rows: 3, group: 'texts' }),
+    defineField({ name: 'projectBody2',   title: 'Párrafo 2 (ES)', type: 'text', rows: 3, group: 'texts' }),
+    defineField({ name: 'projectBody2En', title: 'Párrafo 2 (EN)', type: 'text', rows: 3, group: 'texts' }),
+
+    defineField({ name: 'bullet1',   title: 'Bullet ubicación 1 (ES)', type: 'string', group: 'texts' }),
+    defineField({ name: 'bullet1En', title: 'Bullet ubicación 1 (EN)', type: 'string', group: 'texts' }),
+    defineField({ name: 'bullet2',   title: 'Bullet ubicación 2 (ES)', type: 'string', group: 'texts' }),
+    defineField({ name: 'bullet2En', title: 'Bullet ubicación 2 (EN)', type: 'string', group: 'texts' }),
+    defineField({ name: 'bullet3',   title: 'Bullet ubicación 3 (ES)', type: 'string', group: 'texts' }),
+    defineField({ name: 'bullet3En', title: 'Bullet ubicación 3 (EN)', type: 'string', group: 'texts' }),
+
+    defineField({ name: 'floorPlansDesc',   title: 'Descripción floor plans (ES)', type: 'text', rows: 2, group: 'texts' }),
+    defineField({ name: 'floorPlansDescEn', title: 'Descripción floor plans (EN)', type: 'text', rows: 2, group: 'texts' }),
+
     defineField({
       name: 'highlights', title: 'Datos clave (quickfacts strip)',
       description: 'Los 3 primeros se muestran en el strip. El precio se toma automáticamente.',

@@ -100,6 +100,21 @@ export interface Plaza {
   taglineEn?: string;
   description?: string;
   descriptionEn?: string;
+  // landing copy
+  projectTitle?: string;
+  projectTitleEn?: string;
+  projectBody1?: string;
+  projectBody1En?: string;
+  projectBody2?: string;
+  projectBody2En?: string;
+  bullet1?: string;
+  bullet1En?: string;
+  bullet2?: string;
+  bullet2En?: string;
+  bullet3?: string;
+  bullet3En?: string;
+  floorPlansDesc?: string;
+  floorPlansDescEn?: string;
   // SEO
   seoTitle?: string;
   seoTitleEn?: string;
