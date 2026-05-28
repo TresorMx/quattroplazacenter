@@ -45,7 +45,7 @@ export default async function HomePage() {
 
         {/* Bottom — Tresor logo + The Art of Luxury Living */}
         {/* Mobile: centrado, encima del scroll hint · Desktop: izquierda */}
-        <div className="absolute bottom-20 left-0 right-0 z-10 flex items-center justify-center gap-4 px-6 md:bottom-7 md:right-auto md:justify-start md:pl-[5%]">
+        <div className="absolute bottom-32 left-0 right-0 z-10 flex items-center justify-center gap-4 px-6 md:bottom-7 md:right-auto md:justify-start md:pl-[5%]">
           <Image
             src="/logos/LogoTresor.svg"
             alt="Tresor Real Estate"
