@@ -95,6 +95,19 @@ export interface Plaza {
   paymentPlans?: PaymentPlan[];
   units?: Unit[];
   comingSoon?: boolean;
+  // i18n
+  nameEn?: string;
+  taglineEn?: string;
+  description?: string;
+  descriptionEn?: string;
+  // SEO
+  seoTitle?: string;
+  seoTitleEn?: string;
+  seoDescription?: string;
+  seoDescriptionEn?: string;
+  // gallery / floor plans
+  gallery?: string[];
+  floorPlans?: { label: string; labelEn?: string; area?: string; order?: number; image?: string }[];
 }
 
 export interface PlazasData {

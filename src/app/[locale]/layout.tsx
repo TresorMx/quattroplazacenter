@@ -91,8 +91,12 @@ export async function generateMetadata({
     publisher: 'Tresor Real Estate',
     formatDetection: { telephone: true, address: true, email: true },
     alternates: {
-      canonical: '/',
-      languages: { es: '/', en: '/en' },
+      canonical: isEs ? SITE_URL : `${SITE_URL}/en`,
+      languages: {
+        'es':        SITE_URL,
+        'en':        `${SITE_URL}/en`,
+        'x-default': SITE_URL,
+      },
     },
     openGraph: {
       type: 'website',

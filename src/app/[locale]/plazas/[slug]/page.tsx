@@ -23,21 +23,48 @@ export async function generateMetadata({
 }: {
   params: Promise<{ slug: string; locale: string }>;
 }): Promise<Metadata> {
-  const { slug } = await params;
+  const { slug, locale } = await params;
   const plaza = await getPlazaBySlugAsync(slug);
   if (!plaza) return {};
 
+  const isEs = locale === 'es';
   const minPrice = getMinAvailablePrice(plaza);
   const fromText = minPrice ? ` desde ${formatMXN(minPrice)}` : '';
 
+  // Usa campos SEO del Studio si existen, si no genera automáticamente
+  const title = isEs
+    ? (plaza.seoTitle ?? `${plaza.name} — Locales en Venta Cancún`)
+    : (plaza.seoTitleEn ?? `${plaza.nameEn ?? plaza.name} — Commercial Units Cancún`);
+
+  const description = isEs
+    ? (plaza.seoDescription ?? `${plaza.tagline}. Plaza comercial premium en ${plaza.city}. ${plaza.availableUnits ?? '+10'} locales disponibles${fromText}. Entrega ${plaza.deliveryWindow}. Por Tresor Real Estate.`)
+    : (plaza.seoDescriptionEn ?? `${plaza.taglineEn ?? plaza.tagline}. Premium commercial plaza in ${plaza.city}. ${plaza.availableUnits ?? '+10'} units available${fromText}. By Tresor Real Estate.`);
+
+  const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://quattroplaza.mx';
+
   return {
-    title: `${plaza.name} — Locales en Venta`,
-    description: `${plaza.tagline}. Plaza comercial premium en ${plaza.city}. ${plaza.availableUnits ?? '+10'} locales disponibles${fromText}. Entrega ${plaza.deliveryWindow}. Por Tresor Real Estate.`,
-    alternates: { canonical: `/plazas/${plaza.slug}` },
+    title,
+    description,
+    alternates: {
+      canonical: `/plazas/${plaza.slug}`,
+      languages: {
+        'es':        `${SITE}/plazas/${plaza.slug}`,
+        'en':        `${SITE}/en/plazas/${plaza.slug}`,
+        'x-default': `${SITE}/plazas/${plaza.slug}`,
+      },
+    },
     openGraph: {
-      title: `${plaza.name} — Locales en Venta Cancún`,
-      description: `${plaza.tagline}. ${plaza.availableUnits ?? '+10'} locales disponibles${fromText}.`,
-      images: [{ url: plaza.heroRender, width: 1600, height: 900, alt: plaza.name }],
+      title,
+      description,
+      images: plaza.heroRender
+        ? [{ url: plaza.heroRender, width: 1600, height: 900, alt: plaza.name }]
+        : [{ url: '/og/home.jpg', width: 1200, height: 630, alt: plaza.name }],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title,
+      description,
+      images: [plaza.heroRender ?? '/og/home.jpg'],
     },
   };
 }

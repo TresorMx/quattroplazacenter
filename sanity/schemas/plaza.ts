@@ -12,6 +12,7 @@ export default defineType({
     { name: 'specs',    title: 'Campos del local' },
     { name: 'plans',    title: 'Planes de pago' },
     { name: 'units',    title: 'Locales' },
+    { name: 'seo',      title: '🔍 SEO' },
   ],
   fields: [
 
@@ -143,6 +144,40 @@ export default defineType({
           return sum === 100 || `Los % deben sumar 100 (actual: ${sum}%)`;
         }),
       }],
+    }),
+
+    // ── SEO ───────────────────────────────────────────────────────
+    defineField({
+      name: 'seoTitle',
+      title: 'SEO Title (ES)',
+      type: 'string',
+      group: 'seo',
+      description: 'Título para Google. Si se deja vacío usa el nombre de la plaza. Recomendado: 50-60 caracteres.',
+      validation: (r) => r.max(60),
+    }),
+    defineField({
+      name: 'seoTitleEn',
+      title: 'SEO Title (EN)',
+      type: 'string',
+      group: 'seo',
+      validation: (r) => r.max(60),
+    }),
+    defineField({
+      name: 'seoDescription',
+      title: 'Meta Description (ES)',
+      type: 'text',
+      rows: 3,
+      group: 'seo',
+      description: 'Descripción para Google y redes sociales. Recomendado: 140-160 caracteres.',
+      validation: (r) => r.max(160),
+    }),
+    defineField({
+      name: 'seoDescriptionEn',
+      title: 'Meta Description (EN)',
+      type: 'text',
+      rows: 3,
+      group: 'seo',
+      validation: (r) => r.max(160),
     }),
 
     // ── LOCALES ──────────────────────────────────────────────────
