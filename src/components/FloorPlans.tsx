@@ -180,10 +180,26 @@ export default function FloorPlans({ plaza, floorPlansDesc }: { plaza: Plaza; fl
               <div className="mt-1.5 font-serif text-[32px] font-light italic leading-tight">
                 {fpLabel(current)}{current.area ? ` — ${current.area}` : ''}
               </div>
-              {current.area && (
-                <div className="mt-4 flex justify-between border-t border-line pt-4 text-[13px]">
-                  <span className="text-ink-3">Área total</span>
-                  <span className="font-medium tabular-nums">{current.area}</span>
+              {(current.area || current.frente || current.fondo) && (
+                <div className="mt-4 flex flex-col gap-3 border-t border-line pt-4">
+                  {current.area && (
+                    <div className="flex justify-between text-[13px]">
+                      <span className="text-ink-3">Área total</span>
+                      <span className="font-medium tabular-nums">{current.area}</span>
+                    </div>
+                  )}
+                  {current.frente && (
+                    <div className="flex justify-between text-[13px]">
+                      <span className="text-ink-3">Frente</span>
+                      <span className="font-medium tabular-nums">{current.frente}</span>
+                    </div>
+                  )}
+                  {current.fondo && (
+                    <div className="flex justify-between text-[13px]">
+                      <span className="text-ink-3">Fondo</span>
+                      <span className="font-medium tabular-nums">{current.fondo}</span>
+                    </div>
+                  )}
                 </div>
               )}
               <Link

@@ -135,10 +135,12 @@ export default defineType({
       of: [{
         type: 'object', name: 'floorPlan',
         fields: [
-          { name: 'label',   title: 'Nombre tipología (ES)', type: 'string', validation: (r) => r.required() },
+          { name: 'label',   title: 'Nombre tipología (ES)', type: 'string', validation: (r: any) => r.required() },
           { name: 'labelEn', title: 'Nombre tipología (EN)', type: 'string' },
-          { name: 'image',   title: 'Imagen',                type: 'image' },
-          { name: 'area',    title: 'Área (m²)',             type: 'string' },
+          { name: 'image',   title: 'Imagen del plano',      type: 'image' },
+          { name: 'area',    title: 'Área total (m²)',       type: 'string', description: 'Ej: 42.5 m²' },
+          { name: 'frente',  title: 'Frente (m)',            type: 'string', description: 'Ej: 5.5 m' },
+          { name: 'fondo',   title: 'Fondo (m)',             type: 'string', description: 'Ej: 8.0 m' },
           { name: 'order',   title: 'Orden',                 type: 'number', initialValue: 1 },
         ],
         preview: { select: { title: 'label', subtitle: 'area', media: 'image' }, prepare: ({ title, subtitle, media }: any) => ({ title, subtitle: subtitle ? `${subtitle} m²` : undefined, media }) },

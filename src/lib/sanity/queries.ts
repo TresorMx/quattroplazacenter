@@ -66,7 +66,7 @@ const PLAZA_FIELDS = `
   "masterPlanLevel2": masterPlanLevel2.asset->url,
   "gallery":          gallery[].asset->url,
   "floorPlans":       floorPlans[]{
-    label, labelEn, area, order,
+    label, labelEn, area, frente, fondo, order,
     "image": image.asset->url
   },
   location,
