@@ -189,7 +189,7 @@ export default function MasterPlan({ plaza }: { plaza: Plaza }) {
 
                 {selected.status === 'disponible' && selected.price ? (
                   <Link
-                    href={`/cotizar/${plaza.slug}/${selected.id}`}
+                    href={`/cotizar/${plaza.slug}?unit=${selected.id}`}
                     className="btn btn-primary mt-5 w-full font-semibold"
                   >
                     {t('quoteThis')}
