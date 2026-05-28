@@ -45,7 +45,9 @@ export async function sendLeadToGHL(lead: GHLLead): Promise<{ ok: boolean; conta
         locationId,
         source: `web-${lead.source}`,
         tags: lead.tags ?? [],
-        customFields: lead.customFields,
+        customFields: lead.customFields
+          ? Object.entries(lead.customFields).map(([key, value]) => ({ key, field_value: String(value) }))
+          : [],
       }),
     });
     if (!res.ok) {
