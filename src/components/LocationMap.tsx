@@ -45,10 +45,15 @@ export default function LocationMap({
         styles: WHITE_EDITORIAL_STYLE,
         mapId: 'QUATTRO_LIGHT',
       });
+      const pinSvg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 52" width="40" height="52">
+        <path d="M20 0C9 0 0 9 0 20c0 14 20 32 20 32S40 34 40 20C40 9 31 0 20 0z" fill="#FFD057"/>
+        <circle cx="20" cy="20" r="7" fill="#16151C"/>
+      </svg>`;
+      const pinUrl = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(pinSvg);
       new (window as any).google.maps.Marker({
         position: { lat, lng },
         map,
-        icon: { url: pinSvgUrl, scaledSize: new (window as any).google.maps.Size(48, 48) },
+        icon: { url: pinUrl, scaledSize: new (window as any).google.maps.Size(40, 52), anchor: new (window as any).google.maps.Point(20, 52) },
       });
     }
 
