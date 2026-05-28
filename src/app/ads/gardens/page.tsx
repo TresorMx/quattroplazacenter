@@ -14,17 +14,16 @@ const RENDERS = [
 ];
 
 const FEATURES = [
-  { icon: MapPin,        title: 'Ubicación privilegiada',   desc: 'Corredor comercial de alto tráfico en Cancún, rodeado de zonas residenciales de alta demanda.' },
-  { icon: TrendingUp,    title: 'Alta plusvalía',           desc: 'Zona con crecimiento sostenido. Ideal como inversión a largo plazo o negocio propio.' },
-  { icon: Building2,     title: 'Diseño premium',           desc: 'Arquitectura contemporánea, acabados de primera, espacios flexibles para cualquier giro comercial.' },
-  { icon: ShieldCheck,   title: 'Desarrollador respaldado', desc: 'Tresor Real Estate — trayectoria comprobada en desarrollos residenciales y comerciales.' },
+  { icon: MapPin,      title: 'Ubicación privilegiada',   desc: 'Corredor comercial de alto tráfico en Cancún, rodeado de zonas residenciales de alta demanda.' },
+  { icon: TrendingUp,  title: 'Alta plusvalía',           desc: 'Zona con crecimiento sostenido. Ideal como inversión a largo plazo o negocio propio.' },
+  { icon: Building2,   title: 'Diseño premium',           desc: 'Arquitectura contemporánea, acabados de primera, espacios flexibles para cualquier giro comercial.' },
+  { icon: ShieldCheck, title: 'Desarrollador respaldado', desc: 'Tresor Real Estate — trayectoria comprobada en desarrollos residenciales y comerciales.' },
 ];
 
 export default function GardensLandingBrochure() {
   const [activeImg, setActiveImg] = useState(0);
   const [form, setForm] = useState({ firstName: '', lastName: '', email: '', phone: '', uso: '' });
   const [loading, setLoading] = useState(false);
-  const [done, setDone] = useState(false);
   const [err, setErr] = useState<string | null>(null);
 
   const set = (k: string, v: string) => setForm((f) => ({ ...f, [k]: v }));
@@ -42,7 +41,6 @@ export default function GardensLandingBrochure() {
         body: JSON.stringify({ ...form, variant: 'brochure' }),
       });
       if (!res.ok) throw new Error('Error');
-      // Trigger brochure download
       const a = document.createElement('a');
       a.href = '/brochures/gardens-brochure.pdf';
       a.download = 'Quattro-Plaza-Gardens-Brochure.pdf';
@@ -59,14 +57,10 @@ export default function GardensLandingBrochure() {
     <main className="min-h-screen bg-bg text-ink">
 
       {/* ── Nav bar ── */}
-      <header className="sticky top-0 z-40 flex items-center justify-between border-b border-line bg-white/95 px-6 py-4 backdrop-blur-sm">
-        <Image src="/logos/logo-quattro.svg" alt="Quattro Plaza Center" width={110} height={32} className="h-7 w-auto" />
-        <a
-          href="tel:+529984045602"
-          className="hidden text-[12px] font-semibold text-ink-3 hover:text-ink md:block"
-        >
-          +52 998 404 5602
-        </a>
+      <header className="sticky top-0 z-40 border-b border-line bg-white/95 px-6 py-4 backdrop-blur-sm">
+        <div className="flex justify-center">
+          <Image src="/logos/logo-quattro.svg" alt="Quattro Plaza Center" width={143} height={42} className="h-9 w-auto" />
+        </div>
       </header>
 
       {/* ── Hero + Form ── */}
@@ -81,7 +75,7 @@ export default function GardensLandingBrochure() {
             sizes="100vw"
             className="object-cover"
           />
-          <div className="absolute inset-0 bg-black/60" />
+          <div className="absolute inset-0 bg-black/[0.69]" />
         </div>
 
         <div className="relative z-10 container-wrap grid items-center gap-10 py-16 md:grid-cols-[1fr_420px] md:py-24">
@@ -99,9 +93,14 @@ export default function GardensLandingBrochure() {
               Locales desde 25 m² en preventa con planes de pago flexibles.
             </p>
             <ul className="mt-7 space-y-2">
-              {['Desde $1.2 MDP · Preventa exclusiva', 'Planes sin intereses hasta 24 meses', 'Alta plusvalía · Zona de alto tráfico', 'Entrega estimada 2026'].map((item) => (
+              {[
+                'Desde $1,968,600 MXN · Preventa exclusiva',
+                'Planes sin intereses hasta 24 meses',
+                'Alta plusvalía · Zona de alto tráfico',
+                'Entrega estimada 2026',
+              ].map((item) => (
                 <li key={item} className="flex items-center gap-2.5 text-[13px] text-white/90">
-                  <CheckCircle2 size={14} className="shrink-0 text-[#FAB413]" strokeWidth={2} />
+                  <CheckCircle2 size={14} className="shrink-0 text-[#FAB413]" strokeWidth={1.5} />
                   {item}
                 </li>
               ))}
@@ -149,7 +148,7 @@ export default function GardensLandingBrochure() {
                 <div className="grid grid-cols-2 gap-2">
                   {[
                     { v: 'inversion', label: '💰 Inversión' },
-                    { v: 'negocio', label: '🏪 Negocio Propio' },
+                    { v: 'negocio',   label: '🏪 Negocio Propio' },
                   ].map(({ v, label }) => (
                     <button
                       key={v}
@@ -176,7 +175,7 @@ export default function GardensLandingBrochure() {
                 style={{ background: '#FAB413', color: '#0E0E0E', fontWeight: 700 }}
               >
                 {loading ? 'Procesando…' : 'Descargar Brochure'}
-                {!loading && <ArrowRight size={14} strokeWidth={2} />}
+                {!loading && <ArrowRight size={14} strokeWidth={1.5} />}
               </button>
               <p className="text-center text-[10.5px] text-ink-3">
                 Tus datos están seguros. Sin spam.
@@ -192,7 +191,7 @@ export default function GardensLandingBrochure() {
           <div className="mb-8 text-center">
             <span className="eyebrow eyebrow-accent">— El Proyecto</span>
             <h2 className="mt-3 font-serif text-[clamp(28px,3vw,44px)] font-light italic">
-              Renders Oficiales
+              Descubre Quattro Plaza
             </h2>
           </div>
           {/* Main image */}
@@ -235,7 +234,7 @@ export default function GardensLandingBrochure() {
             {FEATURES.map(({ icon: Icon, title, desc }) => (
               <div key={title} className="rounded-xl border border-line bg-white p-7">
                 <div className="flex h-12 w-12 items-center justify-center rounded-full bg-bg-soft text-ink">
-                  <Icon size={22} strokeWidth={1.4} />
+                  <Icon size={22} strokeWidth={1.5} />
                 </div>
                 <h3 className="mt-5 font-serif text-xl font-light italic">{title}</h3>
                 <p className="mt-2 text-[13px] leading-relaxed text-ink-3">{desc}</p>
@@ -260,7 +259,7 @@ export default function GardensLandingBrochure() {
               onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
               className="inline-flex items-center gap-2 rounded-full bg-[#FAB413] px-6 py-3 text-[12px] font-bold uppercase tracking-widest text-ink"
             >
-              Descargar Brochure <ArrowRight size={14} strokeWidth={2} />
+              Descargar Brochure <ArrowRight size={14} strokeWidth={1.5} />
             </a>
             <a
               href="https://wa.me/529984045602?text=Hola+quiero+más+información+de+Quattro+Plaza+Center+Gardens!"

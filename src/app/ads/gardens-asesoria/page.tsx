@@ -21,9 +21,9 @@ const FEATURES = [
 ];
 
 const STEPS = [
-  { n: '01', title: 'Llena el formulario',    desc: 'Comparte tus datos en menos de 30 segundos.' },
-  { n: '02', title: 'Asesor te contacta',     desc: 'Un experto te llama o escribe en menos de 2 horas.' },
-  { n: '03', title: 'Agenda tu visita',        desc: 'Presencial o por Zoom, sin compromisos.' },
+  { n: '01', title: 'Llena el formulario',  desc: 'Comparte tus datos en menos de 30 segundos.' },
+  { n: '02', title: 'Asesor te contacta',   desc: 'Un experto te llama o escribe en menos de 2 horas.' },
+  { n: '03', title: 'Agenda tu visita',     desc: 'Presencial o por Zoom, sin compromisos.' },
 ];
 
 export default function GardensLandingAsesoria() {
@@ -59,14 +59,10 @@ export default function GardensLandingAsesoria() {
     <main className="min-h-screen bg-bg text-ink">
 
       {/* ── Nav bar ── */}
-      <header className="sticky top-0 z-40 flex items-center justify-between border-b border-line bg-white/95 px-6 py-4 backdrop-blur-sm">
-        <Image src="/logos/logo-quattro.svg" alt="Quattro Plaza Center" width={110} height={32} className="h-7 w-auto" />
-        <a
-          href="tel:+529984045602"
-          className="hidden text-[12px] font-semibold text-ink-3 hover:text-ink md:block"
-        >
-          +52 998 404 5602
-        </a>
+      <header className="sticky top-0 z-40 border-b border-line bg-white/95 px-6 py-4 backdrop-blur-sm">
+        <div className="flex justify-center">
+          <Image src="/logos/logo-quattro.svg" alt="Quattro Plaza Center" width={143} height={42} className="h-9 w-auto" />
+        </div>
       </header>
 
       {/* ── Hero + Form ── */}
@@ -81,7 +77,7 @@ export default function GardensLandingAsesoria() {
             sizes="100vw"
             className="object-cover"
           />
-          <div className="absolute inset-0 bg-black/60" />
+          <div className="absolute inset-0 bg-black/[0.69]" />
         </div>
 
         <div className="relative z-10 container-wrap grid items-center gap-10 py-16 md:grid-cols-[1fr_420px] md:py-24">
@@ -99,9 +95,14 @@ export default function GardensLandingAsesoria() {
               Sin compromisos, sin costo.
             </p>
             <ul className="mt-7 space-y-2">
-              {['Asesoría personalizada sin costo', 'Conoce precios, planos y disponibilidad', 'Visita presencial o por Zoom', 'Respuesta en menos de 2 horas'].map((item) => (
+              {[
+                'Desde $1,968,600 MXN · Preventa exclusiva',
+                'Asesoría personalizada sin costo',
+                'Visita presencial o por Zoom',
+                'Respuesta en menos de 2 horas',
+              ].map((item) => (
                 <li key={item} className="flex items-center gap-2.5 text-[13px] text-white/90">
-                  <CheckCircle2 size={14} className="shrink-0 text-[#FAB413]" strokeWidth={2} />
+                  <CheckCircle2 size={14} className="shrink-0 text-[#FAB413]" strokeWidth={1.5} />
                   {item}
                 </li>
               ))}
@@ -113,7 +114,7 @@ export default function GardensLandingAsesoria() {
             <div className="mb-6">
               <div className="flex items-center gap-2.5">
                 <div className="flex h-9 w-9 items-center justify-center rounded-full bg-[#FAB413] text-ink">
-                  <Users size={16} strokeWidth={2} />
+                  <Users size={16} strokeWidth={1.5} />
                 </div>
                 <div className="font-serif text-[22px] font-light italic leading-tight text-ink">
                   Asesoría sin Costo
@@ -181,7 +182,7 @@ export default function GardensLandingAsesoria() {
                 style={{ background: '#0E0E0E', color: '#fff', fontWeight: 700 }}
               >
                 {loading ? 'Enviando…' : 'Solicitar Asesoría sin Costo'}
-                {!loading && <ArrowRight size={14} strokeWidth={2} />}
+                {!loading && <ArrowRight size={14} strokeWidth={1.5} />}
               </button>
               <p className="text-center text-[10.5px] text-ink-3">
                 Tus datos están seguros. Sin spam.
@@ -220,7 +221,7 @@ export default function GardensLandingAsesoria() {
           <div className="mb-8 text-center">
             <span className="eyebrow eyebrow-accent">— El Proyecto</span>
             <h2 className="mt-3 font-serif text-[clamp(28px,3vw,44px)] font-light italic">
-              Renders Oficiales
+              Descubre Quattro Plaza
             </h2>
           </div>
           <div className="relative mb-3 aspect-[16/9] w-full overflow-hidden rounded-xl">
@@ -261,7 +262,7 @@ export default function GardensLandingAsesoria() {
             {FEATURES.map(({ icon: Icon, title, desc }) => (
               <div key={title} className="rounded-xl border border-line bg-bg p-7">
                 <div className="flex h-12 w-12 items-center justify-center rounded-full bg-bg-soft text-ink">
-                  <Icon size={22} strokeWidth={1.4} />
+                  <Icon size={22} strokeWidth={1.5} />
                 </div>
                 <h3 className="mt-5 font-serif text-xl font-light italic">{title}</h3>
                 <p className="mt-2 text-[13px] leading-relaxed text-ink-3">{desc}</p>
@@ -286,7 +287,7 @@ export default function GardensLandingAsesoria() {
               onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
               className="inline-flex items-center gap-2 rounded-full bg-[#FAB413] px-6 py-3 text-[12px] font-bold uppercase tracking-widest text-ink"
             >
-              Solicitar Asesoría <ArrowRight size={14} strokeWidth={2} />
+              Solicitar Asesoría <ArrowRight size={14} strokeWidth={1.5} />
             </a>
             <a
               href="https://wa.me/529984045602?text=Hola+quiero+más+información+de+Quattro+Plaza+Center+Gardens!"

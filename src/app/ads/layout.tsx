@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import { Cormorant_Garamond, Manrope, Montserrat } from 'next/font/google';
+import { NextIntlClientProvider } from 'next-intl';
+import Chatbot from '@/components/Chatbot';
 import '@/styles/globals.css';
 
 export const dynamic = 'force-dynamic';
@@ -30,6 +32,15 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
+const ES_MESSAGES = {
+  chatbot: {
+    title: 'Asesor Quattro',
+    subtitle: 'Resuelvo tus dudas al instante',
+    placeholder: 'Pregúntame por disponibilidad, precios, ubicación…',
+    welcome: '¡Hola! Soy Luis, tu asesor de Quattro Plaza Center. ¿En qué te puedo ayudar?',
+  },
+};
+
 export default function AdsLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
@@ -37,7 +48,11 @@ export default function AdsLayout({ children }: { children: React.ReactNode }) {
       className={`${cormorant.variable} ${manrope.variable} ${montserrat.variable}`}
     >
       <body>
-        {children}
+        <NextIntlClientProvider locale="es" messages={ES_MESSAGES}>
+          {children}
+          <Chatbot />
+        </NextIntlClientProvider>
+
         {/* WhatsApp-only mobile bar */}
         <div className="fixed bottom-0 inset-x-0 z-50 md:hidden">
           <a
