@@ -57,11 +57,6 @@ export default async function PlazaCard({ plaza, large = false }: { plaza: Plaza
         )}>
           {statusLabel}
         </span>
-        {!isComing && (
-          <span className="text-[9px] font-semibold uppercase tracking-caps text-white/50">
-            {plaza.city}, {(plaza.state ?? '').replace('Quintana Roo', 'Q. Roo')}
-          </span>
-        )}
       </div>
 
       {/* Centro: logo o nombre */}
