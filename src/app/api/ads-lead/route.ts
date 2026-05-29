@@ -27,8 +27,8 @@ export async function POST(req: NextRequest) {
       source: 'agenda',
       tags: ['Ads Quattro'],
       customFields: {
-        'contact.desarrollo_de_interes': plazaToDesarrollo('gardens'),
-        'contact.fuente_de_contacto': 'digital',
+        'desarrollo_de_inters': plazaToDesarrollo('gardens'),
+        'fuente_de_contacto': 'digital',
       },
       notes: `Ads Landing Gardens — Variant: ${variant} | Uso: ${uso}`,
     });

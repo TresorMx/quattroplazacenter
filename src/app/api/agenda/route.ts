@@ -50,9 +50,9 @@ export async function POST(req: NextRequest) {
       source: 'agenda',
       tags: ['Ads Quattro', 'Cita Quattro'],
       customFields: {
-        'contact.desarrollo_de_interes': plazaToDesarrollo(plaza),
-        'contact.fuente_de_contacto': 'digital',
-        'contact.observaciones': `Visita agendada · ${PLAZA_LABELS[plaza] ?? plaza} · ${MODE_LABELS[mode] ?? mode} · ${formatDate(date)} ${formatTime(time)}`,
+        'desarrollo_de_inters': plazaToDesarrollo(plaza),
+        'fuente_de_contacto': 'digital',
+        'observaciones': `Visita agendada · ${PLAZA_LABELS[plaza] ?? plaza} · ${MODE_LABELS[mode] ?? mode} · ${formatDate(date)} ${formatTime(time)}`,
       },
       notes: `Visita agendada · ${PLAZA_LABELS[plaza] ?? plaza} · ${MODE_LABELS[mode] ?? mode} · ${formatDate(date)} ${formatTime(time)}`,
     });

@@ -189,7 +189,7 @@ async function runTool(name: string, input: any, plazas: Plaza[]): Promise<any> 
           source: 'chat',
           tags: ['Ads Quattro'],
           customFields: {
-            'contact.fuente_de_contacto': 'digital',
+            'fuente_de_contacto': 'digital',
           },
           notes: input.notas,
         });
