@@ -59,12 +59,12 @@ export default function GardensLandingBrochure() {
       {/* ── Nav bar ── */}
       <header className="sticky top-0 z-40 border-b border-line bg-white/95 px-6 py-4 backdrop-blur-sm">
         <div className="flex justify-center">
-          <Image src="/logos/logo-quattro.svg" alt="Quattro Plaza Center" width={186} height={54} className="h-[47px] w-auto" />
+          <Image src="/logos/logo-quattro.svg" alt="Quattro Plaza Center" width={186} height={54} style={{ height: '47px', width: 'auto' }} />
         </div>
       </header>
 
       {/* ── Hero + Form ── */}
-      <section className="relative min-h-[100svh] overflow-hidden flex items-center">
+      <section className="relative overflow-hidden flex items-center" style={{ minHeight: '100svh' }}>
         {/* BG image */}
         <div className="absolute inset-0">
           <Image
@@ -88,7 +88,7 @@ export default function GardensLandingBrochure() {
               Quattro Plaza<br />
               <span className="text-[#FAB413]">Gardens</span>
             </h1>
-            <p className="mt-5 max-w-md text-[17px] font-light leading-relaxed text-white/80">
+            <p className="mt-5 max-w-md font-light leading-relaxed text-white/80" style={{ fontSize: '17px' }}>
               Invierte o instala tu negocio en uno de los desarrollos comerciales más exclusivos de Cancún.
               Locales desde 25 m² en preventa con planes de pago flexibles.
             </p>
@@ -99,7 +99,7 @@ export default function GardensLandingBrochure() {
                 'Alta plusvalía · Zona de alto tráfico',
                 'Entrega estimada 2026',
               ].map((item) => (
-                <li key={item} className="flex items-center gap-2.5 text-[15px] text-white/90">
+                <li key={item} className="flex items-center gap-2.5 text-white/90" style={{ fontSize: '15px' }}>
                   <CheckCircle2 size={16} className="shrink-0 text-[#FAB413]" strokeWidth={1.5} />
                   {item}
                 </li>
