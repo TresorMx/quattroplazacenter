@@ -61,12 +61,12 @@ export default function GardensLandingAsesoria() {
       {/* ── Nav bar ── */}
       <header className="sticky top-0 z-40 border-b border-line bg-white/95 px-6 py-4 backdrop-blur-sm">
         <div className="flex justify-center">
-          <Image src="/logos/logo-quattro.svg" alt="Quattro Plaza Center" width={143} height={42} className="h-9 w-auto" />
+          <Image src="/logos/logo-quattro.svg" alt="Quattro Plaza Center" width={186} height={54} className="h-[47px] w-auto" />
         </div>
       </header>
 
       {/* ── Hero + Form ── */}
-      <section className="relative overflow-hidden">
+      <section className="relative min-h-[100svh] overflow-hidden flex items-center">
         {/* BG image */}
         <div className="absolute inset-0">
           <Image
@@ -80,7 +80,7 @@ export default function GardensLandingAsesoria() {
           <div className="absolute inset-0 bg-black/[0.69]" />
         </div>
 
-        <div className="relative z-10 container-wrap grid items-center gap-10 py-16 md:grid-cols-[1fr_420px] md:py-24">
+        <div className="relative z-10 w-full container-wrap grid items-center gap-10 py-16 md:grid-cols-[1fr_420px] md:py-24">
           {/* Left — copy */}
           <div className="text-white">
             <span className="inline-block rounded-full border border-white/30 bg-white/10 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-white/80 backdrop-blur-sm">
@@ -90,19 +90,19 @@ export default function GardensLandingAsesoria() {
               Quattro Plaza<br />
               <span className="text-[#FAB413]">Gardens</span>
             </h1>
-            <p className="mt-5 max-w-md text-[15px] font-light leading-relaxed text-white/80">
+            <p className="mt-5 max-w-md text-[17px] font-light leading-relaxed text-white/80">
               Habla con un asesor especializado y encuentra el local perfecto para tu inversión o negocio en Cancún.
               Sin compromisos, sin costo.
             </p>
-            <ul className="mt-7 space-y-2">
+            <ul className="mt-7 space-y-2.5">
               {[
                 'Desde $1,968,600 MXN · Preventa exclusiva',
                 'Asesoría personalizada sin costo',
                 'Visita presencial o por Zoom',
                 'Respuesta en menos de 2 horas',
               ].map((item) => (
-                <li key={item} className="flex items-center gap-2.5 text-[13px] text-white/90">
-                  <CheckCircle2 size={14} className="shrink-0 text-[#FAB413]" strokeWidth={1.5} />
+                <li key={item} className="flex items-center gap-2.5 text-[15px] text-white/90">
+                  <CheckCircle2 size={16} className="shrink-0 text-[#FAB413]" strokeWidth={1.5} />
                   {item}
                 </li>
               ))}
