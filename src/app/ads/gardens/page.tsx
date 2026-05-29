@@ -59,12 +59,12 @@ export default function GardensLandingBrochure() {
       {/* ── Nav bar ── */}
       <header className="sticky top-0 z-40 border-b border-line bg-white/95 px-6 py-4 backdrop-blur-sm">
         <div className="flex justify-center">
-          <Image src="/logos/logo-quattro.svg" alt="Quattro Plaza Center" width={186} height={54} style={{ height: '47px', width: 'auto' }} />
+          <Image src="/logos/logo-quattro.svg" alt="Quattro Plaza Center" width={220} height={64} style={{ height: '60px', width: 'auto' }} />
         </div>
       </header>
 
       {/* ── Hero + Form ── */}
-      <section className="relative overflow-hidden flex items-center" style={{ minHeight: '100svh' }}>
+      <section className="relative overflow-hidden flex items-center" style={{ height: 'calc(100svh - 92px)', minHeight: '500px' }}>
         {/* BG image */}
         <div className="absolute inset-0">
           <Image
