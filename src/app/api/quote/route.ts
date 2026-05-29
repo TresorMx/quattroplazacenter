@@ -72,7 +72,8 @@ export async function POST(req: Request) {
     tags: ['Ads Quattro'],
     customFields: {
       'contact.desarrollo_de_interes': plazaToDesarrollo(plaza.slug),
-      'contact.fuente_de_contacto': 'Digital',
+      'contact.fuente_de_contacto': 'digital',
+      'contact.observaciones': `Cotización · ${plaza.name} · Local ${unit.code} · Plan ${plan.code} · Total $${Math.round(computed.total).toLocaleString('es-MX')} MXN`,
     },
     notes: contact.notes,
   });

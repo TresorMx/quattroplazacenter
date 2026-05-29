@@ -7,14 +7,14 @@
  * Por ahora el adaptador hace fallback silencioso a un log + email.
  */
 
-/** Mapea slug de plaza al valor del campo GHL desarrollo_de_interes */
+/** Mapea slug de plaza al valor exacto del campo GHL desarrollo_de_interes */
 export function plazaToDesarrollo(plaza: string): string {
   const map: Record<string, string> = {
-    'gardens':    'Quattro Plaza Gardens',
-    'long-island': 'Quattro Plaza Long Island',
-    'ambos':      'Todos los proyectos',
+    'gardens':     'quattro_plaza_gardens',
+    'long-island': 'quattro_plaza_long_island',
+    'ambos':       'proyectos_quattro',
   };
-  return map[plaza] ?? plaza;
+  return map[plaza] ?? 'proyectos_quattro';
 }
 
 export interface GHLLead {
