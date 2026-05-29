@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { ArrowRight, CheckCircle2, MapPin, TrendingUp, Building2, ShieldCheck, Users } from 'lucide-react';
+import { ArrowRight, CheckCircle2, MapPin, TrendingUp, Building2, ShieldCheck, Users, Store, BarChart2 } from 'lucide-react';
 
 const RENDERS = [
   '/renders/gardens/02.jpg',
@@ -154,19 +154,20 @@ export default function GardensLandingAsesoria() {
                 <span className="field-label block mb-2">¿Para qué lo buscas? *</span>
                 <div className="grid grid-cols-2 gap-2">
                   {[
-                    { v: 'inversion', label: '💰 Inversión' },
-                    { v: 'negocio',   label: '🏪 Negocio Propio' },
-                  ].map(({ v, label }) => (
+                    { v: 'inversion', label: 'Inversión',     Icon: BarChart2 },
+                    { v: 'negocio',   label: 'Negocio Propio', Icon: Store },
+                  ].map(({ v, label, Icon }) => (
                     <button
                       key={v}
                       type="button"
                       onClick={() => set('uso', v)}
-                      className={`rounded-lg border py-2.5 text-[12px] font-semibold transition-all ${
+                      className={`flex items-center justify-center gap-2 rounded-lg border py-2.5 text-[12px] font-semibold transition-all ${
                         form.uso === v
                           ? 'border-ink bg-ink text-white'
                           : 'border-line bg-bg text-ink-3 hover:border-ink-3'
                       }`}
                     >
+                      <Icon size={14} strokeWidth={1.5} />
                       {label}
                     </button>
                   ))}
