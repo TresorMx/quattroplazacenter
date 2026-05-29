@@ -130,7 +130,14 @@ export default function Chatbot() {
 
       {/* Panel */}
       {open && (
-        <div className="fixed bottom-40 right-5 z-50 flex h-[580px] max-h-[80vh] w-[380px] max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-2xl bg-white shadow-[0_24px_64px_rgba(0,0,0,0.16)] md:bottom-24 md:right-6">
+        <div
+          className="fixed z-50 flex flex-col overflow-hidden bg-white shadow-[0_24px_64px_rgba(0,0,0,0.16)]
+            inset-x-0 bottom-[64px] rounded-t-2xl
+            md:inset-x-auto md:bottom-24 md:right-6 md:w-[380px] md:rounded-2xl"
+          style={{
+            height: 'min(calc(100dvh - 64px - 20px), 580px)',
+          } as React.CSSProperties}
+        >
 
           {/* Header */}
           <div className="relative flex items-center gap-3.5 bg-ink px-5 py-4">
