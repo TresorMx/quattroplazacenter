@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Cormorant_Garamond, Manrope, Montserrat } from 'next/font/google';
 import { NextIntlClientProvider } from 'next-intl';
 import Chatbot from '@/components/Chatbot';
+import MetaPixel from '@/components/MetaPixel';
 import '@/styles/globals.css';
 
 export const dynamic = 'force-dynamic';
@@ -51,6 +52,7 @@ export default function AdsLayout({ children }: { children: React.ReactNode }) {
         <NextIntlClientProvider locale="es" messages={ES_MESSAGES}>
           {children}
           <Chatbot />
+          <MetaPixel />
         </NextIntlClientProvider>
 
         {/* WhatsApp-only mobile bar */}
