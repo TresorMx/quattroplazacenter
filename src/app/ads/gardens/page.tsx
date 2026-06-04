@@ -64,7 +64,7 @@ export default function GardensLandingBrochure() {
       </header>
 
       {/* ── Hero + Form ── */}
-      <section className="relative overflow-hidden flex items-center" style={{ height: 'calc(100svh - 92px)', minHeight: '500px' }}>
+      <section className="relative overflow-hidden flex items-start md:items-center py-12 md:py-0" style={{ minHeight: 'calc(100svh - 92px)' } as React.CSSProperties}>
         {/* BG image */}
         <div className="absolute inset-0">
           <Image
@@ -78,7 +78,7 @@ export default function GardensLandingBrochure() {
           <div className="absolute inset-0 bg-black/[0.69]" />
         </div>
 
-        <div className="relative z-10 w-full container-wrap grid items-center gap-10 py-16 md:grid-cols-[1fr_420px] md:py-24">
+        <div className="relative z-10 w-full container-wrap grid items-center gap-10 py-0 md:grid-cols-[1fr_420px] md:py-16">
           {/* Left — copy */}
           <div className="text-white">
             <span className="inline-block rounded-full border border-white/30 bg-white/10 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-white/80 backdrop-blur-sm">
