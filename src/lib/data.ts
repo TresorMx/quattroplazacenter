@@ -98,12 +98,12 @@ export async function getActivePlazasAsync(): Promise<Plaza[]> {
   return plazas.filter((p) => !p.comingSoon);
 }
 
-export async function getSiteSettings(): Promise<{ showAgendaWidget: boolean }> {
-  if (!USE_SANITY) return { showAgendaWidget: false };
+export async function getSiteSettings() {
+  if (!USE_SANITY) return { showAgendaWidget: false, agendaTitle1: 'Agenda', agendaTitle2: 'tu visita', agendaDesc: 'Elige fecha, hora y modalidad. Te confirmamos en menos de 24 hrs.' };
   try {
     const { fetchSiteSettings } = await import('./sanity/queries');
     return fetchSiteSettings();
   } catch {
-    return { showAgendaWidget: false };
+    return { showAgendaWidget: false, agendaTitle1: 'Agenda', agendaTitle2: 'tu visita', agendaDesc: 'Elige fecha, hora y modalidad. Te confirmamos en menos de 24 hrs.' };
   }
 }

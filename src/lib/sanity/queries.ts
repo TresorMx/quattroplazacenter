@@ -117,11 +117,23 @@ export async function fetchPlazaBySlug(slug: string): Promise<Plaza | null> {
   return raw ? normalizePlaza(raw) : null;
 }
 
-export async function fetchSiteSettings(): Promise<{ showAgendaWidget: boolean }> {
+export interface SiteSettings {
+  showAgendaWidget: boolean;
+  agendaTitle1: string;
+  agendaTitle2: string;
+  agendaDesc: string;
+}
+
+export async function fetchSiteSettings(): Promise<SiteSettings> {
   const raw = await sanityClient.fetch(
-    `*[_type == "siteSettings" && _id == "siteSettings"][0]{ showAgendaWidget }`,
+    `*[_type == "siteSettings" && _id == "siteSettings"][0]{ showAgendaWidget, agendaTitle1, agendaTitle2, agendaDesc }`,
     {},
     { cache: 'no-store' }
   );
-  return { showAgendaWidget: raw?.showAgendaWidget ?? false };
+  return {
+    showAgendaWidget: raw?.showAgendaWidget ?? false,
+    agendaTitle1:     raw?.agendaTitle1    ?? 'Agenda',
+    agendaTitle2:     raw?.agendaTitle2    ?? 'tu visita',
+    agendaDesc:       raw?.agendaDesc      ?? 'Elige fecha, hora y modalidad. Te confirmamos en menos de 24 hrs.',
+  };
 }
