@@ -254,7 +254,7 @@ export default async function PlazaPage({ params }: { params: Promise<{ slug: st
 
       {/* ═════ 5. MASTER PLAN INTERACTIVO ═════ */}
       <div id="master-plan">
-        <MasterPlan plaza={plaza} />
+        <MasterPlan plaza={plaza} showAgendaWidget={showAgendaWidget} />
       </div>
 
       {/* ═════ 6. COTIZADOR / AGENDA ═════ */}

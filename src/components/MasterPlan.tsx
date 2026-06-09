@@ -16,7 +16,7 @@ import { cn } from '@/lib/utils';
  * Las coordenadas de los pines se editan en Sanity. Si no hay pin definido,
  * se posiciona en grid automático según el código del local.
  */
-export default function MasterPlan({ plaza }: { plaza: Plaza }) {
+export default function MasterPlan({ plaza, showAgendaWidget = false }: { plaza: Plaza; showAgendaWidget?: boolean }) {
   const t = useTranslations('plaza');
   const [level, setLevel] = useState<1 | 2>(1);
   const [statusFilter, setStatusFilter] = useState<UnitStatus | 'all'>('all');
@@ -188,13 +188,23 @@ export default function MasterPlan({ plaza }: { plaza: Plaza }) {
                 </div>
 
                 {selected.status === 'disponible' && selected.price ? (
-                  <Link
-                    href={`/cotizar/${plaza.slug}?unit=${selected.id}`}
-                    className="btn btn-primary mt-5 w-full font-semibold"
-                  >
-                    {t('quoteThis')}
-                    <ArrowRight size={14} strokeWidth={1.6} />
-                  </Link>
+                  showAgendaWidget ? (
+                    <button
+                      onClick={() => document.getElementById('aparta')?.scrollIntoView({ behavior: 'smooth' })}
+                      className="btn btn-primary mt-5 w-full font-semibold"
+                    >
+                      {t('agendaThis')}
+                      <ArrowRight size={14} strokeWidth={1.6} />
+                    </button>
+                  ) : (
+                    <Link
+                      href={`/cotizar/${plaza.slug}?unit=${selected.id}`}
+                      className="btn btn-primary mt-5 w-full font-semibold"
+                    >
+                      {t('quoteThis')}
+                      <ArrowRight size={14} strokeWidth={1.6} />
+                    </Link>
+                  )
                 ) : (
                   <div className="mt-5 rounded bg-bg-soft px-4 py-3 text-[12px] text-ink-3">
                     {selected.status === 'vendido' && t('soldMsg')}
