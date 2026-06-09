@@ -81,7 +81,8 @@
     "reservedMsg": "This unit is reserved and in process. We will notify you if it becomes available.",
     "blockedMsg": "This unit is not available to the public at this time.",
     "apartaEyebrow": "— Reserve your unit",
-    "apartaTitle": "$50,000 MXN refundable. Your unit reserved in minutes.",
+    "apartaTitle1": "$50,000 MXN refundable.",
+    "apartaTitle2": "Your unit reserved in minutes.",
     "apartaDesc": "Secure payment via Stripe (card · OXXO · SPEI). Legal advice included. Quote, download the PDF and reserve in one session."
   },
   "quote": {

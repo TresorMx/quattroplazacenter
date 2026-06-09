@@ -81,7 +81,8 @@
     "reservedMsg": "Este local está apartado y en proceso. Te avisamos si se libera.",
     "blockedMsg": "Este local no está disponible al público en este momento.",
     "apartaEyebrow": "— Aparta tu local",
-    "apartaTitle": "$50,000 MXN reembolsables. Tu local apartado en minutos.",
+    "apartaTitle1": "$50,000 MXN reembolsables.",
+    "apartaTitle2": "Tu local apartado en minutos.",
     "apartaDesc": "Pago seguro con Stripe (tarjeta · OXXO · SPEI). Asesoría legal incluida. Cotiza, descarga el PDF y aparta en una sola sesión."
   },
   "quote": {
