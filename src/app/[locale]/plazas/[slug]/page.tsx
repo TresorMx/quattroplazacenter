@@ -72,7 +72,7 @@ export async function generateMetadata({
 
 export default async function PlazaPage({ params }: { params: Promise<{ slug: string; locale: string }> }) {
   const { slug, locale } = await params;
-  const [plaza, { showAgendaWidget, agendaTitle1, agendaTitle2, agendaDesc }] = await Promise.all([
+  const [plaza, { showAgendaWidget, agendaEyebrow, agendaTitle1, agendaTitle2, agendaDesc }] = await Promise.all([
     getPlazaBySlugAsync(slug),
     getSiteSettings(),
   ]);
@@ -262,7 +262,7 @@ export default async function PlazaPage({ params }: { params: Promise<{ slug: st
         <div className="container-wrap pb-0 pt-20 text-center md:pt-28">
           {showAgendaWidget ? (
             <>
-              <span className="eyebrow eyebrow-accent">{t('apartaEyebrow')}</span>
+              <span className="eyebrow eyebrow-accent">{agendaEyebrow}</span>
               <h2 className="mx-auto mt-5 h-display max-w-3xl text-[clamp(34px,4.5vw,64px)]">
                 {agendaTitle1}<br />{agendaTitle2}
               </h2>
