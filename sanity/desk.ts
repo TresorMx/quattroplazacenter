@@ -41,4 +41,14 @@ export const structure = (S: any) =>
             .title('Leads')
             .defaultOrdering([{ field: 'createdAt', direction: 'desc' }])
         ),
+
+      S.divider(),
+
+      S.listItem()
+        .title('⚙️ Configuración del sitio')
+        .child(
+          S.document()
+            .schemaType('siteSettings')
+            .documentId('siteSettings')
+        ),
     ]);

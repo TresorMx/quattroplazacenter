@@ -97,3 +97,13 @@ export async function getActivePlazasAsync(): Promise<Plaza[]> {
   const plazas = await getPlazasAsync();
   return plazas.filter((p) => !p.comingSoon);
 }
+
+export async function getSiteSettings(): Promise<{ showAgendaWidget: boolean }> {
+  if (!USE_SANITY) return { showAgendaWidget: false };
+  try {
+    const { fetchSiteSettings } = await import('./sanity/queries');
+    return fetchSiteSettings();
+  } catch {
+    return { showAgendaWidget: false };
+  }
+}

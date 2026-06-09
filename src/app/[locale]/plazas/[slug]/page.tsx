@@ -5,13 +5,14 @@ import type { Metadata } from 'next';
 import { ArrowRight, Building2, Layers, MapPin } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
 
-import { getActivePlazasAsync, getPlazaBySlugAsync, getMinAvailablePrice } from '@/lib/data';
+import { getActivePlazasAsync, getPlazaBySlugAsync, getMinAvailablePrice, getSiteSettings } from '@/lib/data';
 import { formatMXN } from '@/lib/utils';
 import MasterPlan from '@/components/MasterPlan';
 import Gallery from '@/components/Gallery';
 import FloorPlans from '@/components/FloorPlans';
 import LocationMap from '@/components/LocationMap';
 import QuoteWizard from '@/components/QuoteWizard';
+import AgendaWidget from '@/components/AgendaWidget';
 
 export async function generateStaticParams() {
   const plazas = await getActivePlazasAsync();
@@ -71,7 +72,10 @@ export async function generateMetadata({
 
 export default async function PlazaPage({ params }: { params: Promise<{ slug: string; locale: string }> }) {
   const { slug, locale } = await params;
-  const plaza = await getPlazaBySlugAsync(slug);
+  const [plaza, { showAgendaWidget }] = await Promise.all([
+    getPlazaBySlugAsync(slug),
+    getSiteSettings(),
+  ]);
   if (!plaza || plaza.comingSoon) notFound();
 
   const t = await getTranslations('plaza');
@@ -253,18 +257,32 @@ export default async function PlazaPage({ params }: { params: Promise<{ slug: st
         <MasterPlan plaza={plaza} />
       </div>
 
-      {/* ═════ 6. COTIZADOR EMBEBIDO — APARTA TU LOCAL ═════ */}
+      {/* ═════ 6. COTIZADOR / AGENDA ═════ */}
       <section className="border-t border-line bg-white" id="aparta">
         <div className="container-wrap pb-0 pt-20 text-center md:pt-28">
-          <span className="eyebrow eyebrow-accent">{t('apartaEyebrow')}</span>
-          <h2 className="mx-auto mt-5 h-display max-w-3xl text-[clamp(34px,4.5vw,64px)]">
-            {t('apartaTitle1')}<br />{t('apartaTitle2')}
-          </h2>
-          <p className="mx-auto mt-5 max-w-xl text-[15px] font-light text-ink-3">
-            {t('apartaDesc')}
-          </p>
+          {showAgendaWidget ? (
+            <>
+              <span className="eyebrow eyebrow-accent">{t('apartaEyebrow')}</span>
+              <h2 className="mx-auto mt-5 h-display max-w-3xl text-[clamp(34px,4.5vw,64px)]">
+                {t('agendaTitle1', { defaultValue: 'Agenda' })}<br />{t('agendaTitle2', { defaultValue: 'tu visita' })}
+              </h2>
+              <p className="mx-auto mt-5 max-w-xl text-[15px] font-light text-ink-3">
+                {t('agendaDesc', { defaultValue: 'Elige fecha, hora y modalidad. Te confirmamos en menos de 24 hrs.' })}
+              </p>
+            </>
+          ) : (
+            <>
+              <span className="eyebrow eyebrow-accent">{t('apartaEyebrow')}</span>
+              <h2 className="mx-auto mt-5 h-display max-w-3xl text-[clamp(34px,4.5vw,64px)]">
+                {t('apartaTitle1')}<br />{t('apartaTitle2')}
+              </h2>
+              <p className="mx-auto mt-5 max-w-xl text-[15px] font-light text-ink-3">
+                {t('apartaDesc')}
+              </p>
+            </>
+          )}
         </div>
-        <QuoteWizard plaza={plaza} />
+        {showAgendaWidget ? <AgendaWidget plaza={plaza} /> : <QuoteWizard plaza={plaza} />}
       </section>
     </>
   );

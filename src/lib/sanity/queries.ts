@@ -116,3 +116,12 @@ export async function fetchPlazaBySlug(slug: string): Promise<Plaza | null> {
   );
   return raw ? normalizePlaza(raw) : null;
 }
+
+export async function fetchSiteSettings(): Promise<{ showAgendaWidget: boolean }> {
+  const raw = await sanityClient.fetch(
+    `*[_type == "siteSettings" && _id == "siteSettings"][0]{ showAgendaWidget }`,
+    {},
+    { cache: 'no-store' }
+  );
+  return { showAgendaWidget: raw?.showAgendaWidget ?? false };
+}
