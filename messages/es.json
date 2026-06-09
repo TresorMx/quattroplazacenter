@@ -83,7 +83,10 @@
     "apartaEyebrow": "— Aparta tu local",
     "apartaTitle1": "$50,000 MXN reembolsables.",
     "apartaTitle2": "Tu local apartado en minutos.",
-    "apartaDesc": "Pago seguro con Stripe (tarjeta · OXXO · SPEI). Asesoría legal incluida. Cotiza, descarga el PDF y aparta en una sola sesión."
+    "apartaDesc": "Pago seguro con Stripe (tarjeta · OXXO · SPEI). Asesoría legal incluida. Cotiza, descarga el PDF y aparta en una sola sesión.",
+    "agendaTitle1": "Agenda",
+    "agendaTitle2": "tu visita",
+    "agendaDesc": "Elige fecha, hora y modalidad. Te confirmamos en menos de 24 hrs."
   },
   "quote": {
     "title": "Cotiza tu local",

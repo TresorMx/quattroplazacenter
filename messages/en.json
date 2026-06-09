@@ -83,7 +83,10 @@
     "apartaEyebrow": "— Reserve your unit",
     "apartaTitle1": "$50,000 MXN refundable.",
     "apartaTitle2": "Your unit reserved in minutes.",
-    "apartaDesc": "Secure payment via Stripe (card · OXXO · SPEI). Legal advice included. Quote, download the PDF and reserve in one session."
+    "apartaDesc": "Secure payment via Stripe (card · OXXO · SPEI). Legal advice included. Quote, download the PDF and reserve in one session.",
+    "agendaTitle1": "Schedule",
+    "agendaTitle2": "your visit",
+    "agendaDesc": "Choose a date, time and format. We'll confirm within 24 hours."
   },
   "quote": {
     "title": "Quote your unit",

@@ -264,10 +264,10 @@ export default async function PlazaPage({ params }: { params: Promise<{ slug: st
             <>
               <span className="eyebrow eyebrow-accent">{t('apartaEyebrow')}</span>
               <h2 className="mx-auto mt-5 h-display max-w-3xl text-[clamp(34px,4.5vw,64px)]">
-                {t('agendaTitle1', { defaultValue: 'Agenda' })}<br />{t('agendaTitle2', { defaultValue: 'tu visita' })}
+                {t('agendaTitle1')}<br />{t('agendaTitle2')}
               </h2>
               <p className="mx-auto mt-5 max-w-xl text-[15px] font-light text-ink-3">
-                {t('agendaDesc', { defaultValue: 'Elige fecha, hora y modalidad. Te confirmamos en menos de 24 hrs.' })}
+                {t('agendaDesc')}
               </p>
             </>
           ) : (
