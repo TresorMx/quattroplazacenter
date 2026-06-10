@@ -119,7 +119,7 @@ export async function generateMetadata({
         : 'Premium commercial units in Cancún.',
       images: ['/og/home.jpg'],
     },
-    verification: { google: 'google682c8dbc86478744' },
+    verification: { google: 'U4evI45bFXrab7MhX6773_n1G9ZW862gxl8W9FufDh4' },
     robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
     icons: {
       icon: [
