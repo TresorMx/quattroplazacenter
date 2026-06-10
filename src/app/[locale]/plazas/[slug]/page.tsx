@@ -206,10 +206,12 @@ export default async function PlazaPage({ params }: { params: Promise<{ slug: st
               <Link href="#master-plan" className="btn btn-outline font-semibold">
                 {t('viewAvailability')}
               </Link>
-              <Link href={`/cotizar/${plaza.slug}`} className="btn btn-primary font-semibold">
-                {t('quoteUnit')}
-                <ArrowRight size={14} strokeWidth={1.6} />
-              </Link>
+              {!showAgendaWidget && (
+                <Link href={`/cotizar/${plaza.slug}`} className="btn btn-primary font-semibold">
+                  {t('quoteUnit')}
+                  <ArrowRight size={14} strokeWidth={1.6} />
+                </Link>
+              )}
             </div>
           </div>
         </div>
