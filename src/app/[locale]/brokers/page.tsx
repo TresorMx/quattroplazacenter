@@ -101,11 +101,6 @@ function BrokerGate({ onAccess }: { onAccess: (s: BrokerSession) => void }) {
             presentaciones, listas de precios, master plans, cuentas bancarias, materiales de
             marketing y formatos administrativos.
           </p>
-          <div className="mt-8 flex flex-wrap gap-2">
-            {['8 secciones', '4 formatos', '2 plazas activas', '+3 coming soon'].map((t) => (
-              <span key={t} className="tag">{t}</span>
-            ))}
-          </div>
         </div>
 
         <form onSubmit={submit} className="rounded-lg border border-line bg-white p-10 shadow-sm">
