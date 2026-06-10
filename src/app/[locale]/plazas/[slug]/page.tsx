@@ -13,6 +13,7 @@ import FloorPlans from '@/components/FloorPlans';
 import LocationMap from '@/components/LocationMap';
 import QuoteWizard from '@/components/QuoteWizard';
 import AgendaWidget from '@/components/AgendaWidget';
+import PixelViewContent from '@/components/PixelViewContent';
 
 export async function generateStaticParams() {
   const plazas = await getActivePlazasAsync();
@@ -113,6 +114,7 @@ export default async function PlazaPage({ params }: { params: Promise<{ slug: st
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <PixelViewContent name={plaza.name} category="Plaza Comercial" ids={[plaza.slug]} />
 
       {/* ═════ HERO — logo centrado ═════ */}
       <section className="relative -mt-[72px] overflow-hidden bg-bg-deep text-bg" style={{ height: 'calc(100svh - 104px - 72px)', minHeight: '480px' }}>

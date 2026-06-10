@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { CalendarDays, Video, MapPin, ArrowRight, Clock } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { pixel } from '@/lib/pixel';
 import type { Plaza } from '@/lib/types';
 
 const TIME_SLOTS = [
@@ -64,6 +65,7 @@ export default function AgendaWidget({ plaza }: AgendaWidgetProps) {
       });
       if (!res.ok) throw new Error(t('errorMsg'));
       const { id } = await res.json();
+      pixel.lead({ content_name: 'Agenda Visita', content_category: plaza.slug });
       router.push(
         `/agenda/gracias?id=${id}&mode=${form.mode}&date=${form.date}&time=${form.time}&name=${encodeURIComponent(form.firstName)}&plaza=${plaza.slug}`
       );

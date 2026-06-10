@@ -41,6 +41,7 @@ export default function GardensLandingBrochure() {
         body: JSON.stringify({ ...form, variant: 'brochure' }),
       });
       if (!res.ok) throw new Error('Error');
+      if (typeof window !== 'undefined' && typeof window.fbq === 'function') window.fbq('track', 'Lead', { content_name: 'Brochure Gardens', content_category: 'gardens' });
       const a = document.createElement('a');
       a.href = '/brochures/gardens-brochure.pdf';
       a.download = 'Quattro-Plaza-Gardens-Brochure.pdf';

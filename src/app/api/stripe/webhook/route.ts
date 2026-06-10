@@ -42,6 +42,38 @@ export async function POST(req: Request) {
           tags: ['apartado-pagado', quote.computed.plaza.slug, `local-${quote.computed.unit.code}`],
           customFields: { quoteId, stripeSessionId: session.id },
         });
+
+        // Meta Conversions API — Purchase server-side
+        const pixelId = process.env.NEXT_PUBLIC_META_PIXEL_ID;
+        const accessToken = process.env.META_CONVERSIONS_TOKEN;
+        if (pixelId && accessToken) {
+          try {
+            await fetch(`https://graph.facebook.com/v19.0/${pixelId}/events`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                data: [{
+                  event_name: 'Purchase',
+                  event_time: Math.floor(Date.now() / 1000),
+                  action_source: 'website',
+                  user_data: {
+                    em: [quote.contact.email],
+                    ph: [quote.contact.phone],
+                  },
+                  custom_data: {
+                    value: session.amount_total ? session.amount_total / 100 : 0,
+                    currency: 'MXN',
+                    content_ids: [quote.computed.unit.id],
+                    content_name: `${quote.computed.plaza.name} · Local ${quote.computed.unit.code}`,
+                  },
+                }],
+                access_token: accessToken,
+              }),
+            });
+          } catch (e) {
+            console.error('[Meta CAPI] Purchase error', e);
+          }
+        }
       }
     }
   }

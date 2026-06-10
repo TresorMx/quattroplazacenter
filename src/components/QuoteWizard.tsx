@@ -6,6 +6,7 @@ import { ArrowLeft, ArrowRight, Check, MapPin, Ruler, Calendar } from 'lucide-re
 import { useTranslations } from 'next-intl';
 import type { Plaza, Unit, PaymentPlan } from '@/lib/types';
 import { computeQuote, generateQuoteId, getAvailablePlans, getDefaultPlan, type QuoteCalc } from '@/lib/quote';
+import { pixel } from '@/lib/pixel';
 import { formatMXN, cn } from '@/lib/utils';
 import { primarySpec, unitSummary } from '@/lib/specs';
 
@@ -110,6 +111,7 @@ export default function QuoteWizard({ plaza, preselectedUnit }: QuoteWizardProps
         body: JSON.stringify(payload),
       });
       if (!res.ok) throw new Error('Submit failed');
+      pixel.initiateCheckout({ value: quote.total, content_ids: [quote.unit.id] });
       router.push(`/gracias?id=${encodeURIComponent(quoteId)}`);
     } catch (e) {
       console.error(e);

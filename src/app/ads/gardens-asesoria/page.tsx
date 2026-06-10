@@ -47,6 +47,7 @@ export default function GardensLandingAsesoria() {
         body: JSON.stringify({ ...form, variant: 'asesoria' }),
       });
       if (!res.ok) throw new Error('Error');
+      if (typeof window !== 'undefined' && typeof window.fbq === 'function') window.fbq('track', 'Lead', { content_name: 'Asesoría Gardens', content_category: 'gardens' });
       window.location.href = `/ads/gracias?name=${encodeURIComponent(form.firstName)}&variant=asesoria`;
     } catch {
       setErr('Hubo un problema. Intenta de nuevo.');
