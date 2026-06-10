@@ -72,8 +72,8 @@ export async function generateMetadata({
       template: '%s · Quattro Plaza Center',
     },
     description: isEs
-      ? 'Plazas comerciales premium en Cancún. Locales en preventa y lanzamiento. Inversión inmobiliaria segura, diseño arquitectónico premium y alto retorno. Long Island y Gardens disponibles.'
-      : 'Premium commercial plazas in Cancún. Units in pre-sale and launch. Secure real estate investment, premium architecture and high returns. Long Island and Gardens available.',
+      ? 'Plazas comerciales premium en Cancún. Locales en preventa con alto retorno. Long Island y Gardens disponibles. Por Tresor Real Estate.'
+      : 'Premium commercial plazas in Cancún. Pre-sale units with high returns. Long Island & Gardens available. By Tresor Real Estate.',
     keywords: isEs
       ? [
           'locales en venta Cancún',
