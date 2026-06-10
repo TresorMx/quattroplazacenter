@@ -3,7 +3,7 @@
 import { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useTranslations } from 'next-intl';
-import Link from 'next/link';
+import { Link } from '@/navigation';
 import { CheckCircle2, ArrowRight, CalendarDays, MessageCircle } from 'lucide-react';
 
 function formatDate(dateStr: string, locale: string) {

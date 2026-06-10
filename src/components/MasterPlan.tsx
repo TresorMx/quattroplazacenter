@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import Link from 'next/link';
+import { Link } from '@/navigation';
 import { ArrowRight, Maximize2 } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import type { Plaza, Unit, UnitStatus, UnitSpecTemplate } from '@/lib/types';

@@ -3,7 +3,7 @@
 import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Image from 'next/image';
-import Link from 'next/link';
+import { Link } from '@/navigation';
 import { Download, ArrowRight, CheckCircle2, Calendar } from 'lucide-react';
 import ReserveModal from '@/components/ReserveModal';
 

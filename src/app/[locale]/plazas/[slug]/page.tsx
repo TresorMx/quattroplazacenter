@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
-import Link from 'next/link';
+import { Link } from '@/navigation';
 import type { Metadata } from 'next';
 import { ArrowRight, Building2, Layers, MapPin } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';

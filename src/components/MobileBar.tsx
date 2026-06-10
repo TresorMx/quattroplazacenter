@@ -2,7 +2,7 @@
 
 import { Calendar, MessageCircle } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import Link from 'next/link';
+import { Link } from '@/navigation';
 import { whatsappURL } from '@/lib/utils';
 
 export default function MobileBar() {
