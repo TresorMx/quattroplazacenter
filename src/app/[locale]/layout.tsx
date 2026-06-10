@@ -10,6 +10,7 @@ import Footer from '@/components/Footer';
 import MobileBar from '@/components/MobileBar';
 import Chatbot from '@/components/Chatbot';
 import MetaPixel from '@/components/MetaPixel';
+import GoogleAnalytics from '@/components/GoogleAnalytics';
 import { locales, type Locale } from '@/i18n';
 import { getPlazasAsync } from '@/lib/data';
 import '@/styles/globals.css';
@@ -184,6 +185,7 @@ export default async function LocaleLayout({
           <Chatbot />
         </NextIntlClientProvider>
         <MetaPixel />
+        <GoogleAnalytics />
         <Analytics />
         <SpeedInsights />
       </body>
