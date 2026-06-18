@@ -43,12 +43,32 @@ function MessageContent({ content, isUser }: { content: string; isUser: boolean 
 export default function Chatbot() {
   const t = useTranslations('chatbot');
   const [open, setOpen] = useState(false);
+  const [stage, setStage] = useState<'form' | 'chat'>('form');
+  const [leadForm, setLeadForm] = useState({ fullName: '', phone: '' });
+  const [leadSaving, setLeadSaving] = useState(false);
   const [input, setInput] = useState('');
-  const [messages, setMessages] = useState<Message[]>([{ role: 'assistant', content: t('welcome') }]);
+  const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState(false);
   const endRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => endRef.current?.scrollIntoView({ behavior: 'smooth' }), [messages, loading]);
+
+  async function submitLead(e: React.FormEvent) {
+    e.preventDefault();
+    if (!leadForm.fullName.trim() || !leadForm.phone.trim()) return;
+    setLeadSaving(true);
+    try {
+      await fetch('/api/chat-lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ fullName: leadForm.fullName, phone: leadForm.phone }),
+      });
+    } catch {}
+    const welcome = `¡Gracias, ${leadForm.fullName.split(' ')[0]}! ¿En qué te puedo ayudar?`;
+    setMessages([{ role: 'assistant', content: welcome }]);
+    setStage('chat');
+    setLeadSaving(false);
+  }
 
   async function quickSend(text: string) {
     if (loading) return;
@@ -167,83 +187,126 @@ export default function Chatbot() {
             </button>
           </div>
 
-          {/* Messages */}
-          <div className="flex-1 space-y-3 overflow-y-auto px-4 py-5 no-scrollbar">
-            {messages.map((m, i) => (
-              <div key={i} className={cn('flex items-end gap-2', m.role === 'user' ? 'justify-end' : 'justify-start')}>
-                {m.role === 'assistant' && (
-                  <div className="relative h-6 w-6 shrink-0 overflow-hidden rounded-full mb-0.5">
-                    <Image src="/luis.png" alt="Luis" fill className="object-cover" />
+          {/* Form de captación o Chat */}
+          {stage === 'form' ? (
+            <div className="flex flex-1 flex-col justify-center px-6 py-8">
+              <p className="mb-6 text-[14px] leading-relaxed text-ink-2">
+                ¡Hola! Soy Luis, tu asesor de Quattro Plaza Center. Por favor ingresa tus datos para comenzar:
+              </p>
+              <form onSubmit={submitLead} className="flex flex-col gap-4">
+                <label className="field">
+                  <span className="field-label">Nombre completo *</span>
+                  <input
+                    required
+                    type="text"
+                    className="field-input"
+                    placeholder="Tu nombre"
+                    value={leadForm.fullName}
+                    onChange={(e) => setLeadForm((f) => ({ ...f, fullName: e.target.value }))}
+                  />
+                </label>
+                <label className="field">
+                  <span className="field-label">Teléfono *</span>
+                  <input
+                    required
+                    type="tel"
+                    className="field-input"
+                    placeholder="+52 998 000 0000"
+                    value={leadForm.phone}
+                    onChange={(e) => setLeadForm((f) => ({ ...f, phone: e.target.value }))}
+                  />
+                </label>
+                <button
+                  type="submit"
+                  disabled={leadSaving || !leadForm.fullName.trim() || !leadForm.phone.trim()}
+                  className="btn btn-lg mt-2 w-full font-bold disabled:opacity-40"
+                  style={{ background: '#FAB413', color: '#0E0E0E' }}
+                >
+                  {leadSaving ? 'Un momento…' : 'Comenzar'}
+                </button>
+              </form>
+            </div>
+          ) : (
+            <>
+              {/* Messages */}
+              <div className="flex-1 space-y-3 overflow-y-auto px-4 py-5 no-scrollbar">
+                {messages.map((m, i) => (
+                  <div key={i} className={cn('flex items-end gap-2', m.role === 'user' ? 'justify-end' : 'justify-start')}>
+                    {m.role === 'assistant' && (
+                      <div className="relative h-6 w-6 shrink-0 overflow-hidden rounded-full mb-0.5">
+                        <Image src="/luis.png" alt="Luis" fill className="object-cover" />
+                      </div>
+                    )}
+                    <div
+                      className={cn(
+                        'max-w-[80%] rounded-2xl px-4 py-3 text-[13.5px] leading-relaxed',
+                        m.role === 'user'
+                          ? 'rounded-br-sm bg-ink text-white'
+                          : 'rounded-bl-sm bg-[#F4F2EE] text-ink-2',
+                      )}
+                    >
+                      <MessageContent content={m.content} isUser={m.role === 'user'} />
+                    </div>
+                  </div>
+                ))}
+
+                {/* Quick replies — solo después del mensaje de bienvenida */}
+                {messages.length === 1 && !loading && (
+                  <div className="flex flex-col gap-2 pl-8">
+                    {[
+                      '¿Qué locales tienen disponibles?',
+                      'Quiero cotizar un local',
+                      'Quiero agendar una visita',
+                    ].map((suggestion) => (
+                      <button
+                        key={suggestion}
+                        onClick={() => quickSend(suggestion)}
+                        className="w-fit rounded-full border border-line bg-white px-4 py-2 text-left text-[12.5px] font-medium text-ink-2 transition-all hover:border-ink hover:bg-bg-soft"
+                      >
+                        {suggestion}
+                      </button>
+                    ))}
                   </div>
                 )}
-                <div
-                  className={cn(
-                    'max-w-[80%] rounded-2xl px-4 py-3 text-[13.5px] leading-relaxed',
-                    m.role === 'user'
-                      ? 'rounded-br-sm bg-ink text-white'
-                      : 'rounded-bl-sm bg-[#F4F2EE] text-ink-2',
-                  )}
-                >
-                  <MessageContent content={m.content} isUser={m.role === 'user'} />
-                </div>
-              </div>
-            ))}
 
-            {/* Quick replies — solo cuando no hay mensajes del usuario aún */}
-            {messages.length === 1 && !loading && (
-              <div className="flex flex-col gap-2 pl-8">
-                {[
-                  '¿Qué locales tienen disponibles?',
-                  'Quiero cotizar un local',
-                  'Quiero agendar una visita',
-                ].map((suggestion) => (
+                {loading && (
+                  <div className="flex items-end gap-2 justify-start">
+                    <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent text-ink mb-0.5">
+                      <Sparkles size={10} strokeWidth={2} />
+                    </div>
+                    <div className="rounded-2xl rounded-bl-sm bg-[#F4F2EE] px-4 py-3.5">
+                      <span className="inline-flex gap-1.5 items-center">
+                        <span className="h-2 w-2 animate-bounce rounded-full bg-ink-3" style={{ animationDelay: '0ms' }} />
+                        <span className="h-2 w-2 animate-bounce rounded-full bg-ink-3" style={{ animationDelay: '120ms' }} />
+                        <span className="h-2 w-2 animate-bounce rounded-full bg-ink-3" style={{ animationDelay: '240ms' }} />
+                      </span>
+                    </div>
+                  </div>
+                )}
+                <div ref={endRef} />
+              </div>
+
+              {/* Input */}
+              <div className="border-t border-line bg-white px-3 pb-3 pt-2.5">
+                <form onSubmit={send} className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    value={input}
+                    onChange={(e) => setInput(e.target.value)}
+                    placeholder={t('placeholder')}
+                    className="flex-1 rounded-full border border-line bg-bg-soft px-4 py-2.5 text-[13.5px] outline-none transition-colors focus:border-ink focus:bg-white"
+                  />
                   <button
-                    key={suggestion}
-                    onClick={() => quickSend(suggestion)}
-                    className="w-fit rounded-full border border-line bg-white px-4 py-2 text-left text-[12.5px] font-medium text-ink-2 transition-all hover:border-ink hover:bg-bg-soft"
+                    type="submit"
+                    disabled={loading || !input.trim()}
+                    className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent text-ink transition-all hover:brightness-90 disabled:opacity-35"
                   >
-                    {suggestion}
+                    <Send size={15} strokeWidth={2} />
                   </button>
-                ))}
+                </form>
               </div>
-            )}
-
-            {loading && (
-              <div className="flex items-end gap-2 justify-start">
-                <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent text-ink mb-0.5">
-                  <Sparkles size={10} strokeWidth={2} />
-                </div>
-                <div className="rounded-2xl rounded-bl-sm bg-[#F4F2EE] px-4 py-3.5">
-                  <span className="inline-flex gap-1.5 items-center">
-                    <span className="h-2 w-2 animate-bounce rounded-full bg-ink-3" style={{ animationDelay: '0ms' }} />
-                    <span className="h-2 w-2 animate-bounce rounded-full bg-ink-3" style={{ animationDelay: '120ms' }} />
-                    <span className="h-2 w-2 animate-bounce rounded-full bg-ink-3" style={{ animationDelay: '240ms' }} />
-                  </span>
-                </div>
-              </div>
-            )}
-            <div ref={endRef} />
-          </div>
-
-          {/* Input */}
-          <div className="border-t border-line bg-white px-3 pb-3 pt-2.5">
-            <form onSubmit={send} className="flex items-center gap-2">
-              <input
-                type="text"
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                placeholder={t('placeholder')}
-                className="flex-1 rounded-full border border-line bg-bg-soft px-4 py-2.5 text-[13.5px] outline-none transition-colors focus:border-ink focus:bg-white"
-              />
-              <button
-                type="submit"
-                disabled={loading || !input.trim()}
-                className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent text-ink transition-all hover:brightness-90 disabled:opacity-35"
-              >
-                <Send size={15} strokeWidth={2} />
-              </button>
-            </form>
-          </div>
+            </>
+          )}
         </div>
       )}
     </>
