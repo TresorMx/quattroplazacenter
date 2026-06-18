@@ -78,7 +78,7 @@ export default function RewardsPage() {
           <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-4 py-1.5 text-[11px] font-bold uppercase tracking-eyebrow text-accent">
             <Medal size={13} /> Refiere y Gana
           </span>
-          <h1 className="font-serif mt-4 text-[52px] font-light italic leading-[1.1] text-white md:text-[72px]">
+          <h1 className="font-serif mt-4 text-[52px] font-light italic leading-[1.1] text-accent md:text-[72px]">
             Programa Rewards
           </h1>
           <p className="mt-4 text-[16px] font-semibold uppercase tracking-wider text-accent">
