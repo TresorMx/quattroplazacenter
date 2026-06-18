@@ -33,6 +33,13 @@ export default async function Footer() {
               <span className="block">{t('developmentBy1')}</span>
               <span className="block">{t('developmentBy2')}</span>
             </p>
+            {/* Separador amarillo desvanecido */}
+            <div className="my-5 h-px w-24 mx-auto md:mx-0" style={{ background: 'linear-gradient(to right, transparent, #FAB413, transparent)' }} />
+            <ul className="flex flex-col gap-2 text-[13px] text-white/70">
+              <li><a href="mailto:hello@tresor.mx" className="hover:text-accent transition-colors">hello@tresor.mx</a></li>
+              <li><a href="tel:+529984045602" className="hover:text-accent transition-colors">+52 998 404 5602</a></li>
+              <li className="text-white/50">Cancún, Q. Roo · México</li>
+            </ul>
           </div>
 
           {/* Developments — dinámico desde Sanity */}
@@ -64,10 +71,8 @@ export default async function Footer() {
               {t('contact')}
             </h4>
             <ul className="flex flex-col gap-3 text-[13px] text-white/85 md:text-[14px]">
-              <li><a href="mailto:hello@tresor.mx" className="hover:text-accent break-all">hello@tresor.mx</a></li>
-              <li><a href="tel:+529984045602" className="hover:text-accent">+52 998 404 5602</a></li>
-              <li className="text-white/70">Cancún, Q. Roo · México</li>
               <li><Link href="/brokers" className="hover:text-accent">{tNav('brokers')}</Link></li>
+              <li><Link href="/agenda" className="hover:text-accent">{tNav('scheduleVisit')}</Link></li>
               <li><Link href="/privacidad" className="hover:text-accent">{t('privacy')}</Link></li>
             </ul>
           </div>
