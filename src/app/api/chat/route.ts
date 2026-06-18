@@ -40,12 +40,13 @@ ${activeStr || '- Sin proyectos activos en este momento'}
 PRÓXIMAMENTE:
 ${comingStr || '- Sin proyectos próximos'}
 
-FLUJO IDEAL:
-1. Entender qué busca (tamaño, presupuesto, giro comercial).
-2. Mostrar 1-2 opciones concretas con la tool get_availability.
-3. Pedir nombre y teléfono. Cuando los tengas, usar capture_lead.
-4. Dar link del cotizador con la tool get_quote_link.
-5. Si no quiere cotizar: invitar a agendar en /agenda.
+FLUJO IDEAL — SIGUE ESTE ORDEN SIN EXCEPCIÓN:
+1. En el primer mensaje del cliente, pregunta INMEDIATAMENTE su nombre y teléfono antes de cualquier otra cosa. Ejemplo: "Con gusto te ayudo. ¿Me das tu nombre y teléfono para enviarte la información?"
+2. En cuanto tengas nombre + teléfono, usa capture_lead DE INMEDIATO. No esperes más datos.
+3. Después de guardar el lead, pregunta qué busca (tamaño, presupuesto, giro comercial).
+4. Usar get_availability para mostrar 1-2 opciones concretas que coincidan.
+5. Dar link del cotizador con get_quote_link.
+6. Si no quiere cotizar: invitar a agendar en /agenda.
 
 CONTACTO DIRECTO (usa cuando el cliente quiere hablar con alguien o cuando cierras conversación):
 - WhatsApp: https://wa.me/529984045602
@@ -149,8 +150,14 @@ async function runTool(name: string, input: any, plazas: Plaza[]): Promise<any> 
       if (input.max_price_mxn) units = units.filter((u) => u.price && u.price <= input.max_price_mxn);
       if (input.min_price_mxn) units = units.filter((u) => u.price && u.price >= input.min_price_mxn);
       if (input.level) units = units.filter((u) => u.level === input.level);
-      if (input.max_area) units = units.filter((u) => u.specs?.areaTotal && Number(u.specs.areaTotal) <= input.max_area);
-      if (input.min_area) units = units.filter((u) => u.specs?.areaTotal && Number(u.specs.areaTotal) >= input.min_area);
+      if (input.max_area) units = units.filter((u) => {
+        const area = Number(u.specs?.areaTotal ?? u.specs?.area ?? u.specs?.m2 ?? u.specs?.metros ?? 0);
+        return area > 0 && area <= input.max_area;
+      });
+      if (input.min_area) units = units.filter((u) => {
+        const area = Number(u.specs?.areaTotal ?? u.specs?.area ?? u.specs?.m2 ?? u.specs?.metros ?? 0);
+        return area > 0 && area >= input.min_area;
+      });
       return {
         plaza: plaza.shortName,
         disponibles: units.length,
