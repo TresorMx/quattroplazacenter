@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { Resend } from 'resend';
 import { getPlazaBySlugAsync } from '@/lib/data';
+import { saveLeadToSanity } from '@/lib/sanity/saveLead';
 import { computeQuote, type QuoteCalc } from '@/lib/quote';
 import { quoteStore } from '@/lib/leadStore';
 import { sendLeadToGHL, plazaToDesarrollo } from '@/lib/ghl';
@@ -60,7 +61,21 @@ export async function POST(req: Request) {
     status: 'generated',
   });
 
-  // 1) Enviar a GHL (no bloquea si no hay keys)
+  // 1) Guardar en Sanity
+  await saveLeadToSanity({
+    source: 'cotizacion',
+    fullName: contact.fullName,
+    email: contact.email,
+    phone: contact.phone,
+    company: contact.company,
+    isBroker: contact.isBroker,
+    brokerage: contact.brokerage,
+    plazaSlug: plaza.slug,
+    unitCode: unit.code,
+    message: `Plan ${plan.code} · Total $${Math.round(computed.total).toLocaleString('es-MX')} MXN`,
+  });
+
+  // 2) Enviar a GHL (no bloquea si no hay keys)
   const [first, ...rest] = contact.fullName.trim().split(' ');
   await sendLeadToGHL({
     firstName: first || contact.fullName,

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { randomUUID } from 'crypto';
 import { Resend } from 'resend';
 import { sendLeadToGHL, plazaToDesarrollo } from '@/lib/ghl';
+import { saveLeadToSanity } from '@/lib/sanity/saveLead';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -41,7 +42,17 @@ export async function POST(req: NextRequest) {
 
     const id = `AGD-${randomUUID().split('-')[0].toUpperCase()}`;
 
-    // 1) Enviar a GHL
+    // 1) Guardar en Sanity
+    await saveLeadToSanity({
+      source: 'agenda',
+      fullName: `${firstName} ${lastName}`,
+      email,
+      phone,
+      plazaSlug: plaza,
+      message: `${MODE_LABELS[mode] ?? mode} · ${formatDate(date)} ${formatTime(time)}`,
+    });
+
+    // 2) Enviar a GHL
     await sendLeadToGHL({
       firstName,
       lastName,

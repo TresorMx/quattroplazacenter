@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import Anthropic from '@anthropic-ai/sdk';
 import { getPlazasAsync } from '@/lib/data';
 import { sendLeadToGHL } from '@/lib/ghl';
+import { saveLeadToSanity } from '@/lib/sanity/saveLead';
 import type { Plaza } from '@/lib/types';
 
 export const runtime = 'nodejs';
@@ -182,17 +183,23 @@ async function runTool(name: string, input: any, plazas: Plaza[]): Promise<any> 
     case 'capture_lead': {
       try {
         const [first, ...rest] = (input.nombre as string).trim().split(' ');
-        await sendLeadToGHL({
-          firstName: first || input.nombre,
-          lastName: rest.join(' '),
-          phone: input.telefono,
-          source: 'chat',
-          tags: ['Ads Quattro'],
-          customFields: {
-            'fuente_de_contacto': 'digital',
-          },
-          notes: input.notas,
-        });
+        await Promise.all([
+          sendLeadToGHL({
+            firstName: first || input.nombre,
+            lastName: rest.join(' '),
+            phone: input.telefono,
+            source: 'chat',
+            tags: ['Ads Quattro'],
+            customFields: { 'fuente_de_contacto': 'digital' },
+            notes: input.notas,
+          }),
+          saveLeadToSanity({
+            source: 'chatbot',
+            fullName: input.nombre,
+            phone: input.telefono,
+            message: input.notas,
+          }),
+        ]);
         return { ok: true, message: 'Lead guardado correctamente' };
       } catch (e) {
         console.error('[capture_lead]', e);
