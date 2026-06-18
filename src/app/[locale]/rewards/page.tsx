@@ -76,10 +76,10 @@ export default function RewardsPage() {
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/70" />
         <div className="container-wrap relative">
           <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-4 py-1.5 text-[11px] font-bold uppercase tracking-eyebrow text-accent">
-            <Medal size={13} /> Programa Rewards
+            <Medal size={13} /> Refiere y Gana
           </span>
           <h1 className="font-serif mt-4 text-[52px] font-light italic leading-[1.1] text-white md:text-[72px]">
-            Refiere y Gana
+            Programa Rewards
           </h1>
           <p className="mt-4 text-[16px] font-semibold uppercase tracking-wider text-accent">
             La cancelería de tu local*
