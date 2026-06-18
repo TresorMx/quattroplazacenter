@@ -66,9 +66,15 @@ export default function RewardsPage() {
     <main className="min-h-screen bg-bg-soft">
       {/* Hero */}
       <section className="relative overflow-hidden bg-ink py-24 text-center">
-        <div className="absolute inset-0 opacity-10 bg-[radial-gradient(ellipse_at_top,_#FAB413_0%,_transparent_70%)]" />
+        <Image
+          src="/renders/long-island/WEB.jpg"
+          alt=""
+          fill
+          className="object-cover grayscale opacity-30"
+          priority
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/70" />
         <div className="container-wrap relative">
-          <Image src="/logos/LogoQuattro.svg" alt="Quattro Plaza Center" width={120} height={40} className="mx-auto mb-8 h-10 w-auto brightness-0 invert" />
           <span className="mb-4 inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-4 py-1.5 text-[11px] font-bold uppercase tracking-eyebrow text-accent">
             <Medal size={13} /> Programa Rewards
           </span>
