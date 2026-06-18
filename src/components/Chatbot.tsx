@@ -189,32 +189,32 @@ export default function Chatbot() {
                 ¡Hola! Soy Luis, tu asesor de Quattro Plaza Center. Por favor ingresa tus datos para comenzar:
               </p>
               <form onSubmit={submitLead} className="flex flex-col gap-4">
-                <label className="field">
-                  <span className="field-label">Nombre completo *</span>
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[12px] font-medium text-ink/60">Nombre completo *</label>
                   <input
                     required
                     type="text"
-                    className="field-input"
+                    className="rounded-lg border border-line bg-bg-soft px-3.5 py-2.5 text-[14px] outline-none transition focus:border-ink"
                     placeholder="Tu nombre"
                     value={leadForm.fullName}
                     onChange={(e) => setLeadForm((f) => ({ ...f, fullName: e.target.value }))}
                   />
-                </label>
-                <label className="field">
-                  <span className="field-label">Teléfono *</span>
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[12px] font-medium text-ink/60">Teléfono *</label>
                   <input
                     required
                     type="tel"
-                    className="field-input"
+                    className="rounded-lg border border-line bg-bg-soft px-3.5 py-2.5 text-[14px] outline-none transition focus:border-ink"
                     placeholder="+52 998 000 0000"
                     value={leadForm.phone}
                     onChange={(e) => setLeadForm((f) => ({ ...f, phone: e.target.value }))}
                   />
-                </label>
+                </div>
                 <button
                   type="submit"
                   disabled={leadSaving || !leadForm.fullName.trim() || !leadForm.phone.trim()}
-                  className="btn btn-lg mt-2 w-full font-bold disabled:opacity-40"
+                  className="mt-2 w-full rounded-full py-3 text-[13px] font-bold uppercase tracking-wide transition disabled:opacity-40"
                   style={{ background: '#FAB413', color: '#0E0E0E' }}
                 >
                   {leadSaving ? 'Un momento…' : 'Comenzar'}
