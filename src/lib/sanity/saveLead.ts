@@ -1,7 +1,7 @@
 import { sanityClient } from './client';
 
 interface LeadData {
-  source: 'form' | 'chatbot' | 'broker' | 'cotizacion' | 'agenda';
+  source: 'form' | 'chatbot' | 'broker' | 'cotizacion' | 'agenda' | 'rewards';
   fullName?: string;
   email?: string;
   phone?: string;

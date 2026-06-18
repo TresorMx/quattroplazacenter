@@ -162,15 +162,8 @@ export default function Chatbot() {
           {/* Header */}
           <div className="relative flex items-center gap-3.5 bg-ink px-5 py-4">
             {/* Avatar con foto */}
-            <div className="relative h-11 w-11 shrink-0">
-              <div className="h-full w-full overflow-hidden rounded-full ring-2 ring-white/20">
-                <Image src="/luis.png" alt="Luis" fill className="object-cover" />
-              </div>
-              {/* Green dot — fuera del overflow-hidden para que no se recorte */}
-              <span className="absolute -bottom-0.5 -right-0.5 flex h-3.5 w-3.5 items-center justify-center rounded-full bg-ink">
-                <span className="h-2 w-2 rounded-full bg-emerald-400" />
-                <span className="absolute h-2 w-2 animate-ping rounded-full bg-emerald-400 opacity-60" />
-              </span>
+            <div className="relative h-11 w-11 shrink-0 overflow-hidden rounded-full ring-2 ring-white/20">
+              <Image src="/luis.png" alt="Luis" fill className="object-cover" />
             </div>
 
             <div className="flex-1 min-w-0">

@@ -71,6 +71,7 @@ export default async function Footer() {
               {t('contact')}
             </h4>
             <ul className="flex flex-col gap-3 text-[13px] text-white/85 md:text-[14px]">
+              <li><Link href="/rewards" className="hover:text-accent">{t('rewards')}</Link></li>
               <li><Link href="/brokers" className="hover:text-accent">{tNav('brokers')}</Link></li>
               <li><Link href="/agenda" className="hover:text-accent">{tNav('scheduleVisit')}</Link></li>
               <li><Link href="/privacidad" className="hover:text-accent">{t('privacy')}</Link></li>
