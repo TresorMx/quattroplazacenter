@@ -82,7 +82,7 @@ export default function RewardsPage() {
             Programa Rewards
           </h1>
           <p className="mt-4 text-[16px] font-semibold uppercase tracking-wider text-accent">
-            La cancelería de tu local*
+            Gana la cancelería de tu local*
           </p>
           <p className="mx-auto mt-6 max-w-xl text-[15px] font-semibold leading-relaxed text-white">
             Recomienda Quattro Plaza Center a familiares o conocidos. Si compran, tú recibes la cancelería de tu local sin costo adicional.
