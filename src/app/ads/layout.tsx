@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Cormorant_Garamond, Manrope, Montserrat } from 'next/font/google';
 import { NextIntlClientProvider } from 'next-intl';
 import Chatbot from '@/components/Chatbot';
+import ExitIntent from '@/components/ExitIntent';
 import MetaPixel from '@/components/MetaPixel';
 import '@/styles/globals.css';
 
@@ -52,6 +53,7 @@ export default function AdsLayout({ children }: { children: React.ReactNode }) {
         <NextIntlClientProvider locale="es" messages={ES_MESSAGES}>
           {children}
           <Chatbot />
+          <ExitIntent agendaHref="https://www.quattroplaza.mx/agenda" />
           <MetaPixel />
         </NextIntlClientProvider>
 

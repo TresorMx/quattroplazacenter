@@ -9,6 +9,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import MobileBar from '@/components/MobileBar';
 import Chatbot from '@/components/Chatbot';
+import ExitIntent from '@/components/ExitIntent';
 import MetaPixel from '@/components/MetaPixel';
 import GoogleAnalytics from '@/components/GoogleAnalytics';
 import { locales, type Locale } from '@/i18n';
@@ -183,6 +184,7 @@ export default async function LocaleLayout({
           <Footer />
           <MobileBar />
           <Chatbot />
+          <ExitIntent />
         </NextIntlClientProvider>
         <MetaPixel />
         <GoogleAnalytics />
