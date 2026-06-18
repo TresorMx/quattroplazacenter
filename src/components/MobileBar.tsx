@@ -12,7 +12,7 @@ export default function MobileBar() {
   return (
     <div className="fixed inset-x-0 bottom-0 z-40 flex items-stretch bg-white shadow-[0_-8px_24px_rgba(0,0,0,0.06)] md:hidden">
       <Link
-        href="#agenda"
+        href="/agenda"
         className="flex flex-1 items-center justify-center gap-2 py-4 text-[11px] font-semibold uppercase tracking-caps text-ink"
       >
         <Calendar size={16} strokeWidth={1.6} />
