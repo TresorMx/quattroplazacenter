@@ -98,11 +98,11 @@ export default function GardensCPage() {
           <div className="text-white">
             {/* Urgency badge */}
             <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-accent/40 bg-accent/15 px-4 py-1.5 text-[11px] font-bold uppercase tracking-eyebrow text-accent backdrop-blur">
-              <Clock size={11} /> Lanzamiento · Unidades limitadas
+              <Clock size={11} /> Locales en Venta Cancún · Unidades limitadas
             </div>
 
             <h1 className="font-serif text-[clamp(40px,5.5vw,78px)] font-light italic leading-[1.05]">
-              Tu local propio<br />en <span className="text-accent">Cancún</span>
+              Locales Comerciales<br />en Venta <span className="text-accent">Cancún</span>
             </h1>
             <p className="mt-5 max-w-lg text-[17px] font-light leading-relaxed text-white/80">
               Quattro Plaza Gardens — locales comerciales premium en una de las zonas de mayor crecimiento de Cancún. Invierte o instala tu negocio con planes accesibles.

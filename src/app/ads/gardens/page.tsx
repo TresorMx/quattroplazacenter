@@ -83,7 +83,7 @@ export default function GardensLandingBrochure() {
           {/* Left — copy */}
           <div className="text-white">
             <span className="inline-block rounded-full border border-white/30 bg-white/10 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-white/80 backdrop-blur-sm">
-              Locales Comerciales en Venta Cancún
+              Locales Comerciales en Venta · Cancún
             </span>
             <h1 className="mt-5 font-serif text-[clamp(36px,5vw,72px)] font-light italic leading-[1.05]">
               Quattro Plaza<br />
