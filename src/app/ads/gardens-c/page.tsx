@@ -2,7 +2,8 @@
 
 import { useState, useRef } from 'react';
 import Image from 'next/image';
-import { ArrowRight, CheckCircle2, Clock, Users, TrendingUp, Star } from 'lucide-react';
+import { ArrowRight, CheckCircle2, Clock, Users, TrendingUp, Star, Building2, Layers, MapPin } from 'lucide-react';
+import LocationMap from '@/components/LocationMap';
 
 const HERO_IMG = '/renders/gardens/02.jpg';
 const GALLERY = [
@@ -231,6 +232,62 @@ export default function GardensCPage() {
                 </a>
               </div>
             )}
+          </div>
+        </div>
+      </section>
+
+      {/* ── El Proyecto ── */}
+      <section className="py-20 md:py-28">
+        <div className="container-wrap grid gap-12 md:grid-cols-[1fr_1.4fr] md:gap-20">
+          <div>
+            <span className="eyebrow eyebrow-accent block">— El proyecto</span>
+            <h2 className="mt-5 font-serif text-[clamp(34px,4vw,56px)] font-light italic leading-[1.1] text-ink">
+              Mucho más que un local comercial.
+            </h2>
+          </div>
+          <div className="text-[17px] font-light leading-[1.7] text-ink-2">
+            <p>
+              Gardens se ubica en una zona de alta densidad residencial con flujo vehicular y peatonal validado. El diseño arquitectónico de doble altura, las fachadas con vegetación integrada y el cuidadoso mix de tenants generan un ecosistema retail que impulsa la rentabilidad de cada negocio.
+            </p>
+            <p className="mt-4">
+              Cada local cuenta con instalaciones eléctricas, hidráulicas y sanitarias listas para tu giro. Estacionamiento amplio, accesos peatonales y áreas comunes diseñadas para incrementar el tiempo de permanencia.
+            </p>
+            <button
+              onClick={scrollToForm}
+              className="mt-8 inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3 text-[12px] font-bold uppercase tracking-caps text-ink transition hover:brightness-95"
+            >
+              Agenda tu visita <ArrowRight size={14} strokeWidth={1.8} />
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Ubicación ── */}
+      <section className="border-t border-line py-20 md:py-28">
+        <div className="container-wrap grid gap-10 md:grid-cols-[1fr_1.6fr] md:gap-16">
+          <div>
+            <span className="eyebrow eyebrow-accent">— Ubicación</span>
+            <h2 className="mt-5 font-serif text-[clamp(32px,3.5vw,48px)] font-light italic leading-[1.1] text-ink">
+              Ubicación estratégica
+            </h2>
+            <p className="mt-4 text-[15px] font-light leading-relaxed text-ink-3">
+              Cancún, Q. Roo, México
+            </p>
+            <div className="mt-8 space-y-3 border-t border-line pt-6">
+              {[
+                { icon: <Building2 size={16} strokeWidth={1.5} />, text: 'Alta densidad residencial circundante' },
+                { icon: <Layers size={16} strokeWidth={1.5} />,   text: 'Flujo vehicular validado por estudio de mercado' },
+                { icon: <MapPin size={16} strokeWidth={1.5} />,   text: 'Frente a vialidad primaria' },
+              ].map((b) => (
+                <div key={b.text} className="flex items-center gap-3 text-[14px] text-ink-2">
+                  <span className="text-accent">{b.icon}</span>
+                  {b.text}
+                </div>
+              ))}
+            </div>
+          </div>
+          <div>
+            <LocationMap lat={21.13} lng={-86.855} address="Cancún, Q. Roo, México" />
           </div>
         </div>
       </section>
