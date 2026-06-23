@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
       email?: string;
       phone: string;
       uso?: string;
-      variant: 'brochure' | 'asesoria' | 'gardens-c';
+      variant: 'brochure' | 'asesoria' | 'gardens-c' | 'seo-locales-cancun';
     };
 
     if (!firstName || !phone) {
@@ -27,12 +27,14 @@ export async function POST(req: NextRequest) {
       ...(email ? { email } : {}),
       phone,
       source: 'agenda',
-      tags: ['Ads Quattro'],
+      tags: variant === 'seo-locales-cancun' ? ['SEO Quattro'] : ['Ads Quattro'],
       customFields: {
-        'desarrollo_de_inters': plazaToDesarrollo('gardens'),
+        'desarrollo_de_inters': plazaToDesarrollo(variant === 'seo-locales-cancun' ? (uso === 'long-island' ? 'long-island' : 'gardens') : 'gardens'),
         'fuente_de_contacto': 'digital',
       },
-        notes: `Ads Landing Gardens — Variant: ${variant} | Uso: ${uso}`,
+        notes: variant === 'seo-locales-cancun'
+          ? `SEO Locales Cancún — Plaza: ${uso} | Página: /locales-comerciales-cancun`
+          : `Ads Landing Gardens — Variant: ${variant} | Uso: ${uso}`,
       }),
       saveLeadToSanity({
         source: 'form',

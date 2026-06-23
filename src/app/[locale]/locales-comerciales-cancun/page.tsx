@@ -197,7 +197,7 @@ export default function LocalesComercialesCancun() {
       const res = await fetch('/api/ads-lead', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, variant: 'gardens-c', lastName: '', email: '' }),
+        body: JSON.stringify({ firstName: form.firstName, phone: form.phone, uso: form.plaza, variant: 'seo-locales-cancun' }),
       });
       if (!res.ok) throw new Error('Error');
       if (typeof (window as any).gtag === 'function') {
