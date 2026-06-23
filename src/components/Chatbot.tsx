@@ -63,6 +63,9 @@ export default function Chatbot() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ fullName: leadForm.fullName, phone: leadForm.phone }),
       });
+      if (typeof (window as any).gtag === 'function') {
+        (window as any).gtag('event', 'conversion', { send_to: 'AW-17453917774/wazACPXDnMQcEM7M1oJB' });
+      }
     } catch {}
     const welcome = `¡Gracias, ${leadForm.fullName.split(' ')[0]}! ¿En qué te puedo ayudar?`;
     setMessages([{ role: 'assistant', content: welcome }]);
