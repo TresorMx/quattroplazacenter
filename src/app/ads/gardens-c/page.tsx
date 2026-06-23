@@ -281,7 +281,7 @@ export default function GardensCPage() {
               ))}
             </div>
           </div>
-          <div className="relative overflow-hidden rounded-xl" style={{ aspectRatio: '16/9' }}>
+          <div className="relative h-[420px] w-full overflow-hidden rounded-xl border border-line">
             {mapOpen ? (
               <LocationMap lat={21.086815082087483} lng={-86.88777051510452} address="Cancún, Q. Roo, México" />
             ) : (
@@ -293,7 +293,6 @@ export default function GardensCPage() {
                   sizes="(max-width: 768px) 100vw, 60vw"
                   className="object-cover"
                 />
-                {/* overlay sutil para legibilidad del botón */}
                 <div className="absolute inset-0 bg-black/10" />
                 <button
                   onClick={() => setMapOpen(true)}
