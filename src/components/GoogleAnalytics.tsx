@@ -2,7 +2,8 @@
 
 import Script from 'next/script';
 
-const GA_ID = 'G-P0FP7MCCC5';
+const GA_ID  = 'G-P0FP7MCCC5';
+const ADS_ID = 'AW-17453917774';
 
 export default function GoogleAnalytics() {
   return (
@@ -17,6 +18,7 @@ export default function GoogleAnalytics() {
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
           gtag('config', '${GA_ID}');
+          gtag('config', '${ADS_ID}');
         `}
       </Script>
     </>

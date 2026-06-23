@@ -1,9 +1,12 @@
 import type { Metadata } from 'next';
 import { Cormorant_Garamond, Manrope, Montserrat } from 'next/font/google';
 import { NextIntlClientProvider } from 'next-intl';
+import Script from 'next/script';
 import Chatbot from '@/components/Chatbot';
 import MetaPixel from '@/components/MetaPixel';
 import '@/styles/globals.css';
+
+const ADS_ID = 'AW-17453917774';
 
 export const dynamic = 'force-dynamic';
 
@@ -78,6 +81,15 @@ export default function AdsLayout({ children }: { children: React.ReactNode }) {
         </div>
         {/* Bottom padding so content isn't hidden behind bar on mobile */}
         <div className="h-16 md:hidden" aria-hidden />
+
+        {/* Google Ads tag */}
+        <Script src={`https://www.googletagmanager.com/gtag/js?id=${ADS_ID}`} strategy="afterInteractive" />
+        <Script id="google-ads" strategy="afterInteractive">{`
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', '${ADS_ID}');
+        `}</Script>
       </body>
     </html>
   );
