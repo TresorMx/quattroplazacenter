@@ -241,7 +241,7 @@ export default function GardensLandingBrochure() {
                   activeImg === i ? 'border-ink' : 'border-transparent opacity-60 hover:opacity-90'
                 }`}
               >
-                <Image src={src} alt="" fill sizes="15vw" className="object-cover" />
+                <Image src={src} alt={`Local comercial Quattro Plaza Gardens — render ${i + 1}`} fill sizes="15vw" className="object-cover" />
               </button>
             ))}
           </div>
