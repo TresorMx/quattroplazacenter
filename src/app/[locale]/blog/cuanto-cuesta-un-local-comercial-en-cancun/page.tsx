@@ -41,11 +41,11 @@ const jsonLd = {
 };
 
 const zonas = [
-  { zona: 'Zona Hotelera', rango: '$80,000 – $150,000 /m²', perfil: 'Turístico premium, alta rotación', renta: '$350 – $700 /m²/mes' },
-  { zona: 'Av. Tulum / Av. Kabah', rango: '$55,000 – $85,000 /m²', perfil: 'Comercial mixto, alta demanda', renta: '$180 – $280 /m²/mes' },
-  { zona: 'SM 59–70 (corredores emergentes)', rango: '$40,000 – $65,000 /m²', perfil: 'Residencial + servicios, creciendo', renta: '$120 – $200 /m²/mes' },
-  { zona: 'Av. Huayacán / Periférico', rango: '$35,000 – $55,000 /m²', perfil: 'Alta plusvalía futura', renta: '$90 – $160 /m²/mes' },
-  { zona: 'Plazas comerciales en preventa', rango: '$45,000 – $70,000 /m²', perfil: 'Mayor potencial de plusvalía', renta: '$130 – $220 /m²/mes (proyectado)' },
+  { zona: 'Zona Hotelera', rango: '$80,000 – $150,000 /m²', perfil: 'Turístico premium, alta rotación', renta: '$900 – $1,500 /m²/mes' },
+  { zona: 'Av. Tulum / Av. Kabah', rango: '$55,000 – $85,000 /m²', perfil: 'Comercial mixto, alta demanda', renta: '$550 – $800 /m²/mes' },
+  { zona: 'SM 59–70 (corredores residenciales)', rango: '$40,000 – $65,000 /m²', perfil: 'Residencial + servicios, alta densidad', renta: '$400 – $600 /m²/mes' },
+  { zona: 'Av. Huayacán / Periférico', rango: '$35,000 – $55,000 /m²', perfil: 'Zona consolidada, alta densidad residencial', renta: '$450 – $650 /m²/mes' },
+  { zona: 'Plazas comerciales en preventa', rango: '$45,000 – $70,000 /m²', perfil: 'Mayor potencial de plusvalía', renta: '$500 – $700 /m²/mes (proyectado)' },
 ];
 
 export default function ArticlePage() {

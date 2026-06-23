@@ -124,7 +124,7 @@ export default function ArticlePage() {
             <strong>Mejor para:</strong> farmacias, consultorios médicos y dentales, bancos, restaurantes de ticket medio, cadenas de comida rápida, tiendas de ropa y calzado, papelerías y librerías.
           </p>
           <p className="text-ink-2 leading-relaxed mb-4">
-            <strong>Precio de locales:</strong> Entre $55,000 y $85,000/m², con rentas de $180–$280/m²/mes. La inversión más alta se compensa con baja vacancia: los locales bien ubicados en estos corredores raramente están desocupados más de 30 días.
+            <strong>Precio de locales:</strong> Entre $55,000 y $85,000/m², con rentas de $550–$800/m²/mes. La inversión más alta se compensa con baja vacancia: los locales bien ubicados en estos corredores raramente están desocupados más de 30 días.
           </p>
           <p className="text-ink-2 leading-relaxed mb-8">
             <strong>Ideal para:</strong> inversionistas que buscan flujo de caja estable y riesgo bajo, así como negocios orientados al mercado local con demanda recurrente.
@@ -147,16 +147,16 @@ export default function ArticlePage() {
           </p>
 
           <h2 className="font-serif italic text-3xl text-ink mt-12 mb-6">
-            Av. Huayacán: el corredor del futuro
+            Av. Huayacán: zona consolidada de alta densidad residencial
           </h2>
           <p className="text-ink-2 leading-relaxed mb-4">
-            La Avenida Huayacán es el eje de crecimiento más importante de Cancún en la próxima década. Conecta el centro de la ciudad con el aeropuerto, pasa por zonas de desarrollo habitacional de gran escala y tiene proyectado un tren ligero que multiplicará su valor.
+            La Avenida Huayacán es uno de los corredores más consolidados de Cancún. Con miles de familias viviendo en su zona de influencia, genera un tráfico residencial constante que sostiene cualquier tipo de negocio orientado al consumo cotidiano: alimentos, salud, educación, servicios personales.
           </p>
           <p className="text-ink-2 leading-relaxed mb-4">
-            <strong>Mejor para:</strong> inversionistas con horizonte de 5–10 años que quieren capturar la mayor plusvalía. También funciona para negocios de servicio automotriz, ferreterías, distribuidoras y negocios que requieren mucho espacio a bajo costo.
+            <strong>Mejor para:</strong> negocios de consumo diario — restaurantes, cafeterías, farmacias, consultorios, servicios de belleza, gimnasios, abarrotes premium y cualquier giro que se beneficie de una base de clientes recurrente en un radio cercano.
           </p>
           <p className="text-ink-2 leading-relaxed mb-8">
-            <strong>Riesgo:</strong> menor tráfico actual comparado con corredores consolidados. La apuesta es a la plusvalía futura más que al flujo de caja inmediato.
+            <strong>Por qué invertir aquí:</strong> alta densidad poblacional ya consolidada, demanda de servicios comprobada y precios de local todavía por debajo de los corredores del centro. Es una de las zonas con mejor relación precio-demanda de Cancún hoy.
           </p>
 
           <h2 className="font-serif italic text-3xl text-ink mt-12 mb-6">

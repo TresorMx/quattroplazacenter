@@ -208,7 +208,7 @@ export default function ArticlePage() {
           <ul className="space-y-3 mb-8 text-ink-2">
             <li className="flex gap-2"><span className="text-accent font-bold">→</span> <span><strong>Av. Kabah y Av. Tulum:</strong> El corazón comercial de Cancún con mayor tráfico vehicular y peatonal.</span></li>
             <li className="flex gap-2"><span className="text-accent font-bold">→</span> <span><strong>Corredor SM 59–64:</strong> Zona en fuerte crecimiento con alto potencial de plusvalía.</span></li>
-            <li className="flex gap-2"><span className="text-accent font-bold">→</span> <span><strong>Av. Huayacán:</strong> Corredor emergente que conecta Cancún con el aeropuerto y el nuevo AIFA.</span></li>
+            <li className="flex gap-2"><span className="text-accent font-bold">→</span> <span><strong>Av. Huayacán:</strong> Zona consolidada con alta densidad residencial y demanda de servicios comprobada.</span></li>
             <li className="flex gap-2"><span className="text-accent font-bold">→</span> <span><strong>Plazas ancla consolidadas:</strong> Dentro de plazas con afluencia probada y mezcla de giros complementarios.</span></li>
           </ul>
 
