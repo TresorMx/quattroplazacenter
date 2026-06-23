@@ -14,14 +14,14 @@ const GALLERY = [
 ];
 
 const STATS = [
-  { value: 'Desde 25 m²', label: 'Locales disponibles' },
-  { value: '$1.96 MDP', label: 'Precio desde' },
-  { value: '2026', label: 'Entrega estimada' },
+  { value: 'Desde 32 m²', label: 'Locales disponibles' },
+  { value: '$1.96 MDP*', label: 'Precio desde' },
+  { value: 'Jun–Sep 2027', label: 'Entrega estimada' },
 ];
 
 const BULLETS = [
   'Zona de alto tráfico residencial — miles de familias cerca',
-  'Enganche desde 10% · mensualidades sin intereses',
+  'Enganche desde $147,000 MXN · mensualidades sin intereses',
   'Arquitectura premium · doble altura · vegetación integrada',
   'Locales listos para abrir desde el primer día',
 ];
@@ -75,7 +75,7 @@ export default function GardensCPage() {
       {/* ── Navbar ── */}
       <header className="sticky top-0 z-40 border-b border-white/10 bg-ink/95 px-6 py-4 backdrop-blur-sm">
         <div className="flex items-center justify-between container-wrap">
-          <Image src="/logos/LogoQuattro.svg" alt="Quattro Plaza Center" width={160} height={48} style={{ height: '36px', width: 'auto', filter: 'brightness(0) invert(1)' }} />
+          <Image src="/logos/logo-quattro.svg" alt="Quattro Plaza Center" width={160} height={48} style={{ height: '36px', width: 'auto', filter: 'brightness(0) invert(1)' }} />
           <button
             onClick={scrollToForm}
             className="rounded-full bg-accent px-5 py-2.5 text-[11px] font-bold uppercase tracking-caps text-ink transition hover:brightness-95"
@@ -145,6 +145,7 @@ export default function GardensCPage() {
                 <p className="mt-2 text-[13px] text-ink-2">
                   Un asesor te contacta en menos de 2 horas con disponibilidad y precios actualizados.
                 </p>
+                <p className="mt-1 text-[11px] text-ink-3">*Precio + IVA</p>
 
                 <form onSubmit={submit} className="mt-6 flex flex-col gap-4">
                   <div className="flex flex-col gap-1.5">

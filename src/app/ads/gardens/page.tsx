@@ -91,14 +91,14 @@ export default function GardensLandingBrochure() {
             </h1>
             <p className="mt-5 max-w-md font-light leading-relaxed text-white/80" style={{ fontSize: '17px' }}>
               Invierte o instala tu negocio en uno de los desarrollos comerciales más exclusivos de Cancún.
-              Locales desde 25 m² en preventa con planes de pago flexibles.
+              Locales desde 32 m² en preventa con planes de pago flexibles.
             </p>
             <ul className="mt-7 space-y-2.5">
               {[
-                'Desde $1,968,600 MXN · Preventa exclusiva',
-                'Planes sin intereses hasta 24 meses',
+                'Desde $1,968,600 MXN* · Preventa exclusiva',
+                'Enganche desde $147,000 MXN · mensualidades sin intereses',
                 'Alta plusvalía · Zona de alto tráfico',
-                'Entrega estimada 2026',
+                'Entrega estimada Jun–Sep 2027',
               ].map((item) => (
                 <li key={item} className="flex items-center gap-2.5 text-white/90" style={{ fontSize: '15px' }}>
                   <CheckCircle2 size={16} className="shrink-0 text-[#FAB413]" strokeWidth={1.5} />
@@ -182,6 +182,7 @@ export default function GardensLandingBrochure() {
               <p className="text-center text-[10.5px] text-ink-3">
                 Tus datos están seguros. Sin spam.
               </p>
+              <p className="text-center text-[10.5px] text-ink-3">*Precio + IVA</p>
             </form>
           </div>
         </div>

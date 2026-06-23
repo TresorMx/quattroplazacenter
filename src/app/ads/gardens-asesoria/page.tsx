@@ -97,7 +97,7 @@ export default function GardensLandingAsesoria() {
             </p>
             <ul className="mt-7 space-y-2.5">
               {[
-                'Desde $1,968,600 MXN · Preventa exclusiva',
+                'Desde $1,968,600 MXN* · Preventa exclusiva',
                 'Asesoría personalizada sin costo',
                 'Visita presencial o por Zoom',
                 'Respuesta en menos de 2 horas',
@@ -189,6 +189,7 @@ export default function GardensLandingAsesoria() {
               <p className="text-center text-[10.5px] text-ink-3">
                 Tus datos están seguros. Sin spam.
               </p>
+              <p className="text-center text-[10.5px] text-ink-3">*Precio + IVA</p>
             </form>
           </div>
         </div>
