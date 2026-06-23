@@ -71,8 +71,32 @@ export default function GardensCPage() {
     formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'RealEstateListing',
+    name: 'Locales en Venta Cancún — Agenda tu Visita | Quattro Plaza Gardens',
+    description: 'Locales en venta en Cancún desde 32 m². Agenda tu visita sin compromiso. Enganche desde $147,000 MXN. Entrega Jun–Sep 2027.',
+    url: 'https://www.quattroplaza.mx/ads/gardens-c',
+    image: 'https://www.quattroplaza.mx/renders/gardens/02.jpg',
+    offers: {
+      '@type': 'Offer',
+      price: 1968600,
+      priceCurrency: 'MXN',
+      availability: 'https://schema.org/InStock',
+      seller: { '@type': 'Organization', name: 'Tresor Real Estate', url: 'https://tresor.mx' },
+    },
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Cancún',
+      addressRegion: 'Quintana Roo',
+      postalCode: '77500',
+      addressCountry: 'MX',
+    },
+  };
+
   return (
     <main className="min-h-screen bg-white text-ink">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       {/* ── Navbar ── */}
       <header className="sticky top-0 z-40 border-b border-white/10 bg-ink/95 px-6 py-4 backdrop-blur-sm">
@@ -105,7 +129,7 @@ export default function GardensCPage() {
               Locales Comerciales<br />en Venta <span className="text-accent">Cancún</span>
             </h1>
             <p className="mt-5 max-w-lg text-[17px] font-light leading-relaxed text-white/80">
-              Quattro Plaza Gardens — locales comerciales premium en una de las zonas de mayor crecimiento de Cancún. Invierte o instala tu negocio con planes accesibles.
+              Locales en venta en Cancún desde 32 m² en Quattro Plaza Gardens — una de las zonas de mayor crecimiento del Caribe Mexicano. Invierte o instala tu negocio con planes accesibles.
             </p>
 
             <ul className="mt-7 space-y-3">
@@ -231,7 +255,7 @@ export default function GardensCPage() {
           <div className="mb-8 text-center">
             <span className="eyebrow eyebrow-accent">— El Proyecto</span>
             <h2 className="mt-3 font-serif text-[clamp(28px,3vw,44px)] font-light italic">
-              Descubre Quattro Plaza Gardens
+              Locales Comerciales en Venta en Cancún
             </h2>
           </div>
           <div className="relative mb-3 aspect-[16/9] w-full overflow-hidden rounded-xl">
@@ -263,8 +287,8 @@ export default function GardensCPage() {
       <section className="bg-ink py-16 text-white">
         <div className="container-wrap">
           <p className="mb-3 text-center text-[11px] font-bold uppercase tracking-eyebrow text-accent">— Por qué invertir</p>
-          <h2 className="mb-12 text-center font-serif text-[36px] font-light italic">
-            Una plaza que trabaja<br />por tu negocio
+          <h2 className="mb-12 text-center font-serif text-[36px] font-light italic" id="por-que">
+            Por qué elegir locales en venta<br />en Cancún con Quattro Plaza
           </h2>
           <div className="grid gap-6 sm:grid-cols-2 md:grid-cols-3">
             {[
@@ -288,9 +312,9 @@ export default function GardensCPage() {
       <section className="bg-accent py-16 text-center">
         <div className="container-wrap">
           <h2 className="font-serif text-[clamp(28px,4vw,48px)] font-light italic text-ink">
-            ¿Listo para ver tu próximo local?
+            Agenda tu visita a estos locales en venta en Cancún
           </h2>
-          <p className="mt-3 text-[15px] text-ink/70">Locales disponibles · Preventa exclusiva · Cancún</p>
+          <p className="mt-3 text-[15px] text-ink/70">Locales comerciales disponibles · Preventa exclusiva · Cancún, Q. Roo</p>
           <button
             onClick={scrollToForm}
             className="mt-8 inline-flex items-center gap-2.5 rounded-full bg-ink px-8 py-4 text-[13px] font-bold uppercase tracking-caps text-white transition hover:bg-ink/90"

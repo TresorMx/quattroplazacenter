@@ -56,8 +56,32 @@ export default function GardensLandingAsesoria() {
     }
   }
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'RealEstateListing',
+    name: 'Locales Comerciales en Venta Cancún — Asesoría Gratuita | Quattro Plaza Gardens',
+    description: 'Locales comerciales en venta en Cancún desde 32 m². Habla con un asesor sin costo. Enganche desde $147,000 MXN. Entrega Jun–Sep 2027.',
+    url: 'https://www.quattroplaza.mx/ads/gardens-asesoria',
+    image: 'https://www.quattroplaza.mx/renders/gardens/02.jpg',
+    offers: {
+      '@type': 'Offer',
+      price: 1968600,
+      priceCurrency: 'MXN',
+      availability: 'https://schema.org/InStock',
+      seller: { '@type': 'Organization', name: 'Tresor Real Estate', url: 'https://tresor.mx' },
+    },
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Cancún',
+      addressRegion: 'Quintana Roo',
+      postalCode: '77500',
+      addressCountry: 'MX',
+    },
+  };
+
   return (
     <main className="min-h-screen bg-bg text-ink">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       {/* ── Nav bar ── */}
       <header className="sticky top-0 z-40 border-b border-line bg-white/95 px-6 py-4 backdrop-blur-sm">
@@ -92,8 +116,8 @@ export default function GardensLandingAsesoria() {
               <span className="text-[#FAB413]">Gardens</span>
             </h1>
             <p className="mt-5 max-w-md font-light leading-relaxed text-white/80" style={{ fontSize: '17px' }}>
-              Habla con un asesor especializado y encuentra el local perfecto para tu inversión o negocio en Cancún.
-              Sin compromisos, sin costo.
+              Locales comerciales en venta en Cancún. Habla con un asesor especializado y encuentra
+              el local perfecto para tu inversión o negocio. Sin compromisos, sin costo.
             </p>
             <ul className="mt-7 space-y-2.5">
               {[
@@ -201,7 +225,7 @@ export default function GardensLandingAsesoria() {
           <div className="mb-10 text-center">
             <span className="eyebrow eyebrow-accent">— Proceso</span>
             <h2 className="mt-3 font-serif text-[clamp(28px,3vw,44px)] font-light italic">
-              Así de sencillo
+              Así consigues tu local comercial en Cancún
             </h2>
           </div>
           <div className="grid gap-8 sm:grid-cols-3">
@@ -224,7 +248,7 @@ export default function GardensLandingAsesoria() {
           <div className="mb-8 text-center">
             <span className="eyebrow eyebrow-accent">— El Proyecto</span>
             <h2 className="mt-3 font-serif text-[clamp(28px,3vw,44px)] font-light italic">
-              Descubre Quattro Plaza
+              Locales en Venta en Cancún — Quattro Plaza Gardens
             </h2>
           </div>
           <div className="relative mb-3 aspect-[16/9] w-full overflow-hidden rounded-xl">
@@ -258,7 +282,7 @@ export default function GardensLandingAsesoria() {
           <div className="mb-10 text-center">
             <span className="eyebrow eyebrow-accent">— Por qué Gardens</span>
             <h2 className="mt-3 font-serif text-[clamp(28px,3vw,44px)] font-light italic">
-              Una inversión que trabaja por ti
+              Por qué invertir en locales comerciales en Cancún
             </h2>
           </div>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -279,10 +303,10 @@ export default function GardensLandingAsesoria() {
       <section className="border-t border-line bg-ink py-16 text-white">
         <div className="container-wrap text-center">
           <h2 className="font-serif text-[clamp(28px,3vw,44px)] font-light italic">
-            Da el primer paso hoy
+            Tu local comercial en Cancún te está esperando
           </h2>
           <p className="mt-3 text-[14px] text-white/60">
-            Habla directo con un asesor o escríbenos por WhatsApp
+            Habla con un asesor especializado en locales en venta en Cancún o escríbenos por WhatsApp
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
             <a

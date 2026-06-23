@@ -54,8 +54,32 @@ export default function GardensLandingBrochure() {
     }
   }
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'RealEstateListing',
+    name: 'Locales Comerciales en Venta Cancún — Quattro Plaza Gardens',
+    description: 'Locales comerciales en venta en Cancún desde 32 m². Enganche desde $147,000 MXN. Entrega Jun–Sep 2027. Desarrollado por Tresor Real Estate.',
+    url: 'https://www.quattroplaza.mx/ads/gardens',
+    image: 'https://www.quattroplaza.mx/renders/gardens/02.jpg',
+    offers: {
+      '@type': 'Offer',
+      price: 1968600,
+      priceCurrency: 'MXN',
+      availability: 'https://schema.org/InStock',
+      seller: { '@type': 'Organization', name: 'Tresor Real Estate', url: 'https://tresor.mx' },
+    },
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Cancún',
+      addressRegion: 'Quintana Roo',
+      postalCode: '77500',
+      addressCountry: 'MX',
+    },
+  };
+
   return (
     <main className="min-h-screen bg-bg text-ink">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
       {/* ── Nav bar ── */}
       <header className="sticky top-0 z-40 border-b border-line bg-white/95 px-6 py-4 backdrop-blur-sm">
@@ -90,8 +114,8 @@ export default function GardensLandingBrochure() {
               <span className="text-[#FAB413]">Gardens</span>
             </h1>
             <p className="mt-5 max-w-md font-light leading-relaxed text-white/80" style={{ fontSize: '17px' }}>
-              Invierte o instala tu negocio en uno de los desarrollos comerciales más exclusivos de Cancún.
-              Locales desde 32 m² en preventa con planes de pago flexibles.
+              Locales comerciales en venta en Cancún desde 32 m². Invierte o instala tu negocio
+              en uno de los desarrollos más exclusivos de Cancún con planes de pago flexibles.
             </p>
             <ul className="mt-7 space-y-2.5">
               {[
@@ -194,7 +218,7 @@ export default function GardensLandingBrochure() {
           <div className="mb-8 text-center">
             <span className="eyebrow eyebrow-accent">— El Proyecto</span>
             <h2 className="mt-3 font-serif text-[clamp(28px,3vw,44px)] font-light italic">
-              Descubre Quattro Plaza
+              Locales en Venta en Cancún — Quattro Plaza Gardens
             </h2>
           </div>
           {/* Main image */}
@@ -230,7 +254,7 @@ export default function GardensLandingBrochure() {
           <div className="mb-10 text-center">
             <span className="eyebrow eyebrow-accent">— Por qué Gardens</span>
             <h2 className="mt-3 font-serif text-[clamp(28px,3vw,44px)] font-light italic">
-              Una inversión que trabaja por ti
+              Por qué invertir en locales comerciales en Cancún
             </h2>
           </div>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -251,10 +275,10 @@ export default function GardensLandingBrochure() {
       <section className="border-t border-line bg-ink py-16 text-white">
         <div className="container-wrap text-center">
           <h2 className="font-serif text-[clamp(28px,3vw,44px)] font-light italic">
-            ¿Listo para invertir en Cancún?
+            ¿Listo para adquirir tu local en Cancún?
           </h2>
           <p className="mt-3 text-[14px] text-white/60">
-            Descarga el brochure completo o habla directo con un asesor
+            Descarga el brochure de locales en venta en Cancún o habla directo con un asesor
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
             <a
