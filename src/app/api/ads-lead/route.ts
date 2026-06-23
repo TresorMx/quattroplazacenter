@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { sendLeadToGHL, plazaToDesarrollo } from '@/lib/ghl';
+import { saveLeadToSanity } from '@/lib/sanity/saveLead';
 import { Resend } from 'resend';
 
 export async function POST(req: NextRequest) {
@@ -18,8 +19,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Faltan campos requeridos' }, { status: 400 });
     }
 
-    // Send to GHL
-    const ghlRes = await sendLeadToGHL({
+    // Send to GHL + Sanity en paralelo
+    const [ghlRes] = await Promise.all([
+      sendLeadToGHL({
       firstName,
       lastName: lastName ?? '',
       ...(email ? { email } : {}),
@@ -30,8 +32,17 @@ export async function POST(req: NextRequest) {
         'desarrollo_de_inters': plazaToDesarrollo('gardens'),
         'fuente_de_contacto': 'digital',
       },
-      notes: `Ads Landing Gardens — Variant: ${variant} | Uso: ${uso}`,
-    });
+        notes: `Ads Landing Gardens — Variant: ${variant} | Uso: ${uso}`,
+      }),
+      saveLeadToSanity({
+        source: 'form',
+        fullName: `${firstName} ${lastName ?? ''}`.trim(),
+        ...(email ? { email } : {}),
+        phone,
+        plazaSlug: 'gardens',
+        message: `Variant: ${variant} | Uso: ${uso ?? 'visita'}`,
+      }),
+    ]);
 
     // Notification email to team (only if Resend key is configured)
     if (process.env.RESEND_API_KEY) {
