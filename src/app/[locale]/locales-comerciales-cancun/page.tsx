@@ -83,7 +83,7 @@ const FAQS = [
   },
   {
     q: '¿Qué diferencia hay entre Gardens y Long Island?',
-    a: 'Gardens es un concepto con arquitectura premium, vegetación integrada y 40% del terreno en áreas verdes — ideal para marcas que buscan un entorno premium. Long Island tiene 120 m lineales de frente comercial y entrega más próxima — ideal para negocios que quieren operar cuanto antes.',
+    a: 'Gardens está ubicado en Cancún con locales desde 32 m². Long Island también en Cancún con locales desde 40 m² y entrega más próxima desde DIC 2026.',
   },
   {
     q: '¿El precio incluye IVA?',
