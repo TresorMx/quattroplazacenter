@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { ArrowRight, CheckCircle2, MapPin, TrendingUp, Building2, ShieldCheck, Users, Store, BarChart2 } from 'lucide-react';
+import { ArrowRight, CheckCircle2, MapPin, TrendingUp, Building2, ShieldCheck, Users, Store, BarChart2, Layers } from 'lucide-react';
+import LocationMap from '@/components/LocationMap';
 
 const RENDERS = [
   '/renders/gardens/02.jpg',
@@ -28,6 +29,8 @@ const STEPS = [
 
 export default function GardensLandingAsesoria() {
   const [activeImg, setActiveImg] = useState(0);
+  const [mapOpen, setMapOpen] = useState(false);
+  const [mapHeight, setMapHeight] = useState<number | null>(null);
   const [form, setForm] = useState({ firstName: '', lastName: '', email: '', phone: '', uso: '' });
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState<string | null>(null);
@@ -279,6 +282,42 @@ export default function GardensLandingAsesoria() {
         </div>
       </section>
 
+      {/* ── Highlights bar ── */}
+      <section className="border-y border-line bg-white">
+        <div className="container-wrap">
+          <div className="grid grid-cols-2 md:grid-cols-5" style={{ minHeight: '104px' }}>
+            {[
+              { value: 'Jardines · Zienna · Ciudadela', label: 'Ubicación' },
+              { value: '32 Locales',                    label: '' },
+              { value: '2 Niveles',                     label: '' },
+              { value: 'JUN – SEP 2027',                label: 'Entrega' },
+            ].map((h, idx) => (
+              <div
+                key={idx}
+                className={[
+                  'flex flex-col justify-center px-5 py-5 md:py-0',
+                  idx % 2 === 1 ? 'border-l' : '',
+                  idx > 0 ? 'md:border-l' : '',
+                  idx >= 2 ? 'border-t md:border-t-0' : '',
+                ].join(' ')}
+                style={{ borderColor: '#e2e2e1' }}
+              >
+                <div className="text-[clamp(13px,1.1vw,17px)] font-normal leading-tight tracking-tight">{h.value}</div>
+                {h.label && <div className="mt-1.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-ink-3">{h.label}</div>}
+              </div>
+            ))}
+            <div className="relative flex flex-col justify-center px-5 py-5 border-t md:border-l md:border-t-0 md:py-0" style={{ borderColor: '#e2e2e1' }}>
+              <div className="absolute inset-0 md:hidden" style={{ background: '#FFD057' }} />
+              <div className="absolute inset-0 hidden md:block" style={{ background: '#FFD057', right: 'calc(-1 * max(24px, 5vw))' }} />
+              <div className="relative z-10">
+                <div className="text-[clamp(13px,1.1vw,17px)] font-extrabold leading-tight tracking-tight text-ink">$1,968,600 MXN</div>
+                <div className="mt-1.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-ink/70">Precio base + IVA</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ── Features ── */}
       <section className="bg-white py-16 md:py-20">
         <div className="container-wrap">
@@ -298,6 +337,57 @@ export default function GardensLandingAsesoria() {
                 <p className="mt-2 text-[13px] leading-relaxed text-ink-3">{desc}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── Ubicación ── */}
+      <section className="border-t border-line py-20 md:py-28">
+        <div className="container-wrap grid gap-10 md:grid-cols-[1fr_1.6fr] md:gap-16">
+          <div>
+            <span className="eyebrow eyebrow-accent">— Ubicación</span>
+            <h2 className="mt-5 font-serif text-[clamp(32px,3.5vw,48px)] font-light italic leading-[1.1] text-ink">
+              Ubicación estratégica
+            </h2>
+            <p className="mt-4 text-[15px] font-light leading-relaxed text-ink-3">Cancún, Q. Roo, México</p>
+            <div className="mt-8 space-y-3 border-t border-line pt-6">
+              {[
+                { icon: <Building2 size={16} strokeWidth={1.5} />, text: 'Alta densidad residencial circundante' },
+                { icon: <Layers size={16} strokeWidth={1.5} />,   text: 'Flujo vehicular validado por estudio de mercado' },
+                { icon: <MapPin size={16} strokeWidth={1.5} />,   text: 'Frente a vialidad primaria' },
+              ].map((b) => (
+                <div key={b.text} className="flex items-center gap-3 text-[14px] text-ink-2">
+                  <span className="text-accent">{b.icon}</span>
+                  {b.text}
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="relative mx-auto w-4/5 overflow-hidden rounded-xl border border-line"
+            style={mapOpen && mapHeight ? { height: mapHeight } : undefined}>
+            {mapOpen ? (
+              <div className="[&>div]:!h-full h-full">
+                <LocationMap lat={21.086815082087483} lng={-86.88777051510452} address="Cancún, Q. Roo, México" />
+              </div>
+            ) : (
+              <>
+                <Image
+                  src="/mapagardens.png"
+                  alt="Ubicación Quattro Plaza Gardens, Cancún"
+                  width={0} height={0}
+                  sizes="(max-width: 768px) 100vw, 60vw"
+                  className="block h-auto w-full"
+                  onLoad={(e) => setMapHeight((e.target as HTMLImageElement).offsetHeight)}
+                />
+                <div className="absolute inset-0 bg-black/10" />
+                <button onClick={() => setMapOpen(true)} className="absolute inset-0 flex items-center justify-center" aria-label="Ver en Google Maps">
+                  <span className="flex items-center gap-2.5 rounded-full bg-white/80 px-5 py-2.5 text-[13px] font-semibold text-ink shadow-lg backdrop-blur-sm transition hover:bg-white">
+                    <MapPin size={15} strokeWidth={2} className="text-[#EA4335]" />
+                    Ver en Google Maps
+                  </span>
+                </button>
+              </>
+            )}
           </div>
         </div>
       </section>
