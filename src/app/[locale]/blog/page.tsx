@@ -41,7 +41,7 @@ const articles = [
       'Análisis detallado de precios por zona, m² y tipo de local en Cancún. Conoce el rango actual del mercado y qué factores influyen en el precio.',
     image: '/renders/long-island/02.jpg',
     readTime: '7 min',
-    date: '23 de junio de 2026',
+    date: '10 de junio de 2026',
   },
   {
     slug: 'mejores-zonas-para-negocio-en-cancun',
@@ -50,7 +50,7 @@ const articles = [
       'Comparativa de las principales zonas comerciales de Cancún: tráfico peatonal, tipo de cliente, precios y potencial de crecimiento.',
     image: '/renders/gardens/03.jpg',
     readTime: '7 min',
-    date: '23 de junio de 2026',
+    date: '20 de mayo de 2026',
   },
   {
     slug: 'local-comercial-vs-departamento-cancun',
@@ -59,7 +59,7 @@ const articles = [
       'Comparamos rendimientos, riesgos, plusvalía y flujo de caja entre locales comerciales y departamentos en Cancún para que tomes la mejor decisión.',
     image: '/renders/long-island/01.jpg',
     readTime: '7 min',
-    date: '23 de junio de 2026',
+    date: '15 de abril de 2026',
   },
   {
     slug: 'guia-comprar-en-preventa-cancun',
@@ -68,7 +68,7 @@ const articles = [
       'Ventajas, riesgos y pasos para comprar un local comercial en preventa en Cancún. Incluye checklist y preguntas clave que debes hacerle al desarrollador.',
     image: '/renders/gardens/02.jpg',
     readTime: '7 min',
-    date: '23 de junio de 2026',
+    date: '3 de marzo de 2026',
   },
 ];
 
