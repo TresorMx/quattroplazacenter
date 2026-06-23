@@ -32,6 +32,7 @@ const BULLETS = [
 export default function GardensCPage() {
   const [activeImg, setActiveImg] = useState(0);
   const [mapOpen, setMapOpen] = useState(false);
+  const [mapHeight, setMapHeight] = useState<number | null>(null);
   const [form, setForm] = useState({ firstName: '', phone: '' });
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
@@ -281,17 +282,26 @@ export default function GardensCPage() {
               ))}
             </div>
           </div>
-          <div className="relative h-[420px] w-full overflow-hidden rounded-xl border border-line">
+          <div
+            className="relative w-full overflow-hidden rounded-xl border border-line"
+            style={mapOpen && mapHeight ? { height: mapHeight } : undefined}
+          >
             {mapOpen ? (
-              <LocationMap lat={21.086815082087483} lng={-86.88777051510452} address="Cancún, Q. Roo, México" />
+              /* el wrapper fuerza al LocationMap a llenar la altura capturada */
+              <div className="[&>div]:!h-full h-full">
+                <LocationMap lat={21.086815082087483} lng={-86.88777051510452} address="Cancún, Q. Roo, México" />
+              </div>
             ) : (
               <>
+                {/* imagen en flujo natural — el contenedor adopta su altura */}
                 <Image
                   src="/mapagardens.png"
                   alt="Ubicación Quattro Plaza Gardens, Cancún"
-                  fill
+                  width={0}
+                  height={0}
                   sizes="(max-width: 768px) 100vw, 60vw"
-                  className="object-cover"
+                  className="block h-auto w-full"
+                  onLoad={(e) => setMapHeight((e.target as HTMLImageElement).offsetHeight)}
                 />
                 <div className="absolute inset-0 bg-black/10" />
                 <button
