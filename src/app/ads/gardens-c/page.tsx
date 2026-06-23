@@ -53,8 +53,9 @@ export default function GardensCPage() {
         body: JSON.stringify({ ...form, lastName: '', email: '', uso: 'visita', variant: 'gardens-c' }),
       });
       if (!res.ok) throw new Error();
-      if (typeof window !== 'undefined' && typeof window.fbq === 'function') {
-        window.fbq('track', 'Lead', { content_name: 'Visita Gardens C', content_category: 'gardens' });
+      if (typeof window !== 'undefined') {
+        if (typeof window.fbq === 'function') window.fbq('track', 'Lead', { content_name: 'Visita Gardens C', content_category: 'gardens' });
+        if (typeof (window as any).gtag === 'function') (window as any).gtag('event', 'conversion', { send_to: 'AW-17453917774/wazACPXDnMQcEM7M1oJB' });
       }
       setDone(true);
     } catch {

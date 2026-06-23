@@ -41,7 +41,10 @@ export default function GardensLandingBrochure() {
         body: JSON.stringify({ ...form, variant: 'brochure' }),
       });
       if (!res.ok) throw new Error('Error');
-      if (typeof window !== 'undefined' && typeof window.fbq === 'function') window.fbq('track', 'Lead', { content_name: 'Brochure Gardens', content_category: 'gardens' });
+      if (typeof window !== 'undefined') {
+        if (typeof window.fbq === 'function') window.fbq('track', 'Lead', { content_name: 'Brochure Gardens', content_category: 'gardens' });
+        if (typeof (window as any).gtag === 'function') (window as any).gtag('event', 'conversion', { send_to: 'AW-17453917774/wazACPXDnMQcEM7M1oJB' });
+      }
       const a = document.createElement('a');
       a.href = '/brochures/gardens-brochure.pdf';
       a.download = 'Quattro-Plaza-Gardens-Brochure.pdf';
