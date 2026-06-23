@@ -36,5 +36,23 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ]);
 
-  return [...staticRoutes, ...plazaRoutes];
+  const blogSlugs = [
+    'como-invertir-en-locales-comerciales-en-cancun',
+    'cuanto-cuesta-un-local-comercial-en-cancun',
+    'mejores-zonas-para-negocio-en-cancun',
+    'local-comercial-vs-departamento-cancun',
+    'guia-comprar-en-preventa-cancun',
+  ];
+
+  const blogRoutes: MetadataRoute.Sitemap = [
+    { url: `${SITE}/blog`, lastModified: now, changeFrequency: 'weekly', priority: 0.85 },
+    ...blogSlugs.map((slug) => ({
+      url: `${SITE}/blog/${slug}`,
+      lastModified: now,
+      changeFrequency: 'monthly' as const,
+      priority: 0.85,
+    })),
+  ];
+
+  return [...staticRoutes, ...plazaRoutes, ...blogRoutes];
 }
