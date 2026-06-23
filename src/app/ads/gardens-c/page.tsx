@@ -100,11 +100,11 @@ export default function GardensCPage() {
 
       {/* ── Navbar ── */}
       <header className="sticky top-0 z-40 border-b border-white/10 bg-ink/95 px-6 py-4 backdrop-blur-sm">
-        <div className="flex items-center justify-between container-wrap">
-          <Image src="/logos/logo-quattro.svg" alt="Quattro Plaza Center" width={160} height={48} style={{ height: '36px', width: 'auto', filter: 'brightness(0) invert(1)' }} />
+        <div className="relative flex items-center justify-center container-wrap">
+          <Image src="/logos/logo-quattro.svg" alt="Quattro Plaza Center" width={256} height={77} style={{ height: '58px', width: 'auto', filter: 'brightness(0) invert(1)' }} />
           <button
             onClick={scrollToForm}
-            className="rounded-full bg-accent px-5 py-2.5 text-[11px] font-bold uppercase tracking-caps text-ink transition hover:brightness-95"
+            className="absolute right-0 rounded-full bg-accent px-5 py-2.5 text-[11px] font-bold uppercase tracking-caps text-ink transition hover:brightness-95"
           >
             Agenda visita
           </button>
