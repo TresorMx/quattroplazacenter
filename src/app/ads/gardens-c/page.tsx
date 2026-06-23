@@ -31,6 +31,7 @@ const BULLETS = [
 
 export default function GardensCPage() {
   const [activeImg, setActiveImg] = useState(0);
+  const [mapOpen, setMapOpen] = useState(false);
   const [form, setForm] = useState({ firstName: '', phone: '' });
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
@@ -280,8 +281,32 @@ export default function GardensCPage() {
               ))}
             </div>
           </div>
-          <div>
-            <LocationMap lat={21.086815082087483} lng={-86.88777051510452} address="Cancún, Q. Roo, México" />
+          <div className="relative overflow-hidden rounded-xl" style={{ aspectRatio: '16/9' }}>
+            {mapOpen ? (
+              <LocationMap lat={21.086815082087483} lng={-86.88777051510452} address="Cancún, Q. Roo, México" />
+            ) : (
+              <>
+                <Image
+                  src="/mapagardens.png"
+                  alt="Ubicación Quattro Plaza Gardens, Cancún"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 60vw"
+                  className="object-cover"
+                />
+                {/* overlay sutil para legibilidad del botón */}
+                <div className="absolute inset-0 bg-black/10" />
+                <button
+                  onClick={() => setMapOpen(true)}
+                  className="absolute inset-0 flex items-center justify-center"
+                  aria-label="Ver en Google Maps"
+                >
+                  <span className="flex items-center gap-2.5 rounded-full bg-white/80 px-5 py-2.5 text-[13px] font-semibold text-ink shadow-lg backdrop-blur-sm transition hover:bg-white">
+                    <MapPin size={15} strokeWidth={2} className="text-[#EA4335]" />
+                    Ver en Google Maps
+                  </span>
+                </button>
+              </>
+            )}
           </div>
         </div>
       </section>
