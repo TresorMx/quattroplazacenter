@@ -7,6 +7,7 @@ import { ArrowRight, CheckCircle2, Clock, Users, TrendingUp, Star } from 'lucide
 const HERO_IMG = '/renders/gardens/02.jpg';
 const GALLERY = [
   '/renders/gardens/01.jpg',
+  '/renders/gardens/02.jpg',
   '/renders/gardens/03.jpg',
   '/renders/gardens/04.jpg',
   '/renders/gardens/05.jpg',
@@ -34,6 +35,7 @@ const TRUST = [
 ];
 
 export default function GardensCPage() {
+  const [activeImg, setActiveImg] = useState(0);
   const [form, setForm] = useState({ firstName: '', phone: '' });
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
@@ -224,20 +226,34 @@ export default function GardensCPage() {
       </section>
 
       {/* ── Gallery ── */}
-      <section className="py-16">
+      <section className="bg-white py-16">
         <div className="container-wrap">
-          <p className="mb-3 text-center text-[11px] font-bold uppercase tracking-eyebrow text-accent">— El proyecto</p>
-          <h2 className="mb-10 text-center font-serif text-[36px] font-light italic text-ink">
-            Quattro Plaza Gardens
-          </h2>
-          <div className="grid gap-3 sm:grid-cols-2 md:grid-cols-3">
+          <div className="mb-8 text-center">
+            <span className="eyebrow eyebrow-accent">— El Proyecto</span>
+            <h2 className="mt-3 font-serif text-[clamp(28px,3vw,44px)] font-light italic">
+              Descubre Quattro Plaza Gardens
+            </h2>
+          </div>
+          <div className="relative mb-3 aspect-[16/9] w-full overflow-hidden rounded-xl">
+            <Image
+              src={GALLERY[activeImg]}
+              alt={`Quattro Plaza Gardens render ${activeImg + 1}`}
+              fill
+              sizes="(max-width: 768px) 100vw, 80vw"
+              className="object-cover transition-all duration-500"
+            />
+          </div>
+          <div className="grid grid-cols-6 gap-2">
             {GALLERY.map((src, i) => (
-              <div
+              <button
                 key={i}
-                className={`relative overflow-hidden rounded-xl ${i === 0 ? 'sm:col-span-2 md:col-span-2 aspect-[16/9]' : 'aspect-square'}`}
+                onClick={() => setActiveImg(i)}
+                className={`relative aspect-square overflow-hidden rounded-lg border-2 transition-all ${
+                  activeImg === i ? 'border-ink' : 'border-transparent opacity-60 hover:opacity-90'
+                }`}
               >
-                <Image src={src} alt={`Render ${i + 1}`} fill sizes="(max-width:768px) 100vw, 50vw" className="object-cover transition-transform duration-500 hover:scale-105" />
-              </div>
+                <Image src={src} alt="" fill sizes="15vw" className="object-cover" />
+              </button>
             ))}
           </div>
         </div>
