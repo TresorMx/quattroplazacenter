@@ -28,12 +28,6 @@ const BULLETS = [
   'Locales listos para abrir desde el primer día',
 ];
 
-const TRUST = [
-  { n: '+25', label: 'proyectos\nentregados' },
-  { n: '+2,000', label: 'casas y depart.\ndesarrollados' },
-  { n: '10+', label: 'años en el\nmercado' },
-  { n: '100%', label: 'apartado\nreembolsable' },
-];
 
 export default function GardensCPage() {
   const [activeImg, setActiveImg] = useState(0);
@@ -292,16 +286,46 @@ export default function GardensCPage() {
         </div>
       </section>
 
-      {/* ── Trust bar ── */}
-      <section className="border-y border-line bg-bg-soft py-10">
+      {/* ── Highlights bar (igual que plaza page) ── */}
+      <section className="border-b border-line bg-white">
         <div className="container-wrap">
-          <div className="grid grid-cols-2 gap-6 md:grid-cols-4">
-            {TRUST.map((t) => (
-              <div key={t.label} className="flex flex-col items-center text-center">
-                <span className="text-[32px] font-bold text-ink">{t.n}</span>
-                <span className="mt-1 whitespace-pre-line text-[11px] uppercase tracking-wide text-ink-3">{t.label}</span>
+          <div className="grid grid-cols-2 md:grid-cols-4" style={{ minHeight: '104px' }}>
+            {[
+              { value: 'Biofílico',       label: 'Concepto' },
+              { value: '2 plantas',       label: 'Niveles' },
+              { value: '40% del terreno', label: 'Áreas Verdes' },
+            ].map((h, idx) => (
+              <div
+                key={h.label}
+                className={[
+                  'flex flex-col justify-center px-5 py-5 md:py-0',
+                  idx % 2 === 1 ? 'border-l' : '',
+                  idx > 0 ? 'md:border-l' : '',
+                  idx >= 2 ? 'border-t md:border-t-0' : '',
+                ].join(' ')}
+                style={{ borderColor: '#e2e2e1' }}
+              >
+                <div className="truncate text-[clamp(17px,1.4vw,20px)] font-normal leading-tight tracking-tight">
+                  {h.value}
+                </div>
+                <div className="mt-1.5 truncate text-[10px] font-semibold uppercase tracking-[0.22em] text-ink-3">
+                  {h.label}
+                </div>
               </div>
             ))}
+            {/* 4ª columna — precio, fondo amarillo */}
+            <div className="relative flex flex-col justify-center px-5 py-5 border-t md:border-t-0 md:py-0" style={{ borderColor: '#e2e2e1' }}>
+              <div className="absolute inset-0 md:hidden" style={{ background: '#FFD057' }} />
+              <div className="absolute inset-0 hidden md:block" style={{ background: '#FFD057', right: 'calc(-1 * max(24px, 5vw))' }} />
+              <div className="relative z-10">
+                <div className="text-[clamp(17px,1.4vw,20px)] font-extrabold leading-tight tracking-tight text-ink">
+                  $1,968,600 MXN
+                </div>
+                <div className="mt-1.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-ink/70">
+                  Precio base + IVA
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
