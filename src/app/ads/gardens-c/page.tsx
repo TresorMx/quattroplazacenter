@@ -283,7 +283,7 @@ export default function GardensCPage() {
             </div>
           </div>
           <div
-            className="relative w-4/5 overflow-hidden rounded-xl border border-line"
+            className="relative mx-auto w-4/5 overflow-hidden rounded-xl border border-line"
             style={mapOpen && mapHeight ? { height: mapHeight } : undefined}
           >
             {mapOpen ? (
