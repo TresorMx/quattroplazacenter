@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# No indexar páginas de ads, admin, API ni thank-you
+Disallow: /ads/
+Disallow: /api/
+Disallow: /cotizar/
+Disallow: /gracias
+
+Sitemap: https://www.quattroplaza.mx/sitemap.xml

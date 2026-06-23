@@ -91,29 +91,84 @@ export default async function PlazaPage({ params }: { params: Promise<{ slug: st
       ? Array.from({ length: 8 }, (_, i) => `/renders/long-island/0${i + 1}.jpg`)
       : Array.from({ length: 6 }, (_, i) => `/renders/gardens/0${i + 1}.jpg`);
 
-  // JSON-LD
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'LocalBusiness',
-    name: plaza.name,
-    description: plaza.tagline,
-    image: `https://quattroplaza.mx${plaza.heroRender}`,
-    address: {
-      '@type': 'PostalAddress',
-      addressLocality: plaza.city,
-      addressRegion: plaza.state,
-      addressCountry: 'MX',
+  const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.quattroplaza.mx';
+
+  // JSON-LD — RealEstateListing + FAQPage
+  const jsonLd = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'RealEstateListing',
+      name: `${plaza.name} — Locales Comerciales en Venta Cancún`,
+      description: plaza.tagline,
+      url: `${SITE}/plazas/${plaza.slug}`,
+      image: plaza.heroRender?.startsWith('http') ? plaza.heroRender : `${SITE}${plaza.heroRender}`,
+      datePosted: '2024-01-01',
+      validThrough: plaza.deliveryWindow ? `${plaza.deliveryWindow}` : '2027-12-31',
+      offers: minPrice ? {
+        '@type': 'Offer',
+        price: minPrice,
+        priceCurrency: 'MXN',
+        availability: 'https://schema.org/InStock',
+        seller: { '@type': 'Organization', name: 'Tresor Real Estate' },
+      } : undefined,
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: plaza.city,
+        addressRegion: plaza.state ?? 'Quintana Roo',
+        postalCode: '77500',
+        addressCountry: 'MX',
+      },
+      geo: plaza.location
+        ? { '@type': 'GeoCoordinates', latitude: plaza.location.lat, longitude: plaza.location.lng }
+        : undefined,
     },
-    geo: plaza.location
-      ? { '@type': 'GeoCoordinates', latitude: plaza.location.lat, longitude: plaza.location.lng }
-      : undefined,
-    parentOrganization: { '@type': 'Organization', name: 'Tresor Real Estate' },
-    priceRange: minPrice ? `${formatMXN(minPrice)} +` : undefined,
-  };
+    {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: [
+        {
+          '@type': 'Question',
+          name: '¿Cuál es el precio de los locales en Quattro Plaza?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: minPrice
+              ? `Los locales en ${plaza.name} tienen un precio desde ${formatMXN(minPrice)} MXN + IVA, con planes de pago flexibles desde $147,000 MXN de enganche.`
+              : `Quattro Plaza ${plaza.name} ofrece locales comerciales en venta en Cancún con planes de pago flexibles. Contáctanos para precios actualizados.`,
+          },
+        },
+        {
+          '@type': 'Question',
+          name: '¿Cuándo es la entrega de los locales?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: `La entrega estimada de Quattro Plaza ${plaza.name} es ${plaza.deliveryWindow ?? 'Jun–Sep 2027'}.`,
+          },
+        },
+        {
+          '@type': 'Question',
+          name: '¿El apartado es reembolsable?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: 'Sí, el apartado de $50,000 MXN es 100% reembolsable. Incluye asesoría legal sin costo.',
+          },
+        },
+        {
+          '@type': 'Question',
+          name: '¿Dónde está ubicado Quattro Plaza?',
+          acceptedAnswer: {
+            '@type': 'Answer',
+            text: `${plaza.name} se ubica en ${plaza.city}, Quintana Roo, México, en una zona de alta densidad residencial y flujo vehicular validado.`,
+          },
+        },
+      ],
+    },
+  ];
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      {jsonLd.map((schema, i) => (
+        <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      ))}
       <PixelViewContent name={plaza.name} category="Plaza Comercial" ids={[plaza.slug]} />
 
       {/* ═════ HERO — logo centrado ═════ */}

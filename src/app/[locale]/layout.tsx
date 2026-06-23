@@ -158,14 +158,38 @@ export default async function LocaleLayout({
     name: 'Quattro Plaza Center',
     url: SITE_URL,
     logo: `${SITE_URL}/logos/logo-quattro.svg`,
-    parentOrganization: { '@type': 'Organization', name: 'Tresor Real Estate' },
+    image: `${SITE_URL}/og/home.jpg`,
+    description: 'Plazas comerciales premium en Cancún. Locales en venta con alto retorno en Long Island y Gardens. Por Tresor Real Estate.',
+    telephone: '+52-998-404-5602',
+    email: 'hello@tresor.mx',
+    parentOrganization: {
+      '@type': 'Organization',
+      name: 'Tresor Real Estate',
+      url: 'https://tresor.mx',
+    },
     address: {
       '@type': 'PostalAddress',
       addressLocality: 'Cancún',
       addressRegion: 'Quintana Roo',
+      postalCode: '77500',
       addressCountry: 'MX',
     },
-    sameAs: ['https://www.instagram.com/quattroplazacenter'],
+    areaServed: {
+      '@type': 'City',
+      name: 'Cancún',
+    },
+    sameAs: [
+      'https://www.instagram.com/quattroplazacenter',
+      `${SITE_URL}`,
+    ],
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: 'Locales Comerciales en Venta Cancún',
+      itemListElement: [
+        { '@type': 'Offer', itemOffered: { '@type': 'Product', name: 'Local Comercial Quattro Plaza Gardens', description: 'Locales comerciales en venta en Cancún desde 32 m². Enganche desde $147,000 MXN.' } },
+        { '@type': 'Offer', itemOffered: { '@type': 'Product', name: 'Local Comercial Quattro Plaza Long Island', description: 'Locales comerciales en venta en Cancún. Diseño premium y ubicación estratégica.' } },
+      ],
+    },
   };
 
   return (
