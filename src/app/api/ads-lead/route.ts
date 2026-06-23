@@ -7,22 +7,22 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const { firstName, lastName, email, phone, uso, variant } = body as {
       firstName: string;
-      lastName: string;
-      email: string;
+      lastName?: string;
+      email?: string;
       phone: string;
-      uso: string;
-      variant: 'brochure' | 'asesoria';
+      uso?: string;
+      variant: 'brochure' | 'asesoria' | 'gardens-c';
     };
 
-    if (!firstName || !email || !phone) {
+    if (!firstName || !phone) {
       return NextResponse.json({ error: 'Faltan campos requeridos' }, { status: 400 });
     }
 
     // Send to GHL
     const ghlRes = await sendLeadToGHL({
       firstName,
-      lastName,
-      email,
+      lastName: lastName ?? '',
+      ...(email ? { email } : {}),
       phone,
       source: 'agenda',
       tags: ['Ads Quattro'],
