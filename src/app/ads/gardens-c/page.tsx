@@ -287,7 +287,7 @@ export default function GardensCPage() {
             </div>
           </div>
           <div>
-            <LocationMap lat={21.13} lng={-86.855} address="Cancún, Q. Roo, México" />
+            <LocationMap lat={21.0860194} lng={-86.8871698} address="Cancún, Q. Roo, México" />
           </div>
         </div>
       </section>
