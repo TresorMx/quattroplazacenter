@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     description:
       'Guía definitiva para invertir en locales comerciales en Cancún: desde elegir la zona correcta hasta negociar el mejor precio.',
     url: 'https://www.quattroplaza.mx/blog/como-invertir-en-locales-comerciales-en-cancun',
-    images: [{ url: 'https://www.quattroplaza.mx/renders/gardens/01.jpg', width: 1200, height: 630 }],
+    images: [{ url: 'https://www.quattroplaza.mx/blog/AdobeStock_791905652.jpeg', width: 1200, height: 630 }],
   },
 };
 
@@ -38,7 +38,7 @@ const jsonLd = {
     name: 'Quattro Plaza Center',
     logo: 'https://www.quattroplaza.mx/logos/logo-quattro.svg',
   },
-  image: 'https://www.quattroplaza.mx/renders/gardens/01.jpg',
+  image: 'https://www.quattroplaza.mx/blog/AdobeStock_791905652.jpeg',
   mainEntityOfPage: 'https://www.quattroplaza.mx/blog/como-invertir-en-locales-comerciales-en-cancun',
 };
 
@@ -53,7 +53,7 @@ export default function ArticlePage() {
       {/* Hero */}
       <div className="relative h-[55vh] min-h-[400px] overflow-hidden">
         <Image
-          src="/renders/gardens/01.jpg"
+          src="/blog/AdobeStock_791905652.jpeg"
           alt="Locales comerciales en Cancún para inversión — Quattro Plaza Center Gardens"
           fill
           priority
@@ -250,9 +250,9 @@ export default function ArticlePage() {
           <h2 className="font-serif italic text-2xl text-ink mt-16 mb-6">Artículos relacionados</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-4">
             {[
-              { slug: 'cuanto-cuesta-un-local-comercial-en-cancun', title: '¿Cuánto Cuesta un Local Comercial en Cancún en 2026?', img: '/renders/long-island/02.jpg' },
-              { slug: 'mejores-zonas-para-negocio-en-cancun', title: 'Las Mejores Zonas para Poner un Negocio en Cancún', img: '/renders/gardens/03.jpg' },
-              { slug: 'guia-comprar-en-preventa-cancun', title: 'Guía para Comprar en Preventa en Cancún', img: '/renders/gardens/02.jpg' },
+              { slug: 'cuanto-cuesta-un-local-comercial-en-cancun', title: '¿Cuánto Cuesta un Local Comercial en Cancún en 2026?', img: '/blog/AdobeStock_664567241.jpeg' },
+              { slug: 'mejores-zonas-para-negocio-en-cancun', title: 'Las Mejores Zonas para Poner un Negocio en Cancún', img: '/blog/AdobeStock_841077811.jpeg' },
+              { slug: 'guia-comprar-en-preventa-cancun', title: 'Guía para Comprar en Preventa en Cancún', img: '/blog/AdobeStock_903743889.jpeg' },
             ].map((rel) => (
               <Link key={rel.slug} href={`/blog/${rel.slug}`} className="group rounded-xl overflow-hidden border border-line hover:shadow-md transition-shadow">
                 <div className="relative aspect-video">

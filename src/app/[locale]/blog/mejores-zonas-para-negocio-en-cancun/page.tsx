@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     title: 'Las Mejores Zonas para Poner un Negocio en Cancún',
     description: 'Análisis completo de las mejores zonas comerciales de Cancún: tráfico, precios, tipo de cliente y potencial de cada corredor.',
     url: 'https://www.quattroplaza.mx/blog/mejores-zonas-para-negocio-en-cancun',
-    images: [{ url: 'https://www.quattroplaza.mx/renders/gardens/03.jpg', width: 1200, height: 630 }],
+    images: [{ url: 'https://www.quattroplaza.mx/blog/AdobeStock_838554951.jpeg', width: 1200, height: 630 }],
   },
 };
 
@@ -36,7 +36,7 @@ const jsonLd = {
     name: 'Quattro Plaza Center',
     logo: 'https://www.quattroplaza.mx/logos/logo-quattro.svg',
   },
-  image: 'https://www.quattroplaza.mx/renders/gardens/03.jpg',
+  image: 'https://www.quattroplaza.mx/blog/AdobeStock_838554951.jpeg',
   mainEntityOfPage: 'https://www.quattroplaza.mx/blog/mejores-zonas-para-negocio-en-cancun',
 };
 
@@ -51,7 +51,7 @@ export default function ArticlePage() {
       {/* Hero */}
       <div className="relative h-[55vh] min-h-[400px] overflow-hidden">
         <Image
-          src="/renders/gardens/03.jpg"
+          src="/blog/AdobeStock_838554951.jpeg"
           alt="Mejores zonas para negocios en Cancún — Quattro Plaza Center Gardens"
           fill
           priority
@@ -216,9 +216,9 @@ export default function ArticlePage() {
           <h2 className="font-serif italic text-2xl text-ink mt-16 mb-6">Artículos relacionados</h2>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-4">
             {[
-              { slug: 'como-invertir-en-locales-comerciales-en-cancun', title: 'Cómo Invertir en Locales Comerciales en Cancún: Guía Completa', img: '/renders/gardens/01.jpg' },
-              { slug: 'cuanto-cuesta-un-local-comercial-en-cancun', title: '¿Cuánto Cuesta un Local Comercial en Cancún en 2026?', img: '/renders/long-island/02.jpg' },
-              { slug: 'guia-comprar-en-preventa-cancun', title: 'Guía para Comprar en Preventa en Cancún', img: '/renders/gardens/02.jpg' },
+              { slug: 'como-invertir-en-locales-comerciales-en-cancun', title: 'Cómo Invertir en Locales Comerciales en Cancún: Guía Completa', img: '/blog/AdobeStock_663402090.jpeg' },
+              { slug: 'cuanto-cuesta-un-local-comercial-en-cancun', title: '¿Cuánto Cuesta un Local Comercial en Cancún en 2026?', img: '/blog/AdobeStock_664567241.jpeg' },
+              { slug: 'guia-comprar-en-preventa-cancun', title: 'Guía para Comprar en Preventa en Cancún', img: '/blog/AdobeStock_903743889.jpeg' },
             ].map((rel) => (
               <Link key={rel.slug} href={`/blog/${rel.slug}`} className="group rounded-xl overflow-hidden border border-line hover:shadow-md transition-shadow">
                 <div className="relative aspect-video">
