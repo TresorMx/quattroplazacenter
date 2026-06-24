@@ -186,8 +186,8 @@ export default async function LocaleLayout({
       '@type': 'OfferCatalog',
       name: 'Locales Comerciales en Venta Cancún',
       itemListElement: [
-        { '@type': 'Offer', itemOffered: { '@type': 'Product', name: 'Local Comercial Quattro Plaza Gardens', description: 'Locales comerciales en venta en Cancún desde 32 m². Enganche desde $147,000 MXN.' } },
-        { '@type': 'Offer', itemOffered: { '@type': 'Product', name: 'Local Comercial Quattro Plaza Long Island', description: 'Locales comerciales en venta en Cancún. Diseño premium y ubicación estratégica.' } },
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Local Comercial Quattro Plaza Gardens', description: 'Locales comerciales en venta en Cancún desde 32 m². Enganche desde $147,000 MXN.' } },
+        { '@type': 'Offer', itemOffered: { '@type': 'Service', name: 'Local Comercial Quattro Plaza Long Island', description: 'Locales comerciales en venta en Cancún. Diseño premium y ubicación estratégica.' } },
       ],
     },
   };
