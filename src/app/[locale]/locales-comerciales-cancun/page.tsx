@@ -15,7 +15,7 @@ const PLAZAS = [
     slug: 'gardens',
     name: 'Quattro Plaza Center Gardens',
     shortName: 'Gardens',
-    tagline: 'Arquitectura premium con áreas verdes y 40% del terreno jardinado.',
+    tagline: 'Arquitectura premium con acabados de primer nivel y 2 niveles comerciales.',
     hero: '/renders/gardens/02.jpg',
     renders: ['/renders/gardens/01.jpg', '/renders/gardens/02.jpg', '/renders/gardens/03.jpg'],
     badge: 'Lanzamiento · Preventa',
@@ -26,7 +26,7 @@ const PLAZAS = [
       { label: 'Entrega', value: 'JUN–SEP 2027' },
     ],
     disponibles: 18,
-    highlights: ['Diseño con vegetación integrada', '2 niveles', '40% áreas verdes', 'Enganche desde $147,000 MXN'],
+    highlights: ['2 niveles', 'Enganche desde $147,000 MXN'],
     href: '/plazas/gardens',
     color: '#FAB413',
   },
@@ -111,7 +111,7 @@ const JSONLD = {
           item: {
             '@type': 'RealEstateListing',
             name: 'Quattro Plaza Center Gardens — Locales Comerciales Cancún',
-            description: 'Locales comerciales en venta en Cancún desde 32 m². Diseño premium con vegetación integrada, 2 plantas, 40% áreas verdes. Entrega JUN–SEP 2027.',
+            description: 'Locales comerciales en venta en Cancún desde 32 m². Diseño premium, 2 niveles, acabados de primer nivel. Entrega JUN–SEP 2027.',
             url: 'https://www.quattroplaza.mx/plazas/gardens',
             image: 'https://www.quattroplaza.mx/renders/gardens/02.jpg',
             offers: { '@type': 'Offer', price: 1968600, priceCurrency: 'MXN', availability: 'https://schema.org/InStock' },
@@ -286,7 +286,7 @@ export default function LocalesComercialesCancun() {
               Cancún es hoy uno de los destinos de inversión inmobiliaria más dinámicos de México. Su crecimiento poblacional sostenido, el flujo constante de turismo y la expansión de zonas residenciales de alta demanda han convertido a los <strong>locales comerciales en Cancún</strong> en una de las inversiones más sólidas del sureste mexicano.
             </p>
             <p>
-              <strong>Quattro Plaza Center</strong> ofrece locales comerciales en venta en Cancún en dos plazas de diseño premium: <strong>Gardens</strong>, con vegetación integrada, áreas verdes y acabados de primer nivel, y <strong>Long Island</strong>, con 120 metros lineales de frente comercial en uno de los corredores con mayor tráfico de la ciudad.
+              <strong>Quattro Plaza Center</strong> ofrece locales comerciales en venta en Cancún en dos plazas de diseño premium: <strong>Gardens</strong>, con arquitectura premium y acabados de primer nivel, y <strong>Long Island</strong>, con 120 metros lineales de frente comercial en uno de los corredores con mayor tráfico de la ciudad.
             </p>
             <p>
               Ambos proyectos están desarrollados por <strong>Tresor Real Estate</strong>, empresa con más de 10 años de trayectoria y más de 25 proyectos entregados en Quintana Roo. Los locales están diseñados de planta libre para adaptarse a cualquier giro comercial: restaurantes, tiendas, consultorios, servicios, y más.
