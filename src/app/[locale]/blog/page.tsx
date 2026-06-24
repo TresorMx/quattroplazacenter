@@ -70,6 +70,15 @@ const articles = [
     readTime: '7 min',
     date: '3 de marzo de 2026',
   },
+  {
+    slug: 'invertir-en-cancun-desde-monterrey-cdmx',
+    title: 'Por Qué Invertir en Cancún desde Monterrey, CDMX o Guadalajara',
+    description:
+      'Si buscas rendimientos mayores que en tu ciudad, Cancún ofrece locales comerciales desde .96 MDP con plusvalía de 10–15% anual y proceso 100% remoto.',
+    image: '/blog/AdobeStock_841077811.jpeg',
+    readTime: '8 min',
+    date: '23 de junio de 2026',
+  },
 ];
 
 const jsonLd = {
