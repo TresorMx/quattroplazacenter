@@ -26,7 +26,7 @@ const PLAZAS = [
       { label: 'Entrega', value: 'JUN–SEP 2027' },
     ],
     disponibles: 18,
-    highlights: ['2 niveles', 'Enganche desde $147,000 MXN'],
+    highlights: ['32 locales disponibles', '2 niveles', 'Planta libre · cualquier giro', 'Enganche desde $147,000 MXN'],
     href: '/plazas/gardens',
     color: '#FAB413',
   },
