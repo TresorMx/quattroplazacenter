@@ -27,6 +27,7 @@ export default async function HomePage() {
         <div className="absolute inset-0 bg-black/50" />
 
         <div className="relative z-10 flex h-full flex-col items-center justify-center px-8">
+          <h1 className="sr-only">Quattro Plaza Center — Locales Comerciales en Venta en Cancún</h1>
           <Image
             src="/brand/perfect-space.png"
             alt="The Perfect Space for your next business"

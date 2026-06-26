@@ -49,7 +49,7 @@ const montserrat = Montserrat({
   display: 'swap',
 });
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://quattroplaza.mx';
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.quattroplaza.mx';
 
 export const viewport: Viewport = {
   themeColor: '#F6F4EF',
