@@ -6,6 +6,7 @@ const withNextIntl = createNextIntlPlugin('./src/i18n.ts');
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  transpilePackages: ['@react-pdf/renderer'],
   images: {
     formats: ['image/avif', 'image/webp'],
     remotePatterns: [

@@ -7,6 +7,7 @@ import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import ChromeGate from '@/components/ChromeGate';
 import MobileBar from '@/components/MobileBar';
 import Chatbot from '@/components/Chatbot';
 import ExitIntent from '@/components/ExitIntent';
@@ -203,12 +204,13 @@ export default async function LocaleLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }}
         />
         <NextIntlClientProvider messages={messages} locale={locale}>
-          <Header />
-          <main className="min-h-screen pt-[72px]">{children}</main>
-          <Footer />
-          <MobileBar />
-          <Chatbot />
-          <ExitIntent />
+          <ChromeGate
+            header={<Header />}
+            footer={<Footer />}
+            extras={<><MobileBar /><Chatbot /><ExitIntent /></>}
+          >
+            {children}
+          </ChromeGate>
         </NextIntlClientProvider>
         <MetaPixel />
         <GoogleAnalytics />
