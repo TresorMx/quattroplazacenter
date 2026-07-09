@@ -153,7 +153,7 @@ const LONG_ISLAND: Proyecto = {
     u('115', 1, 40.60, null, 'DIC 2026', 'vendido'),
     u('116', 1, 151.64, 14962500, 'MAR 2027', 'bloqueado'),
     // Nivel 2
-    u('201', 2, 104.30, 6483513.51, 'DIC 2026', 'bloqueado'),
+    u('201', 2, 104.30, 6483513.51, 'DIC 2026', 'disponible'),
     u('202', 2, 50, null, 'DIC 2026', 'vendido'),
     u('203', 2, 45.45, 2850000, 'DIC 2026', 'disponible'),
     u('205', 2, 50.75, 3350000, 'DIC 2026', 'disponible'),
