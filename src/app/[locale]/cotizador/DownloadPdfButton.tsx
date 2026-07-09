@@ -16,6 +16,7 @@ interface Props {
   fechaCotizacion: string;
   cot: Cotizacion;
   bank: Bank;
+  observaciones: string;
   fileName: string;
 }
 

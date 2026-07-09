@@ -224,6 +224,7 @@ export default function CotizadorPage() {
                 fechaCotizacion={fechaCotTxt}
                 cot={cot}
                 bank={proyecto!.bank}
+                observaciones={obs}
                 fileName={`Cotizacion ${unidad.label} - ${cliente || 'cliente'}.pdf`}
               />
             )}

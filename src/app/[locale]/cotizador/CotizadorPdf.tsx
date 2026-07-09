@@ -7,35 +7,38 @@ const YELLOW = '#FAB413';
 const INK = '#0E0E0E';
 
 const s = StyleSheet.create({
-  page: { paddingTop: 28, paddingBottom: 36, paddingHorizontal: 30, fontSize: 8.5, fontFamily: 'Helvetica', color: INK },
-  header: { backgroundColor: INK, borderRadius: 6, padding: 16, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' },
-  logo: { width: 116, height: 82, objectFit: 'contain' },
+  page: { paddingTop: 24, paddingBottom: 24, paddingHorizontal: 30, fontSize: 8, fontFamily: 'Helvetica', color: INK },
+  header: { backgroundColor: INK, borderRadius: 6, padding: 14, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' },
+  logo: { width: 104, height: 74, objectFit: 'contain' },
   metaRow: { flexDirection: 'row', justifyContent: 'flex-end', marginBottom: 2 },
-  metaLabel: { color: '#bbb', fontSize: 7.5 },
-  metaVal: { color: '#fff', fontSize: 7.5, fontFamily: 'Helvetica-Bold', marginLeft: 4 },
-  metaValYellow: { color: YELLOW, fontSize: 7.5, fontFamily: 'Helvetica-Bold', marginLeft: 4 },
-  title: { fontSize: 13, fontFamily: 'Helvetica-Bold', marginTop: 18, marginBottom: 12 },
-  resumen: { backgroundColor: '#FBF7EC', borderLeftWidth: 3, borderLeftColor: YELLOW, padding: 12, marginBottom: 12 },
-  rLine: { marginBottom: 3 },
+  metaLabel: { color: '#bbb', fontSize: 7 },
+  metaVal: { color: '#fff', fontSize: 7, fontFamily: 'Helvetica-Bold', marginLeft: 4 },
+  metaValYellow: { color: YELLOW, fontSize: 7, fontFamily: 'Helvetica-Bold', marginLeft: 4 },
+  title: { fontSize: 12, fontFamily: 'Helvetica-Bold', marginTop: 11, marginBottom: 7 },
+  resumen: { backgroundColor: '#FBF7EC', borderLeftWidth: 3, borderLeftColor: YELLOW, padding: 9, marginBottom: 8 },
+  rLine: { marginBottom: 2.5 },
   rBold: { fontFamily: 'Helvetica-Bold' },
-  splitRow: { flexDirection: 'row', gap: 8, marginBottom: 14 },
-  splitBox: { flex: 1, backgroundColor: INK, borderRadius: 4, padding: 9, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
+  splitRow: { flexDirection: 'row', gap: 8, marginBottom: 9 },
+  splitBox: { flex: 1, backgroundColor: INK, borderRadius: 4, padding: 8, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' },
   splitLabel: { color: '#fff', fontFamily: 'Helvetica-Bold', fontSize: 8 },
   splitVal: { color: YELLOW, fontFamily: 'Helvetica-Bold', fontSize: 8 },
-  tHead: { flexDirection: 'row', backgroundColor: INK, paddingVertical: 6, paddingHorizontal: 8 },
+  tHead: { flexDirection: 'row', backgroundColor: INK, paddingVertical: 5, paddingHorizontal: 8 },
   th: { color: '#fff', fontFamily: 'Helvetica-Bold', fontSize: 7.5 },
-  tRow: { flexDirection: 'row', paddingVertical: 5, paddingHorizontal: 8, borderBottomWidth: 0.5, borderBottomColor: '#e5e5e5' },
+  tRow: { flexDirection: 'row', paddingVertical: 3.6, paddingHorizontal: 8, borderBottomWidth: 0.5, borderBottomColor: '#e5e5e5' },
   cNum: { width: '8%' },
   cFecha: { width: '20%' },
   cConcepto: { width: '47%' },
   cImporte: { width: '25%', textAlign: 'right' },
-  totalRow: { flexDirection: 'row', backgroundColor: '#FBF7EC', paddingVertical: 7, paddingHorizontal: 8, marginTop: 2 },
-  ivaRow: { flexDirection: 'row', backgroundColor: '#f4f4f4', paddingVertical: 7, paddingHorizontal: 8 },
-  granRow: { flexDirection: 'row', backgroundColor: '#FBF7EC', paddingVertical: 8, paddingHorizontal: 8 },
-  bank: { marginTop: 18, backgroundColor: '#f4f4f4', borderRadius: 6, padding: 12, flexDirection: 'row', justifyContent: 'space-between' },
-  bankTitle: { fontFamily: 'Helvetica-Bold', fontSize: 9, marginBottom: 5 },
+  totalRow: { flexDirection: 'row', backgroundColor: '#FBF7EC', paddingVertical: 5, paddingHorizontal: 8, marginTop: 2 },
+  ivaRow: { flexDirection: 'row', backgroundColor: '#f4f4f4', paddingVertical: 5, paddingHorizontal: 8 },
+  granRow: { flexDirection: 'row', backgroundColor: '#FBF7EC', paddingVertical: 5.5, paddingHorizontal: 8 },
+  bank: { marginTop: 9, backgroundColor: '#f4f4f4', borderRadius: 6, padding: 10, flexDirection: 'row', justifyContent: 'space-between' },
+  bankTitle: { fontFamily: 'Helvetica-Bold', fontSize: 8.5, marginBottom: 4 },
   bankLine: { fontSize: 7.5, marginBottom: 2 },
-  disclaimer: { marginTop: 14, fontSize: 6.5, color: '#888', lineHeight: 1.4 },
+  obs: { marginTop: 8, borderWidth: 0.5, borderColor: '#e0e0e0', borderRadius: 4, padding: 8 },
+  obsTitle: { fontFamily: 'Helvetica-Bold', fontSize: 8, marginBottom: 3 },
+  obsText: { fontSize: 7.5, color: '#444', lineHeight: 1.4 },
+  disclaimer: { marginTop: 8, fontSize: 6.5, color: '#888', lineHeight: 1.35 },
 });
 
 interface Props {
@@ -49,13 +52,14 @@ interface Props {
   fechaCotizacion: string;
   cot: Cotizacion;
   bank: Bank;
+  observaciones: string;
 }
 
 export default function CotizadorPdf(p: Props) {
   const { cot } = p;
   return (
     <Document>
-      <Page size="A4" style={s.page}>
+      <Page size="A4" wrap={false} style={s.page}>
         {/* Header */}
         <View style={s.header}>
           {/* eslint-disable-next-line jsx-a11y/alt-text */}
@@ -136,6 +140,13 @@ export default function CotizadorPdf(p: Props) {
             <Text style={s.bankLine}>Referencia: <Text style={s.rBold}>{p.unidadLabel}</Text></Text>
           </View>
         </View>
+
+        {p.observaciones?.trim() ? (
+          <View style={s.obs}>
+            <Text style={s.obsTitle}>Observaciones</Text>
+            <Text style={s.obsText}>{p.observaciones.trim()}</Text>
+          </View>
+        ) : null}
 
         <Text style={s.disclaimer}>
           Cotizador a modo informativo sin valor contractual, sujeto a cambio. Todos los precios son + IVA.{'\n'}
