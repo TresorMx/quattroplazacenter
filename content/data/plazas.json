@@ -488,7 +488,7 @@
           "id": "G-101",
           "code": "101",
           "level": 1,
-          "price": 8685927.97,
+          "price": 9685000,
           "delivery": "JUN 2027",
           "status": "bloqueado",
           "isAnchor": true,
@@ -504,7 +504,7 @@
           "delivery": "JUN 2027",
           "status": "bloqueado",
           "specs": {
-            "areaTotal": 32.58
+            "areaTotal": 32.6
           }
         },
         {
@@ -534,7 +534,7 @@
           "delivery": "JUN 2027",
           "status": "vendido",
           "specs": {
-            "areaTotal": 32.55
+            "areaTotal": 32.6
           }
         },
         {
@@ -544,7 +544,7 @@
           "delivery": "JUN 2027",
           "status": "vendido",
           "specs": {
-            "areaTotal": 40.74
+            "areaTotal": 40.75
           }
         },
         {
@@ -597,27 +597,25 @@
           "delivery": "SEP 2027",
           "status": "disponible",
           "specs": {
-            "areaTotal": 40.96
+            "areaTotal": 40.75
           }
         },
         {
           "id": "G-112",
           "code": "112",
           "level": 1,
-          "price": 2650000,
           "delivery": "SEP 2027",
-          "status": "disponible",
+          "status": "vendido",
           "specs": {
-            "areaTotal": 32.81
+            "areaTotal": 32.6
           }
         },
         {
           "id": "G-113",
           "code": "113",
           "level": 1,
-          "price": 2650000,
           "delivery": "SEP 2027",
-          "status": "disponible",
+          "status": "vendido",
           "specs": {
             "areaTotal": 32.6
           }
@@ -641,14 +639,14 @@
           "delivery": "SEP 2027",
           "status": "bloqueado",
           "specs": {
-            "areaTotal": 32.58
+            "areaTotal": 32.6
           }
         },
         {
           "id": "G-116",
           "code": "116",
           "level": 1,
-          "price": 8950000,
+          "price": 9685000,
           "delivery": "SEP 2027",
           "status": "bloqueado",
           "isAnchor": true,
@@ -675,7 +673,7 @@
           "delivery": "JUN 2027",
           "status": "apartado",
           "specs": {
-            "areaTotal": 32.58
+            "areaTotal": 32.6
           }
         },
         {
@@ -706,7 +704,7 @@
           "delivery": "JUN 2027",
           "status": "disponible",
           "specs": {
-            "areaTotal": 32.81
+            "areaTotal": 32.6
           }
         },
         {
@@ -717,7 +715,7 @@
           "delivery": "JUN 2027",
           "status": "disponible",
           "specs": {
-            "areaTotal": 40.96
+            "areaTotal": 40.75
           }
         },
         {
@@ -772,7 +770,7 @@
           "delivery": "SEP 2027",
           "status": "disponible",
           "specs": {
-            "areaTotal": 40.96
+            "areaTotal": 40.75
           }
         },
         {
@@ -783,7 +781,7 @@
           "delivery": "SEP 2027",
           "status": "disponible",
           "specs": {
-            "areaTotal": 32.81
+            "areaTotal": 32.6
           }
         },
         {
@@ -816,7 +814,7 @@
           "delivery": "SEP 2027",
           "status": "disponible",
           "specs": {
-            "areaTotal": 32.58
+            "areaTotal": 32.6
           }
         },
         {
