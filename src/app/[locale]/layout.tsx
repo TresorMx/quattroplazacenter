@@ -10,7 +10,6 @@ import Footer from '@/components/Footer';
 import ChromeGate from '@/components/ChromeGate';
 import MobileBar from '@/components/MobileBar';
 import Chatbot from '@/components/Chatbot';
-import ExitIntent from '@/components/ExitIntent';
 import MetaPixel from '@/components/MetaPixel';
 import GoogleAnalytics from '@/components/GoogleAnalytics';
 import { locales, type Locale } from '@/i18n';
@@ -207,7 +206,7 @@ export default async function LocaleLayout({
           <ChromeGate
             header={<Header />}
             footer={<Footer />}
-            extras={<><MobileBar /><Chatbot /><ExitIntent /></>}
+            extras={<><MobileBar /><Chatbot /></>}
           >
             {children}
           </ChromeGate>
