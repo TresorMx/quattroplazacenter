@@ -91,7 +91,7 @@ const GARDENS: Proyecto = {
     u('113', 1, 32.60, null, 'SEP 2027', 'vendido'),
     u('114', 1, 32.60, 2650000, 'SEP 2027', 'disponible'),
     u('115', 1, 32.60, 2650000, 'SEP 2027', 'bloqueado'),
-    u('116', 1, 119.20, 9685000, 'SEP 2027', 'bloqueado'),
+    u('116', 1, 119.20, 9685000, 'SEP 2027', 'disponible'),
     // Nivel 2
     u('201', 2, 119.20, 6765405.41, 'JUN 2027', 'disponible'),
     u('202', 2, 32.60, null, 'JUN 2027', 'apartado'),
