@@ -69,8 +69,10 @@ export async function generateMetadata({
     metadataBase: new URL(SITE_URL),
     title: {
       default: isEs
-        ? 'Quattro Plaza Center — Locales en Venta Cancún'
-        : 'Quattro Plaza Center — Commercial Units for Sale in Cancún',
+        // Marca primero y SIN "locales (comerciales) en venta Cancún": esa
+        // frase la posee tresor.mx/locales-comerciales-cancun (oct/2026).
+        ? 'Quattro Plaza Center — Plazas Comerciales en Cancún'
+        : 'Quattro Plaza Center — Commercial Plazas in Cancún',
       template: '%s · Quattro Plaza Center',
     },
     description: isEs

@@ -12,8 +12,12 @@ export const metadata: Metadata = {
     'bienes raices cancun cdmx',
     'invertir fuera de mi ciudad cancun',
   ],
+  // Canonical ENTRE DOMINIOS (oct/2026): esta página existe casi idéntica en
+  // tresor.mx, y las dos versiones se canibalizaban — ninguna rankeaba. Se
+  // decidió que tresor.mx es la dueña del tema; aquí la página sigue viva
+  // para usuarios y pauta, pero Google consolida las señales en Tresor.
   alternates: {
-    canonical: 'https://www.quattroplaza.mx/invertir-en-cancun',
+    canonical: 'https://www.tresor.mx/invertir-en-cancun',
   },
   openGraph: {
     title: 'Invertir en Cancún — Para Inversionistas de Monterrey, CDMX y Guadalajara',

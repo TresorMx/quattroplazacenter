@@ -13,8 +13,11 @@ export const metadata: Metadata = {
     'precio m2 local comercial cancun',
     'locales comerciales cancun 2026 precio',
   ],
+  // Canonical ENTRE DOMINIOS (oct/2026): este artículo existe casi idéntico
+  // en tresor.mx y las dos versiones se canibalizaban. tresor.mx es la dueña
+  // del tema; aquí sigue vivo para usuarios, pero Google consolida en Tresor.
   alternates: {
-    canonical: 'https://www.quattroplaza.mx/blog/cuanto-cuesta-un-local-comercial-en-cancun',
+    canonical: 'https://www.tresor.mx/blog/cuanto-cuesta-un-local-comercial-en-cancun',
   },
   openGraph: {
     title: '¿Cuánto Cuesta un Local Comercial en Cancún en 2026?',

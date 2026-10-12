@@ -15,8 +15,11 @@ export const metadata: Metadata = {
     'bienes raices cancun monterrey',
     'invertir en cancun sin vivir ahi',
   ],
+  // Canonical ENTRE DOMINIOS (oct/2026): este artículo existe casi idéntico
+  // en tresor.mx y las dos versiones se canibalizaban. tresor.mx es la dueña
+  // del tema; aquí sigue vivo para usuarios, pero Google consolida en Tresor.
   alternates: {
-    canonical: 'https://www.quattroplaza.mx/blog/invertir-en-cancun-desde-monterrey-cdmx',
+    canonical: 'https://www.tresor.mx/blog/invertir-en-cancun-desde-monterrey-cdmx',
   },
   openGraph: {
     title: 'Por Qué Invertir en Cancún desde Monterrey, CDMX o Guadalajara',

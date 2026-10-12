@@ -14,8 +14,11 @@ export const metadata: Metadata = {
     'como comprar en preventa cancun',
     'preventa inmobiliaria cancun 2026',
   ],
+  // Canonical ENTRE DOMINIOS (oct/2026): este artículo existe casi idéntico
+  // en tresor.mx y las dos versiones se canibalizaban. tresor.mx es la dueña
+  // del tema; aquí sigue vivo para usuarios, pero Google consolida en Tresor.
   alternates: {
-    canonical: 'https://www.quattroplaza.mx/blog/guia-comprar-en-preventa-cancun',
+    canonical: 'https://www.tresor.mx/blog/guia-comprar-en-preventa-cancun',
   },
   openGraph: {
     title: 'Guía para Comprar en Preventa en Cancún: Todo lo que Debes Saber',

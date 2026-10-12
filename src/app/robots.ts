@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
 
-const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://quattroplaza.mx';
+// Host canónico con www (el apex redirige 308 a www).
+const SITE = 'https://www.quattroplaza.mx';
 
 export default function robots(): MetadataRoute.Robots {
   return {

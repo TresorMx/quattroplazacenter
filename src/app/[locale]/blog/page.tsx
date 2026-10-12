@@ -15,6 +15,10 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://www.quattroplaza.mx/blog',
   },
+  // noindex (oct/2026): todos sus artículos ahora tienen canonical hacia
+  // tresor.mx (ver cada post). Un índice de páginas canonicalizadas a otro
+  // dominio no aporta nada en Google; sigue vivo para usuarios.
+  robots: { index: false, follow: true },
   openGraph: {
     title: 'Blog — Guía de Inversión en Locales Comerciales en Cancún',
     description:

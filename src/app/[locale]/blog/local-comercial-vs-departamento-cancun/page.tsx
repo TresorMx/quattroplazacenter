@@ -13,8 +13,11 @@ export const metadata: Metadata = {
     'rendimiento local vs departamento cancun',
     'invertir cancun 2026',
   ],
+  // Canonical ENTRE DOMINIOS (oct/2026): este artículo existe casi idéntico
+  // en tresor.mx y las dos versiones se canibalizaban. tresor.mx es la dueña
+  // del tema; aquí sigue vivo para usuarios, pero Google consolida en Tresor.
   alternates: {
-    canonical: 'https://www.quattroplaza.mx/blog/local-comercial-vs-departamento-cancun',
+    canonical: 'https://www.tresor.mx/blog/local-comercial-vs-departamento-cancun',
   },
   openGraph: {
     title: 'Local Comercial vs Departamento en Cancún: ¿Qué Conviene Más como Inversión?',

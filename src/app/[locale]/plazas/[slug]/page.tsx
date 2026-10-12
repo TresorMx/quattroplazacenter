@@ -42,18 +42,18 @@ export async function generateMetadata({
     ? (plaza.seoDescription ?? `${plaza.tagline}. Plaza comercial premium en ${plaza.city}. ${plaza.availableUnits ?? '+10'} locales disponibles${fromText}. Entrega ${plaza.deliveryWindow}. Por Tresor Real Estate.`)
     : (plaza.seoDescriptionEn ?? `${plaza.taglineEn ?? plaza.tagline}. Premium commercial plaza in ${plaza.city}. ${plaza.availableUnits ?? '+10'} units available${fromText}. By Tresor Real Estate.`);
 
-  const SITE = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://quattroplaza.mx';
-
   return {
     title,
     description,
+    // Canonical ENTRE DOMINIOS (oct/2026): la ficha de la misma plaza vive en
+    // tresor.mx/desarrollos/{slug} con el mismo contenido (~81% igual) y las
+    // dos se canibalizaban. tresor.mx es la dueña; esta sigue viva para
+    // usuarios, pauta y cotizador. Sin hreflang: apuntaría a páginas
+    // no canónicas, que Google trata como señal contradictoria.
     alternates: {
-      canonical: `/plazas/${plaza.slug}`,
-      languages: {
-        'es':        `${SITE}/plazas/${plaza.slug}`,
-        'en':        `${SITE}/en/plazas/${plaza.slug}`,
-        'x-default': `${SITE}/plazas/${plaza.slug}`,
-      },
+      canonical: isEs
+        ? `https://www.tresor.mx/desarrollos/${plaza.slug}`
+        : `https://www.tresor.mx/en/desarrollos/${plaza.slug}`,
     },
     openGraph: {
       title,

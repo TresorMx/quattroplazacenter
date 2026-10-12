@@ -14,8 +14,11 @@ export const metadata: Metadata = {
     'locales comerciales cancun 2026',
     'rendimiento local comercial cancun',
   ],
+  // Canonical ENTRE DOMINIOS (oct/2026): este artículo existe casi idéntico
+  // en tresor.mx y las dos versiones se canibalizaban. tresor.mx es la dueña
+  // del tema; aquí sigue vivo para usuarios, pero Google consolida en Tresor.
   alternates: {
-    canonical: 'https://www.quattroplaza.mx/blog/como-invertir-en-locales-comerciales-en-cancun',
+    canonical: 'https://www.tresor.mx/blog/como-invertir-en-locales-comerciales-en-cancun',
   },
   openGraph: {
     title: 'Cómo Invertir en Locales Comerciales en Cancún: Guía Completa 2026',

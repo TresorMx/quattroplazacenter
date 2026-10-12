@@ -15,7 +15,11 @@ export const metadata: Metadata = {
     'local comercial preventa cancun',
     'quattro plaza center',
   ],
-  alternates: { canonical: 'https://www.quattroplaza.mx/locales-comerciales-cancun' },
+  // Canonical ENTRE DOMINIOS (oct/2026): esta página existe casi idéntica en
+  // tresor.mx, y las dos versiones se canibalizaban — ninguna rankeaba. Se
+  // decidió que tresor.mx es la dueña del tema; aquí la página sigue viva
+  // para usuarios y pauta, pero Google consolida las señales en Tresor.
+  alternates: { canonical: 'https://www.tresor.mx/locales-comerciales-cancun' },
   openGraph: {
     title: 'Locales Comerciales en Venta en Cancún | Quattro Plaza Center',
     description: 'Dos plazas comerciales premium en Cancún. Locales desde 32 m² y desde $1,968,600 MXN + IVA. Enganche desde $147,000 MXN. Entrega 2027.',
