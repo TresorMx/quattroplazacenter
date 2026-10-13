@@ -167,8 +167,8 @@ const LONG_ISLAND: Proyecto = {
     u('213', 2, 40.60, 2650000, 'MAR 2027', 'disponible'),
     u('214', 2, 40.60, 2650000, 'MAR 2027', 'disponible'),
     u('215', 2, 40.60, 2650000, 'MAR 2027', 'bloqueado'),
-    u('216', 2, 50.75, 3350000, 'MAR 2027', 'bloqueado'),
-    u('217', 2, 102.26, 6900000, 'MAR 2027', 'bloqueado'),
+    u('216', 2, 50.75, 3350000, 'MAR 2027', 'disponible'),
+    u('217', 2, 102.26, 6900000, 'MAR 2027', 'disponible'),
   ],
 };
 
