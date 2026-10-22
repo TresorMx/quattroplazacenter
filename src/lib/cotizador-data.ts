@@ -79,7 +79,7 @@ const GARDENS: Proyecto = {
     u('101', 1, 119.03, 9685000, 'JUN 2027', 'bloqueado'),
     u('102', 1, 32.60, 2650000, 'JUN 2027', 'bloqueado'),
     u('103', 1, 32.60, null, 'JUN 2027', 'vendido'),
-    u('104', 1, 32.60, null, 'JUN 2027', 'apartado'),
+    u('104', 1, 32.60, 2650000, 'JUN 2027', 'disponible'),
     u('105', 1, 32.60, null, 'JUN 2027', 'vendido'),
     u('106', 1, 40.75, null, 'JUN 2027', 'vendido'),
     u('107', 1, 40.75, null, 'JUN 2027', 'vendido'),
