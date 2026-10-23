@@ -137,31 +137,33 @@ function LevelPage({ plaza, level, units, origin, date, levelHeader }: {
         ))}
       </View>
 
-      {/* Condiciones de pago */}
-      {schemes.length > 0 && (
-        <View style={[s.abs, { left: TABLE.left + 4, top: condTop, width: TABLE.width - 4 }]}>
-          <View style={{ flexDirection: 'row', backgroundColor: C.condHead, paddingVertical: 6, paddingHorizontal: 16 }}>
-            <Text style={{ flex: 1, fontFamily: 'Montserrat', fontWeight: 700, fontSize: 22 }}>Condiciones de pago Nivel {level}:</Text>
-            <Text style={{ width: 200, textAlign: 'center', fontFamily: 'Montserrat', fontWeight: 700, fontSize: 22 }}>Descuento</Text>
-          </View>
-          {schemes.map((e, i) => (
-            <View key={i} style={{ flexDirection: 'row', backgroundColor: i % 2 === 1 ? C.condHead : '#FFFFFF', paddingVertical: 5, paddingHorizontal: 16 }}>
-              <Text style={{ flex: 1, fontFamily: 'Montserrat', fontSize: 21 }}>
-                <Text style={{ fontWeight: 700 }}>- Esquema {String.fromCharCode(65 + i)}:</Text> {schemeText(e)}
-              </Text>
-              <Text style={{ width: 200, textAlign: 'center', fontFamily: 'Montserrat', fontWeight: 700, fontSize: 21 }}>
-                {e.descuento ? `${e.descuento}%` : 'N/A'}
-              </Text>
+      {/* Condiciones de pago + nota de IVA (la nota fluye debajo: con 4
+          esquemas, una posición fija se encimaba con la última fila) */}
+      <View style={[s.abs, { left: TABLE.left + 4, top: condTop, width: TABLE.width - 4 }]}>
+        {schemes.length > 0 && (
+          <>
+            <View style={{ flexDirection: 'row', backgroundColor: C.condHead, paddingVertical: 6, paddingHorizontal: 16 }}>
+              <Text style={{ flex: 1, fontFamily: 'Montserrat', fontWeight: 700, fontSize: 22 }}>Condiciones de pago Nivel {level}:</Text>
+              <Text style={{ width: 200, textAlign: 'center', fontFamily: 'Montserrat', fontWeight: 700, fontSize: 22 }}>Descuento</Text>
             </View>
-          ))}
-        </View>
-      )}
-
-      {plaza.footnote ? (
-        <Text style={[s.abs, { left: TABLE.left + 14, top: 1526, width: TABLE.width - 20, fontFamily: 'Montserrat', fontSize: 12.5, letterSpacing: 0.8 }]}>
-          {plaza.footnote}
-        </Text>
-      ) : null}
+            {schemes.map((e, i) => (
+              <View key={i} style={{ flexDirection: 'row', backgroundColor: i % 2 === 1 ? C.condHead : '#FFFFFF', paddingVertical: 5, paddingHorizontal: 16 }}>
+                <Text style={{ flex: 1, fontFamily: 'Montserrat', fontSize: 21 }}>
+                  <Text style={{ fontWeight: 700 }}>- Esquema {String.fromCharCode(65 + i)}:</Text> {schemeText(e)}
+                </Text>
+                <Text style={{ width: 200, textAlign: 'center', fontFamily: 'Montserrat', fontWeight: 700, fontSize: 21 }}>
+                  {e.descuento ? `${e.descuento}%` : 'N/A'}
+                </Text>
+              </View>
+            ))}
+          </>
+        )}
+        {plaza.footnote ? (
+          <Text style={{ marginTop: schemes.length > 3 ? 22 : 40, paddingHorizontal: 10, fontFamily: 'Montserrat', fontSize: 12.5, letterSpacing: 0.8 }}>
+            {plaza.footnote}
+          </Text>
+        ) : null}
+      </View>
     </Page>
   );
 }
