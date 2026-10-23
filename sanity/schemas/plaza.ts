@@ -11,6 +11,7 @@ export default defineType({
     { name: 'location', title: 'Ubicación' },
     { name: 'specs',    title: 'Campos del local' },
     { name: 'plans',    title: 'Planes de pago' },
+    { name: 'quoter',   title: '📄 Lista de precios y cotizador' },
     { name: 'units',    title: 'Locales' },
     { name: 'seo',      title: '🔍 SEO' },
   ],
@@ -206,6 +207,53 @@ export default defineType({
           return sum === 100 || `Los % deben sumar 100 (actual: ${sum}%)`;
         }),
       }],
+    }),
+
+    // ── LISTA DE PRECIOS Y COTIZADOR ─────────────────────────────
+    // Fuente única de la lista de precios en PDF (/lista-precios/<slug>.pdf)
+    // y del cotizador de asesores (/cotizador). Los esquemas van POR NIVEL
+    // porque cada nivel tiene condiciones distintas; son independientes de
+    // `paymentPlans` (planes del cotizador público de la landing).
+    defineField({
+      name: 'quoterSchemes', title: 'Esquemas de pago por nivel', group: 'quoter',
+      description: 'Se usan en la lista de precios en PDF y en el cotizador de asesores. Enganche + mensualidades + contra entrega = 100.',
+      type: 'object',
+      fields: [1, 2].map((lvl) => ({
+        name: `level${lvl}`, title: `Nivel ${lvl}`, type: 'array',
+        of: [{
+          type: 'object', name: 'scheme',
+          fields: [
+            { name: 'enganche', title: 'Enganche %',       type: 'number', validation: (r: any) => r.min(0).max(100) },
+            { name: 'diferido', title: 'Mensualidades %',  type: 'number', validation: (r: any) => r.min(0).max(100) },
+            { name: 'entrega',  title: 'Contra entrega %', type: 'number', validation: (r: any) => r.min(0).max(100) },
+            { name: 'descuento', title: 'Descuento %',     type: 'number', validation: (r: any) => r.min(0).max(100) },
+          ],
+          preview: {
+            select: { e: 'enganche', d: 'diferido', c: 'entrega', x: 'descuento' },
+            prepare: ({ e, d, c, x }: any) => ({ title: `${e ?? 0}% / ${d ?? 0}% / ${c ?? 0}%`, subtitle: x ? `${x}% de descuento` : 'Sin descuento' }),
+          },
+          validation: (r: any) => r.custom((v: any) => {
+            if (!v) return true;
+            const sum = (v.enganche ?? 0) + (v.diferido ?? 0) + (v.entrega ?? 0);
+            return sum === 100 || `Deben sumar 100 (actual: ${sum}%)`;
+          }),
+        }],
+      })),
+    }),
+    defineField({ name: 'quoterAddress',   title: 'Ubicación (cotizador)',   type: 'string', group: 'quoter', description: 'Texto que aparece en la cotización en PDF.' }),
+    defineField({ name: 'apartadoDefault', title: 'Apartado sugerido (MXN)', type: 'number', group: 'quoter', initialValue: 50000 }),
+    defineField({
+      name: 'bank', title: 'Cuenta para depósitos', type: 'object', group: 'quoter',
+      fields: [
+        { name: 'beneficiario', title: 'Beneficiario', type: 'string' },
+        { name: 'banco',        title: 'Banco',        type: 'string' },
+        { name: 'cuenta',       title: 'Cuenta',       type: 'string' },
+        { name: 'clabe',        title: 'CLABE',        type: 'string' },
+      ],
+    }),
+    defineField({
+      name: 'priceListFootnote', title: 'Nota al pie de la lista de precios', type: 'text', rows: 2, group: 'quoter',
+      initialValue: '* Todos los precios son + IVA, únicamente sobre la construcción del local comercial, no aplicable al valor del terreno proporcional.',
     }),
 
     // ── SEO ───────────────────────────────────────────────────────

@@ -19,6 +19,7 @@ export default defineType({
       options: { list: [{ title: 'Nivel 1', value: 1 }, { title: 'Nivel 2', value: 2 }] },
       initialValue: 1,
     }),
+    defineField({ name: 'm2', title: 'Superficie (m²)', type: 'number' }),
     defineField({ name: 'price', title: 'Precio (MXN, sin IVA)', type: 'number' }),
     defineField({
       name: 'status', title: 'Estatus', type: 'string',
@@ -32,6 +33,10 @@ export default defineType({
         layout: 'radio',
       },
       initialValue: 'disponible',
+    }),
+    defineField({
+      name: 'quotable', title: 'Cotizable para asesores', type: 'boolean', initialValue: false,
+      description: 'Permite cotizarlo en /cotizador aunque el estatus público sea bloqueado o apartado.',
     }),
     defineField({ name: 'delivery', title: 'Entrega (override por local)', type: 'string', description: 'Si está vacío usa la ventana de entrega de la plaza.' }),
     defineField({ name: 'isAnchor', title: 'Local ancla', type: 'boolean', initialValue: false }),

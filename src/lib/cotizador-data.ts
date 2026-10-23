@@ -1,7 +1,6 @@
 /* ────────────────────────────────────────────────────────────
-   Cotizador Quattro Plaza Center — data + motor de cálculo
-   Fuente: listas de precios oficiales (Gardens 25/06/2026,
-   Long Island 08/05/2026). Precios + IVA.
+   Cotizador Quattro Plaza Center — tipos + motor de cálculo.
+   Datos: Sanity (lib/inventory.ts), editables en /inventario. Precios + IVA.
    IVA aplicable 12.8% (16% sobre 80% de construcción; terreno exento).
    ──────────────────────────────────────────────────────────── */
 
@@ -44,138 +43,9 @@ export interface Proyecto {
   esquemas: { 1: Esquema[]; 2: Esquema[] };
 }
 
-const u = (
-  id: string, nivel: 1 | 2, m2: number, precio: number | null,
-  entrega: string, status: Status,
-): Unidad => ({ id, nivel, label: `NIVEL ${nivel} - ${id}`, m2, precio, entrega, status });
-
-/* ─────────── GARDENS ─────────── */
-const GARDENS: Proyecto = {
-  slug: 'gardens',
-  nombre: 'Quattro Plaza Center Gardens',
-  ubicacion: 'Av. Josefa Ortiz de Domínguez y Av. 127',
-  apartadoDefault: 50000,
-  bank: {
-    beneficiario: 'VALKIRA S DE RL DE CV',
-    banco: 'INBURSA',
-    cuenta: '50075915337',
-    clabe: '036691500759153372',
-  },
-  esquemas: {
-    1: [
-      { enganche: 20, diferido: 10, entrega: 70, descuento: 1 },
-      { enganche: 20, diferido: 20, entrega: 60, descuento: 5 },
-      { enganche: 30, diferido: 20, entrega: 50, descuento: 7.5 },
-    ],
-    2: [
-      { enganche: 10, diferido: 10, entrega: 80, descuento: 0 },
-      { enganche: 20, diferido: 10, entrega: 70, descuento: 1 },
-      { enganche: 20, diferido: 20, entrega: 60, descuento: 5 },
-      { enganche: 30, diferido: 20, entrega: 50, descuento: 7.5 },
-    ],
-  },
-  unidades: [
-    // Nivel 1
-    u('101', 1, 119.03, 9685000, 'JUN 2027', 'bloqueado'),
-    u('102', 1, 32.60, 2650000, 'JUN 2027', 'bloqueado'),
-    u('103', 1, 32.60, null, 'JUN 2027', 'vendido'),
-    u('104', 1, 32.60, 2650000, 'JUN 2027', 'disponible'),
-    u('105', 1, 32.60, null, 'JUN 2027', 'vendido'),
-    u('106', 1, 40.75, null, 'JUN 2027', 'vendido'),
-    u('107', 1, 40.75, null, 'JUN 2027', 'vendido'),
-    u('108', 1, 41.36, null, 'JUN 2027', 'vendido'),
-    u('109', 1, 41.36, 3350000, 'SEP 2027', 'disponible'),
-    u('110', 1, 40.75, 3250000, 'SEP 2027', 'disponible'),
-    u('111', 1, 40.75, 3250000, 'SEP 2027', 'disponible'),
-    u('112', 1, 32.60, null, 'SEP 2027', 'vendido'),
-    u('113', 1, 32.60, null, 'SEP 2027', 'vendido'),
-    u('114', 1, 32.60, 2650000, 'SEP 2027', 'disponible'),
-    u('115', 1, 32.60, 2650000, 'SEP 2027', 'bloqueado'),
-    u('116', 1, 119.20, 9685000, 'SEP 2027', 'disponible'),
-    // Nivel 2
-    u('201', 2, 119.20, 6765405.41, 'JUN 2027', 'disponible'),
-    u('202', 2, 32.60, null, 'JUN 2027', 'apartado'),
-    u('203', 2, 32.60, null, 'JUN 2027', 'vendido'),
-    u('204', 2, 32.60, 1968600, 'JUN 2027', 'disponible'),
-    u('205', 2, 32.60, null, 'JUN 2027', 'disponible'),
-    u('206', 2, 40.75, 2375000, 'JUN 2027', 'disponible'),
-    u('207', 2, 40.75, 2375000, 'JUN 2027', 'disponible'),
-    u('208', 2, 41.36, 2475000, 'JUN 2027', 'disponible'),
-    u('209', 2, 41.36, 2475000, 'SEP 2027', 'disponible'),
-    u('210', 2, 40.75, 2375000, 'SEP 2027', 'disponible'),
-    u('211', 2, 40.75, 2375000, 'SEP 2027', 'disponible'),
-    u('212', 2, 32.60, 1968600, 'SEP 2027', 'disponible'),
-    u('213', 2, 32.60, 1968600, 'SEP 2027', 'disponible'),
-    u('214', 2, 32.60, 1968600, 'SEP 2027', 'disponible'),
-    u('215', 2, 32.60, 1968600, 'SEP 2027', 'disponible'),
-    u('216', 2, 119.20, 6950000, 'SEP 2027', 'disponible'),
-  ],
-};
-
-/* ─────────── LONG ISLAND ─────────── */
-const LONG_ISLAND: Proyecto = {
-  slug: 'long-island',
-  nombre: 'Quattro Plaza Center Long Island',
-  ubicacion: 'Long Island - Río - Aqua',
-  apartadoDefault: 50000,
-  bank: {
-    beneficiario: 'VALKIRA S DE RL DE CV',
-    banco: 'INBURSA',
-    cuenta: '50073869590',
-    clabe: '036691500738695903',
-  },
-  esquemas: {
-    1: [
-      { enganche: 30, diferido: 0, entrega: 70, descuento: 2.5 },
-      { enganche: 20, diferido: 20, entrega: 60, descuento: 5 },
-      { enganche: 30, diferido: 20, entrega: 50, descuento: 7.5 },
-    ],
-    2: [
-      { enganche: 10, diferido: 10, entrega: 80, descuento: 0 },
-      { enganche: 20, diferido: 10, entrega: 70, descuento: 1 },
-      { enganche: 20, diferido: 20, entrega: 60, descuento: 5 },
-      { enganche: 30, diferido: 20, entrega: 50, descuento: 7.5 },
-    ],
-  },
-  unidades: [
-    // Nivel 1
-    u('101', 1, 195.03, 19163625, 'DIC 2026', 'bloqueado'),
-    u('105', 1, 50.75, null, 'DIC 2026', 'vendido'),
-    u('106', 1, 40.60, null, 'DIC 2026', 'vendido'),
-    u('107', 1, 40.60, null, 'DIC 2026', 'vendido'),
-    u('108', 1, 40.60, null, 'DIC 2026', 'vendido'),
-    u('109', 1, 40.60, null, 'DIC 2026', 'vendido'),
-    u('110', 1, 40.60, null, 'DIC 2026', 'vendido'),
-    u('111', 1, 40.60, null, 'DIC 2026', 'vendido'),
-    u('112', 1, 40.60, null, 'DIC 2026', 'vendido'),
-    u('113', 1, 40.60, null, 'DIC 2026', 'vendido'),
-    u('114', 1, 40.60, null, 'DIC 2026', 'vendido'),
-    u('115', 1, 40.60, null, 'DIC 2026', 'vendido'),
-    u('116', 1, 151.64, 14962500, 'MAR 2027', 'disponible'),
-    // Nivel 2
-    u('201', 2, 104.30, 6483513.51, 'DIC 2026', 'disponible'),
-    u('202', 2, 50, null, 'DIC 2026', 'vendido'),
-    u('203', 2, 45.45, 2850000, 'DIC 2026', 'disponible'),
-    u('205', 2, 50.75, 3350000, 'DIC 2026', 'disponible'),
-    u('206', 2, 40.60, null, 'DIC 2026', 'vendido'),
-    u('207', 2, 40.60, null, 'DIC 2026', 'vendido'),
-    u('208', 2, 40.60, null, 'DIC 2026', 'vendido'),
-    u('209', 2, 40.60, 2650000, 'DIC 2026', 'disponible'),
-    u('210', 2, 40.60, 2750000, 'DIC 2026', 'bloqueado'),
-    u('211', 2, 40.60, null, 'DIC 2026', 'vendido'),
-    u('212', 2, 40.60, 2650000, 'MAR 2027', 'disponible'),
-    u('213', 2, 40.60, 2650000, 'MAR 2027', 'disponible'),
-    u('214', 2, 40.60, 2650000, 'MAR 2027', 'disponible'),
-    u('215', 2, 40.60, 2650000, 'MAR 2027', 'disponible'),
-    u('216', 2, 50.75, 3350000, 'MAR 2027', 'disponible'),
-    u('217', 2, 102.26, 6900000, 'MAR 2027', 'disponible'),
-  ],
-};
-
-export const PROYECTOS: Proyecto[] = [GARDENS, LONG_ISLAND];
-
-export const getProyecto = (slug: string) =>
-  PROYECTOS.find((p) => p.slug === slug);
+// Los proyectos, unidades, esquemas y cuentas ya NO viven aquí: la fuente
+// única es Sanity (ver src/lib/inventory.ts → getProyectos()). Este archivo
+// solo conserva los tipos y el motor de cálculo del cotizador.
 
 export const esquemaLabel = (e: Esquema) =>
   `${e.descuento}% desc · ${e.enganche}/${e.diferido}/${e.entrega}`;

@@ -6,7 +6,10 @@ const withNextIntl = createNextIntlPlugin('./src/i18n.ts');
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
-  transpilePackages: ['@react-pdf/renderer'],
+  // @react-pdf se carga como paquete externo en el servidor: empaquetado por
+  // Next choca con su React y /lista-precios/*.pdf truena ("reading 'S'").
+  // El cotizador lo usa en el cliente (import dinámico), donde no hace falta.
+  serverExternalPackages: ['@react-pdf/renderer'],
   images: {
     formats: ['image/avif', 'image/webp'],
     remotePatterns: [
