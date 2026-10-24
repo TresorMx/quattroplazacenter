@@ -7,7 +7,7 @@ plazas **Gardens** y **Long Island**). Además del sitio público, aquí viven l
 
 | Ruta | Qué es | Quién la usa |
 |---|---|---|
-| `/inventario` | Panel para editar m², precio, entrega, estatus y "Cotizable" de cada local | Equipo comercial (contraseña `INVENTARIO_PASSWORD`) |
+| `/inventario` | Panel para editar m², precio, entrega, estatus y "Cotizable" de cada local, y las **Fórmulas de pago** de la hoja aparte del PDF (no las usa el cotizador) | Equipo comercial (contraseña `INVENTARIO_PASSWORD`) |
 | `/lista-precios/gardens.pdf`, `/lista-precios/long-island.pdf` | Listas de precios generadas en vivo | Asesores y brokers |
 | `/cotizador` | Cotizador interno con esquemas por nivel | Asesores y brokers. **Abierto a propósito**, sin contraseña, pero noindex |
 | `/[locale]/plazas/[slug]` | Ficha pública de cada plaza con plano interactivo | Público |
