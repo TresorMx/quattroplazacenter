@@ -216,7 +216,7 @@ export default defineType({
     // `paymentPlans` (planes del cotizador público de la landing).
     defineField({
       name: 'quoterSchemes', title: 'Esquemas de pago por nivel', group: 'quoter',
-      description: 'Se usan en la lista de precios en PDF y en el cotizador de asesores. Enganche + mensualidades + contra entrega = 100.',
+      description: 'Se usan en el cotizador de asesores (/cotizador). Enganche + mensualidades + contra entrega = 100. La lista de precios en PDF usa "Fórmulas de pago" (abajo).',
       type: 'object',
       fields: [1, 2].map((lvl) => ({
         name: `level${lvl}`, title: `Nivel ${lvl}`, type: 'array',
@@ -239,6 +239,55 @@ export default defineType({
           }),
         }],
       })),
+    }),
+    defineField({
+      name: 'priceListFormulas', title: 'Fórmulas de pago (hoja aparte de la lista de precios)', group: 'quoter',
+      description: 'Cada fórmula es una tabla en la hoja "Fórmulas de pago" del PDF, en este orden. Desactiva una para ocultarla sin borrarla. Si ninguna está activa, la hoja no aparece.',
+      type: 'array',
+      of: [{
+        type: 'object', name: 'formula',
+        fields: [
+          { name: 'title',  title: 'Título', type: 'string', description: 'Ej: Fórmula Premium ( Entrega Marzo 2027 )', validation: (r: any) => r.required() },
+          { name: 'active', title: 'Activa (se muestra en el PDF)', type: 'boolean', initialValue: true },
+          {
+            name: 'rows', title: 'Opciones', type: 'array',
+            description: 'Enganche + mensualidades + entrega + financiamiento = 100. Si alguna opción lleva financiamiento, la tabla muestra esa columna.',
+            of: [{
+              type: 'object', name: 'formulaRow',
+              fields: [
+                { name: 'enganche',       title: 'Enganche %',       type: 'number', validation: (r: any) => r.min(0).max(100) },
+                { name: 'mensualidades',  title: 'Mensualidades %',  type: 'number', validation: (r: any) => r.min(0).max(100) },
+                { name: 'entrega',        title: 'Entrega %',        type: 'number', validation: (r: any) => r.min(0).max(100) },
+                { name: 'financiamiento', title: 'Financiamiento % (opcional)', type: 'number', validation: (r: any) => r.min(0).max(100) },
+                { name: 'descuento',      title: 'Descuento %',      type: 'number', validation: (r: any) => r.min(0).max(100) },
+              ],
+              preview: {
+                select: { e: 'enganche', m: 'mensualidades', c: 'entrega', f: 'financiamiento', x: 'descuento' },
+                prepare: ({ e, m, c, f, x }: any) => ({
+                  title: `${e ?? 0}% / ${m ?? 0}% / ${c ?? 0}%${f ? ` / ${f}% financiado` : ''}`,
+                  subtitle: x ? `${x}% de descuento` : 'Sin descuento',
+                }),
+              },
+              validation: (r: any) => r.custom((v: any) => {
+                if (!v) return true;
+                const sum = (v.enganche ?? 0) + (v.mensualidades ?? 0) + (v.entrega ?? 0) + (v.financiamiento ?? 0);
+                return sum === 100 || `Deben sumar 100 (actual: ${sum}%)`;
+              }),
+            }],
+          },
+        ],
+        preview: {
+          select: { title: 'title', active: 'active', rows: 'rows' },
+          prepare: ({ title, active, rows }: any) => ({
+            title: title ?? 'Fórmula sin título',
+            subtitle: `${active === false ? '⏸ Desactivada' : '✅ Activa'} · ${rows?.length ?? 0} opciones`,
+          }),
+        },
+      }],
+    }),
+    defineField({
+      name: 'priceListFormulasNote', title: 'Notas al pie de la hoja de fórmulas', type: 'text', rows: 3, group: 'quoter',
+      description: 'Ej: * Entrega de Posesión + Financiamiento Directo a 12 meses al 9.95% interés. El asterisco de la columna Financiamiento remite a esta nota.',
     }),
     defineField({ name: 'quoterAddress',   title: 'Ubicación (cotizador)',   type: 'string', group: 'quoter', description: 'Texto que aparece en la cotización en PDF.' }),
     defineField({ name: 'apartadoDefault', title: 'Apartado sugerido (MXN)', type: 'number', group: 'quoter', initialValue: 50000 }),
