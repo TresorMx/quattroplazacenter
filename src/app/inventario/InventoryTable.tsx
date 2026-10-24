@@ -3,9 +3,10 @@
 import { useMemo, useState, useTransition } from 'react';
 import type { InventoryUnit } from '@/lib/inventory';
 import type { Status } from '@/lib/cotizador-data';
-import { saveUnit, type UnitPatch } from './actions';
+import { saveUnit, type UnitPatch, type FormulaInput } from './actions';
+import FormulasEditor from './FormulasEditor';
 
-type Plaza = { slug: string; name: string; updated: string; units: InventoryUnit[] };
+type Plaza = { slug: string; name: string; updated: string; units: InventoryUnit[]; formulas: FormulaInput[]; formulasNote: string };
 
 const STATUS: { v: Status; label: string; cls: string }[] = [
   { v: 'disponible', label: 'Disponible', cls: 'bg-[#DDF2D4] text-black' },
@@ -138,8 +139,10 @@ export default function InventoryTable({ plazas }: { plazas: Plaza[] }) {
         </table>
       </div>
       <p className="mt-3 text-[12px] text-white/40">
-        Cotizable: el cotizador la habilita aunque el público la vea bloqueada o apartada. Las condiciones de pago, cuentas y nota del PDF se editan en el Studio (pestaña “Lista de precios y cotizador” de cada plaza).
+        Cotizable: el cotizador la habilita aunque el público la vea bloqueada o apartada. Los esquemas del cotizador, cuentas y nota de IVA se editan en el Studio (pestaña “Lista de precios y cotizador” de cada plaza).
       </p>
+
+      <FormulasEditor key={plaza.slug} plazaSlug={plaza.slug} initial={plaza.formulas} initialNote={plaza.formulasNote} />
     </div>
   );
 }

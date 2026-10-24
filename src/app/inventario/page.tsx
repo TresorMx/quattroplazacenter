@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
-import { getInventory, inventoryClient } from '@/lib/inventory';
+import { getInventory, inventoryClient, PLAZA_SLUGS } from '@/lib/inventory';
+import type { FormulaInput } from './actions';
 import { currentUser, isConfigured } from '@/lib/inventory-auth';
 import { formatDate } from '@/lib/pricelist/PriceListPdf';
 import LoginForm from './LoginForm';
@@ -20,12 +21,28 @@ export default async function InventarioPage() {
   const user = await currentUser();
   if (!user) return <Shell><LoginForm /></Shell>;
 
-  const [plazas, log] = await Promise.all([
+  const [plazas, log, formulaDocs] = await Promise.all([
     getInventory(),
     inventoryClient.fetch<{ _id: string; at: string; by: string; plazaSlug: string; code: string; summary: string }[]>(
       `*[_type == "inventoryLog"] | order(at desc)[0...25]{ _id, at, by, plazaSlug, code, summary }`, {}, { cache: 'no-store' },
     ),
+    // Todas las fórmulas (activas e inactivas) para editarlas; getInventory
+    // solo trae las activas porque es lo que usa el PDF.
+    inventoryClient.fetch<{ slug: string; formulas: any[] | null; note: string | null }[]>(
+      `*[_type == "plaza" && slug.current in $slugs]{ "slug": slug.current, "formulas": priceListFormulas, "note": priceListFormulasNote }`,
+      { slugs: PLAZA_SLUGS }, { cache: 'no-store' },
+    ),
   ]);
+  const formulasOf = (slug: string): FormulaInput[] =>
+    (formulaDocs.find((d) => d.slug === slug)?.formulas ?? []).map((f: any) => ({
+      key: f._key,
+      title: f.title ?? '',
+      active: f.active !== false,
+      rows: (f.rows ?? []).map((r: any) => ({
+        enganche: r.enganche ?? 0, mensualidades: r.mensualidades ?? 0, entrega: r.entrega ?? 0,
+        financiamiento: r.financiamiento ?? 0, descuento: r.descuento ?? 0,
+      })),
+    }));
 
   return (
     <Shell wide>
@@ -44,7 +61,10 @@ export default async function InventarioPage() {
       </div>
 
       <InventoryTable
-        plazas={plazas.map((p) => ({ slug: p.slug, name: p.shortName, updated: formatDate(p.updatedAt), units: p.units }))}
+        plazas={plazas.map((p) => ({
+          slug: p.slug, name: p.shortName, updated: formatDate(p.updatedAt), units: p.units,
+          formulas: formulasOf(p.slug), formulasNote: formulaDocs.find((d) => d.slug === p.slug)?.note ?? '',
+        }))}
       />
 
       <section className="mt-12">
