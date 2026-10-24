@@ -36,6 +36,8 @@ export interface FormulaInput {
   key: string;
   title: string;
   active: boolean;
+  /** Muestra la columna Financiamiento. Apagada, el financiamiento cuenta como 0. */
+  showFinancing: boolean;
   rows: FormulaRowInput[];
 }
 
@@ -54,7 +56,7 @@ export async function saveFormulas(
   if (typeof note !== 'string' || note.length > 1000) return { ok: false, error: 'La nota es demasiado larga.' };
 
   // Validación del lado del servidor: el cliente no es confiable.
-  const clean: { _key: string; _type: 'formula'; title: string; active: boolean; rows: Record<string, unknown>[] }[] = [];
+  const clean: { _key: string; _type: 'formula'; title: string; active: boolean; showFinancing: boolean; rows: Record<string, unknown>[] }[] = [];
   for (const [i, f] of formulas.entries()) {
     const title = String(f?.title ?? '').trim();
     const label = title || `Fórmula ${i + 1}`;
@@ -64,6 +66,7 @@ export async function saveFormulas(
     const rows: Record<string, unknown>[] = [];
     for (const [j, r] of f.rows.entries()) {
       const vals = Object.fromEntries(ROW_FIELDS.map((k) => [k, Number(r?.[k] ?? 0)])) as Record<(typeof ROW_FIELDS)[number], number>;
+      if (!f.showFinancing) vals.financiamiento = 0;
       if (ROW_FIELDS.some((k) => !Number.isFinite(vals[k]) || vals[k] < 0 || vals[k] > 100)) {
         return { ok: false, error: `"${label}", opción ${j + 1}: los porcentajes van de 0 a 100.` };
       }
@@ -76,7 +79,7 @@ export async function saveFormulas(
       });
     }
     const key = /^[A-Za-z0-9_-]{1,40}$/.test(f.key ?? '') ? f.key : newKey();
-    clean.push({ _key: key, _type: 'formula', title, active: !!f.active, rows });
+    clean.push({ _key: key, _type: 'formula', title, active: !!f.active, showFinancing: !!f.showFinancing, rows });
   }
 
   const plaza: any = await inventoryClient.fetch(
@@ -86,7 +89,8 @@ export async function saveFormulas(
   if (!plaza) return { ok: false, error: 'Plaza no encontrada.' };
 
   // Resumen para la bitácora: qué fórmulas se agregaron, quitaron o cambiaron.
-  const sig = (f: any) => JSON.stringify([f.title, f.active !== false, (f.rows ?? []).map((r: any) => ROW_FIELDS.map((k) => r[k] ?? 0))]);
+  const showsFin = (f: any) => f.showFinancing ?? (f.rows ?? []).some((r: any) => (r.financiamiento ?? 0) > 0);
+  const sig = (f: any) => JSON.stringify([f.title, f.active !== false, showsFin(f), (f.rows ?? []).map((r: any) => ROW_FIELDS.map((k) => r[k] ?? 0))]);
   const before = new Map<string, any>((plaza.priceListFormulas ?? []).map((f: any) => [f._key, f]));
   const parts: string[] = [];
   for (const f of clean) {

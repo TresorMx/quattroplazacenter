@@ -152,8 +152,9 @@ function LevelPage({ plaza, level, units, origin, date, levelHeader }: {
 
 // Hoja "Fórmulas de pago": una tabla por fórmula activa, con el mismo
 // lenguaje visual que la lista (borde negro, encabezado gris, primera columna
-// amarilla, separadores punteados). La columna Financiamiento solo aparece en
-// las fórmulas que la usan; su asterisco remite a la nota al pie.
+// amarilla, separadores punteados). La columna Financiamiento solo aparece si
+// la fórmula la tiene activada (interruptor en /inventario); su asterisco
+// remite a la nota al pie.
 const FORMULA = { title: 34, gap: 14, after: 46, notes: 110, bottom: 1530 };
 
 function FormulasPage({ plaza, formulas, origin, date }: {
@@ -175,7 +176,7 @@ function FormulasPage({ plaza, formulas, origin, date }: {
 
       <View style={[s.abs, { left: TABLE.left, top: TABLE.top, width: TABLE.width }]}>
         {formulas.map((f, fi) => {
-          const withFin = f.rows.some((r) => r.financiamiento > 0);
+          const withFin = f.showFinancing;
           const cols: { h: string; v: (r: PriceListFormula['rows'][number]) => string }[] = [
             { h: 'Enganche', v: (r) => `${r.enganche}%` },
             { h: 'Mensualidades', v: (r) => `${r.mensualidades}%` },

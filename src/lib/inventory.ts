@@ -42,6 +42,8 @@ export interface PriceListFormulaRow {
 
 export interface PriceListFormula {
   title: string;
+  /** Muestra la columna Financiamiento en el PDF. */
+  showFinancing: boolean;
   rows: PriceListFormulaRow[];
 }
 
@@ -69,7 +71,7 @@ const QUERY = `*[_type == "plaza" && slug.current in $slugs]{
   "schemes1": quoterSchemes.level1[]{enganche, diferido, entrega, descuento},
   "schemes2": quoterSchemes.level2[]{enganche, diferido, entrega, descuento},
   "footnote": priceListFootnote, deliveryWindow, _updatedAt,
-  "formulas": priceListFormulas[coalesce(active, true) == true]{title, rows[]{enganche, mensualidades, entrega, financiamiento, descuento}},
+  "formulas": priceListFormulas[coalesce(active, true) == true]{title, showFinancing, rows[]{enganche, mensualidades, entrega, financiamiento, descuento}},
   "formulasNote": priceListFormulasNote,
   "units": *[_type == "unit" && plazaSlug == ^.slug.current]{
     _id, code, level, m2, price, delivery, status, "quotable": coalesce(quotable, false), _updatedAt
@@ -101,6 +103,9 @@ export async function getInventory(): Promise<InventoryPlaza[]> {
           .filter((f: any) => f?.title && f.rows?.length)
           .map((f: any) => ({
             title: f.title,
+            // Fórmulas guardadas antes de existir el interruptor: se muestra si
+            // alguna opción trae financiamiento.
+            showFinancing: f.showFinancing ?? f.rows.some((r: any) => (r.financiamiento ?? 0) > 0),
             rows: f.rows.map((r: any) => ({
               enganche: r.enganche ?? 0,
               mensualidades: r.mensualidades ?? 0,
