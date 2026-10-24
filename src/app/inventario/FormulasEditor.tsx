@@ -17,7 +17,10 @@ const FIELDS: { k: keyof FormulaRowInput; label: string }[] = [
 
 const cell = 'rounded-md border border-white/10 bg-white/[0.04] px-2 py-1.5 text-[13px] text-white outline-none focus:border-[#FAB413]/60';
 const emptyRow = (): FormulaRowInput => ({ enganche: 0, mensualidades: 0, entrega: 0, financiamiento: 0, descuento: 0 });
-const sumOf = (r: FormulaRowInput, fin: boolean) => r.enganche + r.mensualidades + r.entrega + (fin ? r.financiamiento : 0);
+const sumOf = (r: FormulaRowInput) => r.enganche + r.mensualidades + r.entrega + r.financiamiento;
+// En el panel la columna se ve si sale en el PDF o si ya trae valores (aunque
+// esté oculta en el PDF, el financiamiento cuenta en la suma y debe poder editarse).
+const finVisible = (f: FormulaInput) => f.showFinancing || f.rows.some((r) => r.financiamiento > 0);
 
 export default function FormulasEditor({ plazaSlug, initial, initialNote }: {
   plazaSlug: string;
@@ -39,15 +42,8 @@ export default function FormulasEditor({ plazaSlug, initial, initialNote }: {
     const v = raw.replace(/[^0-9.]/g, '');
     update(i, { rows: formulas[i].rows.map((row, j) => (j === r ? { ...row, [k]: v === '' ? 0 : Number(v) } : row)) });
   };
-  // Ocultar la columna pone el financiamiento en 0 (si no, la suma contaría un
-  // valor que ya no se ve). Si había valores, se pide confirmación.
-  const toggleFinancing = (i: number) => {
-    const f = formulas[i];
-    if (f.showFinancing) {
-      if (f.rows.some((r) => r.financiamiento > 0) && !confirm('Al ocultar la columna, el financiamiento de cada opción pasa a 0 % y tendrás que ajustar las sumas. ¿Continuar?')) return;
-      update(i, { showFinancing: false, rows: f.rows.map((r) => ({ ...r, financiamiento: 0 })) });
-    } else update(i, { showFinancing: true });
-  };
+  // Solo decide si la columna sale en el PDF; no toca los valores.
+  const toggleFinancing = (i: number) => update(i, { showFinancing: !formulas[i].showFinancing });
 
   const move = (i: number, d: -1 | 1) => {
     const next = [...formulas];
@@ -100,9 +96,9 @@ export default function FormulasEditor({ plazaSlug, initial, initialNote }: {
               <button
                 onClick={() => toggleFinancing(i)}
                 className={`rounded-full border px-3 py-1 text-[12px] ${f.showFinancing ? 'border-[#FAB413]/60 text-[#FAB413]' : 'border-white/15 text-white/50 hover:text-white'}`}
-                title="Muestra u oculta la columna Financiamiento en esta fórmula y en el PDF"
+                title="Muestra u oculta la columna Financiamiento en el PDF. Los valores se conservan y cuentan en la suma."
               >
-                {f.showFinancing ? 'Ocultar financiamiento' : '+ Financiamiento'}
+                {f.showFinancing ? 'Financiamiento: visible en PDF' : finVisible(f) ? 'Financiamiento: oculto en PDF' : '+ Financiamiento'}
               </button>
               <div className="flex gap-1 text-[12px]">
                 <button disabled={i === 0} onClick={() => move(i, -1)} className="rounded-md border border-white/10 px-2 py-1 text-white/60 hover:text-white disabled:opacity-30" title="Subir">↑</button>
@@ -120,17 +116,21 @@ export default function FormulasEditor({ plazaSlug, initial, initialNote }: {
               <table className="w-full min-w-[640px] border-collapse text-left">
                 <thead className="text-[11px] uppercase tracking-wider text-white/50">
                   <tr>
-                    {FIELDS.filter((c) => c.k !== 'financiamiento' || f.showFinancing).map((c) => <th key={c.k} className="px-2 py-1.5">{c.label} %</th>)}
+                    {FIELDS.filter((c) => c.k !== 'financiamiento' || finVisible(f)).map((c) => (
+                      <th key={c.k} className="px-2 py-1.5">
+                        {c.label} %{c.k === 'financiamiento' && !f.showFinancing ? <span className="ml-1 normal-case tracking-normal text-white/30">(oculto en PDF)</span> : null}
+                      </th>
+                    ))}
                     <th className="px-2 py-1.5">Suma</th>
                     <th />
                   </tr>
                 </thead>
                 <tbody>
                   {f.rows.map((r, ri) => {
-                    const sum = sumOf(r, f.showFinancing);
+                    const sum = sumOf(r);
                     return (
                       <tr key={ri} className="border-t border-white/5">
-                        {FIELDS.filter((c) => c.k !== 'financiamiento' || f.showFinancing).map((c) => (
+                        {FIELDS.filter((c) => c.k !== 'financiamiento' || finVisible(f)).map((c) => (
                           <td key={c.k} className="px-2 py-1.5">
                             <input inputMode="decimal" className={`${cell} w-24 text-right`} value={r[c.k]} onChange={(e) => updateRow(i, ri, c.k, e.target.value)} />
                           </td>
@@ -174,7 +174,7 @@ export default function FormulasEditor({ plazaSlug, initial, initialNote }: {
           onChange={(e) => setNote(e.target.value)}
           placeholder="* Entrega de Posesión + Financiamiento Directo a 12 meses al 9.95% interés"
         />
-        <span className="mt-1 block text-[12px] text-white/40">Si empieza con *, la columna Financiamiento lleva asterisco. La columna solo aparece en las fórmulas donde está activada.</span>
+        <span className="mt-1 block text-[12px] text-white/40">Si empieza con *, la columna Financiamiento lleva asterisco. La columna solo sale en el PDF en las fórmulas donde está visible; oculta, el financiamiento se conserva y cuenta en la suma.</span>
       </label>
 
       <div className="mt-4 flex items-center justify-end gap-3 text-[12.5px]">

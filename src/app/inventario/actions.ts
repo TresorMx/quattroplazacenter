@@ -36,7 +36,8 @@ export interface FormulaInput {
   key: string;
   title: string;
   active: boolean;
-  /** Muestra la columna Financiamiento. Apagada, el financiamiento cuenta como 0. */
+  /** Muestra la columna Financiamiento en el PDF. Solo afecta lo que se ve: el
+   *  financiamiento capturado se guarda y cuenta en la suma aunque esté oculto. */
   showFinancing: boolean;
   rows: FormulaRowInput[];
 }
@@ -66,7 +67,6 @@ export async function saveFormulas(
     const rows: Record<string, unknown>[] = [];
     for (const [j, r] of f.rows.entries()) {
       const vals = Object.fromEntries(ROW_FIELDS.map((k) => [k, Number(r?.[k] ?? 0)])) as Record<(typeof ROW_FIELDS)[number], number>;
-      if (!f.showFinancing) vals.financiamiento = 0;
       if (ROW_FIELDS.some((k) => !Number.isFinite(vals[k]) || vals[k] < 0 || vals[k] > 100)) {
         return { ok: false, error: `"${label}", opción ${j + 1}: los porcentajes van de 0 a 100.` };
       }

@@ -249,10 +249,10 @@ export default defineType({
         fields: [
           { name: 'title',  title: 'Título', type: 'string', description: 'Ej: Fórmula Premium ( Entrega Marzo 2027 )', validation: (r: any) => r.required() },
           { name: 'active', title: 'Activa (se muestra en el PDF)', type: 'boolean', initialValue: true },
-          { name: 'showFinancing', title: 'Mostrar columna de Financiamiento', type: 'boolean', initialValue: false, description: 'Si está apagada, la columna no aparece y el financiamiento cuenta como 0.' },
+          { name: 'showFinancing', title: 'Mostrar columna de Financiamiento', type: 'boolean', initialValue: false, description: 'Solo controla si la columna sale en el PDF. Si está apagada, el financiamiento capturado se conserva y cuenta en la suma.' },
           {
             name: 'rows', title: 'Opciones', type: 'array',
-            description: 'Enganche + mensualidades + entrega + financiamiento = 100. El financiamiento solo cuenta si la columna está activada.',
+            description: 'Enganche + mensualidades + entrega + financiamiento = 100 (el financiamiento cuenta aunque su columna esté oculta en el PDF).',
             of: [{
               type: 'object', name: 'formulaRow',
               fields: [
