@@ -5,7 +5,8 @@ import type { InventoryPlaza, InventoryUnit, PriceListFormula } from '../invento
 /* ────────────────────────────────────────────────────────────
    Lista de precios en PDF — réplica del Keynote oficial
    ("Quattro Gardens | Lista de Precios", oct/2026): página 1400×1600 pt,
-   una página por nivel (tabla con colores por estatus y nota de IVA) y, al
+   una página por nivel (tabla con colores por estatus, sin fecha de entrega,
+   y nota de IVA) y, al
    final, una hoja de "Fórmulas de pago" si la plaza tiene fórmulas activas
    (Studio → plaza → "Lista de precios y cotizador"). Se genera en vivo desde
    Sanity: lo que cambie en /inventario aparece aquí en la siguiente descarga.
@@ -25,8 +26,9 @@ export function registerFonts(origin: string) {
 
 const PAGE = { width: 1400, height: 1600 };
 const TABLE = { left: 130, width: 1140, top: 308, header: 40, maxBody: 962 };
-// Anchos de columna medidos sobre el Keynote (suman 1140).
-const COLS = [162, 150, 290, 290, 248];
+// Anchos de columna (suman 1140). Sin "Fecha de Entrega" desde el 24/oct/2026:
+// el ancho de esa columna se repartió entre las otras cuatro.
+const COLS = [230, 220, 400, 290];
 
 const C = {
   ink: '#111111',
@@ -109,7 +111,7 @@ function LevelPage({ plaza, level, units, origin, date, levelHeader }: {
       {/* Tabla */}
       <View style={[s.abs, { left: TABLE.left, top: TABLE.top, width: TABLE.width, height: tableH, borderWidth: 3, borderColor: C.ink }]}>
         <View style={{ flexDirection: 'row', height: TABLE.header, backgroundColor: C.header, borderBottomWidth: 3, borderBottomColor: C.ink }}>
-          {[levelHeader, 'm2', 'Precio de lista', 'Fecha de Entrega', 'Disponibilidad'].map((h, i) => (
+          {[levelHeader, 'm2', 'Precio de lista', 'Disponibilidad'].map((h, i) => (
             <View key={h} style={[s.cell, { width: COLS[i] - (i === 0 ? 3 : 0) }]}>
               <Text style={s.th}>{h}</Text>
             </View>
@@ -126,10 +128,7 @@ function LevelPage({ plaza, level, units, origin, date, levelHeader }: {
             <View style={[s.cell, { width: COLS[2], backgroundColor: C.price, borderRightWidth: 3, borderRightColor: C.ink }]}>
               <Text style={s.td}>{showsPrice(u) ? money(u.price!) : ''}</Text>
             </View>
-            <View style={[s.cell, { width: COLS[3], borderRightWidth: 3, borderRightColor: C.ink }]}>
-              <Text style={s.td}>{u.delivery ?? ''}</Text>
-            </View>
-            <View style={[s.cell, { width: COLS[4] - 3, backgroundColor: C.status[u.status] ?? '#fff' }]}>
+            <View style={[s.cell, { width: COLS[3] - 3, backgroundColor: C.status[u.status] ?? '#fff' }]}>
               <Text style={s.td}>{LABEL[u.status] ?? u.status}</Text>
             </View>
             {r < units.length - 1 && (
