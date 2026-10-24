@@ -9,7 +9,7 @@ plazas **Gardens** y **Long Island**). Además del sitio público, aquí viven l
 |---|---|---|
 | `/inventario` | Panel para editar m², precio, entrega, estatus y "Cotizable" de cada local | Equipo comercial (contraseña `INVENTARIO_PASSWORD`) |
 | `/lista-precios/gardens.pdf`, `/lista-precios/long-island.pdf` | Listas de precios generadas en vivo | Asesores y brokers |
-| `/cotizador` | Cotizador interno con esquemas por nivel | Asesores (noindex, sin contraseña) |
+| `/cotizador` | Cotizador interno con esquemas por nivel | Asesores y brokers. **Abierto a propósito**, sin contraseña, pero noindex |
 | `/[locale]/plazas/[slug]` | Ficha pública de cada plaza con plano interactivo | Público |
 | `/[locale]/cotizar/[slug]` | Cotizador público (QuoteWizard) | Público |
 | `/studio` | Sanity Studio | David |
@@ -51,6 +51,9 @@ En local: `~/Desktop/ORGANICA/tresor-web/docs/`.
 5. Verificar con `npx tsc --noEmit` + `pnpm build`, luego commit y push a `main`.
 6. "Libera el local X solo en el cotizador" = marcar **Cotizable**, sin cambiar su estatus público.
 7. Gardens y Long Island **no** están sobre Av. Huayacán.
+8. `/cotizador` y `/lista-precios/*` son **abiertos a propósito** (se comparten con brokers) y **no indexables**: meta
+   `noindex, nofollow` en el cotizador y header `X-Robots-Tag: noindex` en los PDF. No bloquearlos en robots.txt
+   (Google dejaría de ver el noindex) y no ponerles contraseña sin que David lo pida.
 
 ## Documentos viejos de este repo
 
