@@ -1,3 +1,5 @@
+> **Documento histórico** (entrega original del sitio). No describe el inventario, las listas de precios ni el cotizador actuales: ver [`AGENTS.md`](AGENTS.md).
+
 # QA final — Quattro Plaza Center
 
 Ejecutar antes de cada deploy a producción.

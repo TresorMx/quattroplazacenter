@@ -1,3 +1,5 @@
+> **Documento histórico** (entrega original del sitio). No describe el inventario, las listas de precios ni el cotizador actuales: ver [`AGENTS.md`](AGENTS.md).
+
 # Quattro Plaza Center — Handover
 
 David, este es el resumen de entrega del sitio **quattroplaza.mx**.

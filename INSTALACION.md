@@ -1,3 +1,5 @@
+> **Documento histórico** (entrega original del sitio). No describe el inventario, las listas de precios ni el cotizador actuales: ver [`AGENTS.md`](AGENTS.md).
+
 # Instalación de Quattro Plaza Center — Paso a paso
 
 Esta guía asume **cero conocimiento técnico**. Sigue los pasos en orden, sin saltarte ninguno. Tiempo estimado: **30–45 minutos** la primera vez.

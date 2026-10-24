@@ -87,10 +87,19 @@ export async function saveUnit(unitId: string, patch: UnitPatch): Promise<{ ok: 
   // Fichas y plano de quattroplaza.mx. El cotizador y el PDF leen en vivo.
   revalidatePath('/[locale]/plazas/[slug]', 'page');
   revalidatePath('/inventario');
-  // tresor.mx (fichas estáticas): solo si el secreto está configurado.
+  // tresor.mx (fichas estáticas): solo si el secreto está configurado. Su
+  // /api/revalidate exige el slug en el body (mismo formato que el webhook de
+  // Sanity); los slugs de plaza coinciden con los de la ficha en tresor.mx.
   const secret = process.env.TRESOR_REVALIDATE_SECRET;
   if (secret) {
-    fetch('https://www.tresor.mx/api/revalidate', { method: 'POST', headers: { Authorization: `Bearer ${secret}` } }).catch(() => {});
+    // Con await: en Vercel la función puede terminar antes de que salga un
+    // fetch sin esperar. Si tresor.mx no responde en 3 s, el guardado sigue OK.
+    await fetch('https://www.tresor.mx/api/revalidate', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${secret}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type: 'unit', slug: current.plazaSlug }),
+      signal: AbortSignal.timeout(3000),
+    }).catch(() => {});
   }
   return { ok: true, updatedAt: now };
 }
