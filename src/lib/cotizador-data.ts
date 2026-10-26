@@ -6,6 +6,13 @@
 
 export const IVA_RATE = 0.128;
 
+/* ⚠️ DECISIÓN COMERCIAL QUE PUEDE CAMBIAR (26/oct/2026, pedida por David):
+   en los planes con financiamiento directo, el IVA se calcula sobre el precio
+   con descuento MÁS los intereses del financiamiento. Para regresar a IVA solo
+   sobre el precio, cambia esto a `false` (no hay que tocar nada más: cálculo,
+   vista previa y PDF leen `ivaIncluyeIntereses` de la cotización). */
+export const IVA_INCLUYE_INTERESES = true;
+
 export interface Bank {
   beneficiario: string;
   banco: string;
@@ -107,6 +114,8 @@ export interface Cotizacion {
   /** suma de los pagos (precio con descuento + intereses del financiamiento) */
   total: number;
   iva: number;
+  /** true si el IVA se calculó sobre precio + intereses (ver IVA_INCLUYE_INTERESES) */
+  ivaIncluyeIntereses: boolean;
   granTotal: number;
   financiamiento?: Financiamiento;
 }
@@ -221,8 +230,10 @@ export function cotizar(input: CotizarInput): Cotizacion {
   }
 
   const total = round2(filas.reduce((s, f) => s + f.importe, 0));
-  const iva = round2(precioConDescuento * IVA_RATE);
-  const granTotal = round2(precioConDescuento + (financiamiento?.intereses ?? 0) + iva);
+  const intereses = financiamiento?.intereses ?? 0;
+  const ivaIncluyeIntereses = IVA_INCLUYE_INTERESES && intereses > 0;
+  const iva = round2((precioConDescuento + (ivaIncluyeIntereses ? intereses : 0)) * IVA_RATE);
+  const granTotal = round2(precioConDescuento + intereses + iva);
 
   return {
     precioLista,
@@ -235,6 +246,7 @@ export function cotizar(input: CotizarInput): Cotizacion {
     filas,
     total,
     iva,
+    ivaIncluyeIntereses,
     granTotal,
     financiamiento,
   };

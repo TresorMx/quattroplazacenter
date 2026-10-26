@@ -321,7 +321,7 @@ export default function CotizadorClient({ proyectos }: { proyectos: Proyecto[] }
                       <span className="w-[25%] text-right">{fmtMXN(cot.total)}</span>
                     </div>
                     <div className="flex bg-gray-50 px-3 py-2 text-ink-2">
-                      <span className="w-[75%]">IVA Aplicable 12.8% *</span>
+                      <span className="w-[75%]">IVA Aplicable 12.8% *{cot.ivaIncluyeIntereses ? ' (sobre precio + intereses del financiamiento)' : ''}</span>
                       <span className="w-[25%] text-right">{fmtMXN(cot.iva)}</span>
                     </div>
                     <div className="flex bg-[#FBF7EC] px-3 py-2 font-bold text-ink">

@@ -129,7 +129,7 @@ export default function CotizadorPdf(p: Props) {
         <View style={s.ivaRow}>
           <Text style={s.cNum}></Text>
           <Text style={s.cFecha}></Text>
-          <Text style={s.cConcepto}>IVA Aplicable 12.8% *</Text>
+          <Text style={s.cConcepto}>IVA Aplicable 12.8% *{cot.ivaIncluyeIntereses ? ' (sobre precio + intereses)' : ''}</Text>
           <Text style={s.cImporte}>{fmtMXN(cot.iva)}</Text>
         </View>
         <View style={s.granRow}>
