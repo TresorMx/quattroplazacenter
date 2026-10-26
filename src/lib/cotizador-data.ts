@@ -134,6 +134,17 @@ function addMonths(iso: string | undefined, months: number): string {
   return `${dd}/${mm}/${target.getFullYear()}`;
 }
 
+/** Meses de un rango, contando ambos extremos (dic 2026 → jun 2027 = 7).
+ *  null si falta alguna fecha o el fin es antes del inicio. */
+export function mesesEntre(inicioISO?: string, finISO?: string): number | null {
+  if (!inicioISO || !finISO) return null;
+  const [y1, m1] = inicioISO.split('-').map(Number);
+  const [y2, m2] = finISO.split('-').map(Number);
+  if (!y1 || !m1 || !y2 || !m2) return null;
+  const n = (y2 * 12 + m2) - (y1 * 12 + m1) + 1;
+  return n >= 1 ? n : null;
+}
+
 export function cotizar(input: CotizarInput): Cotizacion {
   const { precioLista, esquema, descAdicional, montoApartado, numMensualidades, fechas } = input;
 

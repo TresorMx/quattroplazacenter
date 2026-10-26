@@ -8,7 +8,7 @@ import {
   FileText, Hash, Wallet, CalendarClock, StickyNote,
 } from 'lucide-react';
 import {
-  esquemaLabel, cotizar, fmtMXN,
+  esquemaLabel, cotizar, fmtMXN, mesesEntre,
   type Esquema, type Unidad, type Proyecto,
 } from '@/lib/cotizador-data';
 
@@ -71,17 +71,24 @@ export default function CotizadorClient({ proyectos }: { proyectos: Proyecto[] }
   const sumaCustom = custom.eng + custom.dif + custom.ent;
   const customValido = modoEsq === 'pre' || sumaCustom === 100;
 
+  // Con financiamiento directo, las mensualidades del diferido van del mes de
+  // inicio de pagos diferidos al mes de la entrega de posesión (inclusive); el
+  // financiamiento empieza el mes siguiente. El número no se captura: se calcula.
+  const mensAuto = esquema?.financiamiento ? mesesEntre(fechas.inicioDiferidos, fechas.entrega) : null;
+  const mensualidades = mensAuto ?? numMens;
+  const faltanFechasFin = !!esquema?.financiamiento && esquema.diferido > 0 && !mensAuto;
+
   const cot = useMemo(() => {
-    if (!unidad?.precio || !esquema) return null;
+    if (!unidad?.precio || !esquema || faltanFechasFin) return null;
     return cotizar({
       precioLista: unidad.precio,
       esquema,
       descAdicional: usaAdic ? adic : undefined,
       montoApartado,
-      numMensualidades: numMens,
+      numMensualidades: mensualidades,
       fechas,
     });
-  }, [unidad, esquema, usaAdic, adic, montoApartado, numMens, fechas]);
+  }, [unidad, esquema, faltanFechasFin, usaAdic, adic, montoApartado, mensualidades, fechas]);
 
   const esquemaTxt = esquema
     ? `${esquema.enganche}/${esquema.diferido}/${esquema.entrega}${esquema.financiamiento ? ` + ${esquema.financiamiento.pct}% financiamiento directo a ${esquema.financiamiento.meses} meses al ${esquema.financiamiento.tasaAnual}% anual` : ''}, ${esquema.descuento}% desc${usaAdic && adic.valor > 0 ? (adic.tipo === 'pct' ? ` + ${adic.valor}% desc adicional` : ` + ${fmtMXN(adic.valor)} desc adicional`) : ''}`
@@ -191,7 +198,18 @@ export default function CotizadorClient({ proyectos }: { proyectos: Proyecto[] }
 
         <Section n={7} icon={Hash} title="Mensualidades">
           <label className={labelCls}>Número de mensualidades</label>
-          <input type="number" className={inputCls} value={numMens} onChange={(e) => setNumMens(Number(e.target.value))} />
+          {esquema?.financiamiento ? (
+            <>
+              <input type="number" className={`${inputCls} opacity-70`} value={mensAuto ?? ''} readOnly placeholder="Se calcula con las fechas" />
+              <p className="mt-1.5 text-[11.5px] leading-snug text-white/50">
+                {mensAuto
+                  ? `De la fecha de inicio de pagos diferidos al mes de entrega (${mensAuto} ${mensAuto === 1 ? 'mensualidad' : 'mensualidades'}). El financiamiento directo empieza el mes siguiente a la entrega.`
+                  : 'Captura la fecha de inicio de pagos diferidos y la fecha de entrega: las mensualidades van de una a otra y el financiamiento empieza el mes siguiente.'}
+              </p>
+            </>
+          ) : (
+            <input type="number" className={inputCls} value={numMens} onChange={(e) => setNumMens(Number(e.target.value))} />
+          )}
         </Section>
 
         <Section n={8} icon={Wallet} title="Apartado">
@@ -254,7 +272,11 @@ export default function CotizadorClient({ proyectos }: { proyectos: Proyecto[] }
                   <p>Unidad: <b>{unidad ? `${unidad.label} - ${unidad.m2} m²` : '—'}</b></p>
                   <p>Precio de lista: <b>{unidad?.precio ? fmtMXN(unidad.precio) : '—'}</b></p>
                   <p className="mt-2 text-[12px] text-ink-3">
-                    {!customValido ? 'La suma del esquema personalizado debe ser 100%.' : 'Completa proyecto, unidad y esquema para ver el calendario.'}
+                    {!customValido
+                      ? 'La suma del esquema personalizado debe ser 100%.'
+                      : faltanFechasFin
+                        ? 'Con financiamiento directo, captura la fecha de inicio de pagos diferidos y la fecha de entrega: las mensualidades van de una a otra y el financiamiento empieza el mes siguiente.'
+                        : 'Completa proyecto, unidad y esquema para ver el calendario.'}
                   </p>
                 </div>
               ) : (
