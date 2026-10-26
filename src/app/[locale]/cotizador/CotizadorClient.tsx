@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useLayoutEffect, useMemo, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import {
@@ -19,6 +19,28 @@ const DownloadPdfButton = dynamic(() => import('./DownloadPdfButton'), {
 const DownloadFinanciamientoButton = dynamic(() => import('./DownloadPdfButton').then((m) => m.DownloadFinanciamientoButton), {
   ssr: false,
 });
+
+/** Una sola línea: si el texto no cabe, baja la letra (hasta 9px) en vez de partirlo. */
+function FitLine({ text, className, max = 13 }: { text: string; className?: string; max?: number }) {
+  const ref = useRef<HTMLParagraphElement>(null);
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const fit = () => {
+      let fs = max;
+      el.style.fontSize = `${fs}px`;
+      while (el.scrollWidth > el.clientWidth && fs > 9) {
+        fs -= 0.5;
+        el.style.fontSize = `${fs}px`;
+      }
+    };
+    fit();
+    const ro = new ResizeObserver(fit);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [text, max]);
+  return <p ref={ref} className={`overflow-hidden whitespace-nowrap ${className ?? ''}`}>{text}</p>;
+}
 
 const todayISO = () => new Date().toISOString().slice(0, 10);
 
@@ -325,7 +347,7 @@ export default function CotizadorClient({ proyectos }: { proyectos: Proyecto[] }
                     <p>Unidad: <b>{unidad!.label} - {unidad!.m2} m²</b></p>
                     <p>Precio de lista: <b>{fmtMXN(cot.precioLista)}</b></p>
                     <p>Forma de pago: <b>{planNombre || esquemaTxt}</b></p>
-                    {planNombre && <p className="pl-[92px] text-ink-2">{esquemaTxt}</p>}
+                    {planNombre && <FitLine className="pl-[92px] text-ink-2" text={esquemaTxt} />}
                     <p>Precio con descuento: <b>{fmtMXN(cot.precioConDescuento)}</b></p>
                   </div>
 

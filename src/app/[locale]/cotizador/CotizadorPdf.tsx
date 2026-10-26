@@ -49,6 +49,12 @@ const s = StyleSheet.create({
   fMoney: { width: '18.5%', textAlign: 'right' },
 });
 
+/* La descripción del plan va en una sola línea: si no cabe a 8 pt se reduce la
+   letra. Ancho útil = A4 (595) − márgenes (60) − relleno y borde del recuadro (21) − sangría (58).
+   0.52 em es el ancho medio de Helvetica para este tipo de texto (con holgura). */
+const DESC_WIDTH = 595 - 60 - 21 - 58;
+const fitFont = (txt: string, width: number) => Math.max(5.5, Math.min(8, width / (txt.length * 0.52)));
+
 interface Props {
   proyecto: string;
   asesor: string;
@@ -92,7 +98,7 @@ export default function CotizadorPdf(p: Props) {
           <Text style={s.rLine}>Unidad: <Text style={s.rBold}>{p.unidadLabel} - {p.m2} m²</Text></Text>
           <Text style={s.rLine}>Precio de lista: <Text style={s.rBold}>{fmtMXN(cot.precioLista)}</Text></Text>
           <Text style={s.rLine}>Forma de pago: <Text style={s.rBold}>{p.planNombre || p.esquemaTxt}</Text></Text>
-          {p.planNombre ? <Text style={[s.rLine, { paddingLeft: 58 }]}>{p.esquemaTxt}</Text> : null}
+          {p.planNombre ? <Text style={[s.rLine, { paddingLeft: 58, fontSize: fitFont(p.esquemaTxt, DESC_WIDTH) }]}>{p.esquemaTxt}</Text> : null}
           <Text style={s.rLine}>Precio con descuento: <Text style={s.rBold}>{fmtMXN(cot.precioConDescuento)}</Text></Text>
         </View>
 
