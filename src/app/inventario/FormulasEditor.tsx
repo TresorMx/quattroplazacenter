@@ -17,6 +17,37 @@ const FIELDS: { k: keyof FormulaRowInput; label: string }[] = [
 
 const cell = 'rounded-md border border-white/10 bg-white/[0.04] px-2 py-1.5 text-[13px] text-white outline-none focus:border-[#FAB413]/60';
 const emptyRow = (): FormulaRowInput => ({ enganche: 0, mensualidades: 0, entrega: 0, financiamiento: 0, descuento: 0 });
+// Campo numérico que guarda lo que se está tecleando: con un input controlado
+// por número, "2." se convertía en 2 y no se podían escribir decimales (2.5 %, 9.95 %).
+function NumInput({ value, onChange, className, decimals = true }: {
+  value: number | null;
+  onChange: (v: number | null) => void;
+  className: string;
+  decimals?: boolean;
+}) {
+  const show = (v: number | null) => (v == null ? '' : String(v));
+  const [txt, setTxt] = useState(show(value));
+  const [prev, setPrev] = useState(value);
+  if (value !== prev) {
+    // Cambio desde fuera (Deshacer, otra fórmula): se refleja si no es lo que ya se tecleó.
+    setPrev(value);
+    if ((txt === '' ? null : Number(txt)) !== value) setTxt(show(value));
+  }
+  return (
+    <input
+      inputMode={decimals ? 'decimal' : 'numeric'}
+      className={className}
+      value={txt}
+      onChange={(e) => {
+        let raw = e.target.value.replace(decimals ? /[^0-9.]/g : /[^0-9]/g, '');
+        if (decimals) raw = raw.replace(/(\..*)\./g, '$1'); // un solo punto
+        setTxt(raw);
+        onChange(raw === '' || raw === '.' ? null : Number(raw));
+      }}
+    />
+  );
+}
+
 const sumOf = (r: FormulaRowInput) => r.enganche + r.mensualidades + r.entrega + r.financiamiento;
 // En el panel la columna se ve si sale en el PDF o si ya trae valores (aunque
 // esté oculta en el PDF, el financiamiento cuenta en la suma y debe poder editarse).
@@ -38,9 +69,8 @@ export default function FormulasEditor({ plazaSlug, initial, initialNote }: {
 
   const update = (i: number, patch: Partial<FormulaInput>) =>
     setFormulas(formulas.map((f, j) => (j === i ? { ...f, ...patch } : f)));
-  const updateRow = (i: number, r: number, k: keyof FormulaRowInput, raw: string) => {
-    const v = raw.replace(/[^0-9.]/g, '');
-    update(i, { rows: formulas[i].rows.map((row, j) => (j === r ? { ...row, [k]: v === '' ? 0 : Number(v) } : row)) });
+  const updateRow = (i: number, r: number, k: keyof FormulaRowInput, v: number | null) => {
+    update(i, { rows: formulas[i].rows.map((row, j) => (j === r ? { ...row, [k]: v ?? 0 } : row)) });
   };
   // Solo decide si la columna sale en el PDF; no toca los valores.
   const toggleFinancing = (i: number) => update(i, { showFinancing: !formulas[i].showFinancing });
@@ -132,7 +162,7 @@ export default function FormulasEditor({ plazaSlug, initial, initialNote }: {
                       <tr key={ri} className="border-t border-white/5">
                         {FIELDS.filter((c) => c.k !== 'financiamiento' || finVisible(f)).map((c) => (
                           <td key={c.k} className="px-2 py-1.5">
-                            <input inputMode="decimal" className={`${cell} w-24 text-right`} value={r[c.k]} onChange={(e) => updateRow(i, ri, c.k, e.target.value)} />
+                            <NumInput className={`${cell} w-24 text-right`} value={r[c.k]} onChange={(v) => updateRow(i, ri, c.k, v)} />
                           </td>
                         ))}
                         <td className={`px-2 text-[13px] font-semibold ${Math.abs(sum - 100) < 1e-9 ? 'text-green-400' : 'text-red-400'}`}>{sum}%</td>
@@ -154,12 +184,26 @@ export default function FormulasEditor({ plazaSlug, initial, initialNote }: {
             <button onClick={() => update(i, { rows: [...f.rows, emptyRow()] })} className="mt-2 text-[12.5px] text-[#FAB413] hover:underline">
               + Agregar opción
             </button>
+            {finVisible(f) && (
+              <div className="mt-3 flex flex-wrap items-end gap-3 rounded-xl bg-white/[0.03] px-3 py-2.5">
+                <span className="text-[11px] font-bold uppercase tracking-widest text-white/50">Financiamiento directo</span>
+                <label className="text-[12px] text-white/60">
+                  Meses
+                  <NumInput decimals={false} className={`${cell} ml-2 w-16 text-right`} value={f.financingMonths} onChange={(v) => update(i, { financingMonths: v })} />
+                </label>
+                <label className="text-[12px] text-white/60">
+                  Interés anual %
+                  <NumInput className={`${cell} ml-2 w-20 text-right`} value={f.financingRate} onChange={(v) => update(i, { financingRate: v })} />
+                </label>
+                <span className="text-[11.5px] text-white/40">Lo usa el cotizador de asesores (amortización sobre saldos insolutos).</span>
+              </div>
+            )}
           </div>
         ))}
       </div>
 
       <button
-        onClick={() => setFormulas([...formulas, { key: `n${Date.now()}`, title: '', active: true, showFinancing: false, rows: [emptyRow()] }])}
+        onClick={() => setFormulas([...formulas, { key: `n${Date.now()}`, title: '', active: true, showFinancing: false, financingMonths: null, financingRate: null, rows: [emptyRow()] }])}
         className="mt-4 rounded-full border border-white/15 px-4 py-2 text-[13px] text-white/80 hover:border-white/40"
       >
         + Agregar fórmula

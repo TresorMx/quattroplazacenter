@@ -39,6 +39,9 @@ export interface FormulaInput {
   /** Muestra la columna Financiamiento en el PDF. Solo afecta lo que se ve: el
    *  financiamiento capturado se guarda y cuenta en la suma aunque esté oculto. */
   showFinancing: boolean;
+  /** Plazo (meses) e interés anual (%) del financiamiento directo; los usa el cotizador. */
+  financingMonths: number | null;
+  financingRate: number | null;
   rows: FormulaRowInput[];
 }
 
@@ -57,7 +60,7 @@ export async function saveFormulas(
   if (typeof note !== 'string' || note.length > 1000) return { ok: false, error: 'La nota es demasiado larga.' };
 
   // Validación del lado del servidor: el cliente no es confiable.
-  const clean: { _key: string; _type: 'formula'; title: string; active: boolean; showFinancing: boolean; rows: Record<string, unknown>[] }[] = [];
+  const clean: { _key: string; _type: 'formula'; title: string; active: boolean; showFinancing: boolean; financingMonths?: number; financingRate?: number; rows: Record<string, unknown>[] }[] = [];
   for (const [i, f] of formulas.entries()) {
     const title = String(f?.title ?? '').trim();
     const label = title || `Fórmula ${i + 1}`;
@@ -79,7 +82,17 @@ export async function saveFormulas(
       });
     }
     const key = /^[A-Za-z0-9_-]{1,40}$/.test(f.key ?? '') ? f.key : newKey();
-    clean.push({ _key: key, _type: 'formula', title, active: !!f.active, showFinancing: !!f.showFinancing, rows });
+    const hasFin = rows.some((r) => Number(r.financiamiento ?? 0) > 0);
+    const months = f.financingMonths == null ? null : Number(f.financingMonths);
+    const rate = f.financingRate == null ? null : Number(f.financingRate);
+    if (months != null && (!Number.isInteger(months) || months < 1 || months > 120)) return { ok: false, error: `"${label}": el plazo del financiamiento va de 1 a 120 meses.` };
+    if (rate != null && (!Number.isFinite(rate) || rate < 0 || rate > 100)) return { ok: false, error: `"${label}": el interés anual va de 0 a 100 %.` };
+    if (hasFin && (months == null || rate == null)) return { ok: false, error: `"${label}" tiene financiamiento: captura el plazo (meses) y el interés anual.` };
+    clean.push({
+      _key: key, _type: 'formula', title, active: !!f.active, showFinancing: !!f.showFinancing,
+      ...(hasFin ? { financingMonths: months!, financingRate: rate! } : {}),
+      rows,
+    });
   }
 
   const plaza: any = await inventoryClient.fetch(
@@ -90,7 +103,7 @@ export async function saveFormulas(
 
   // Resumen para la bitácora: qué fórmulas se agregaron, quitaron o cambiaron.
   const showsFin = (f: any) => f.showFinancing ?? (f.rows ?? []).some((r: any) => (r.financiamiento ?? 0) > 0);
-  const sig = (f: any) => JSON.stringify([f.title, f.active !== false, showsFin(f), (f.rows ?? []).map((r: any) => ROW_FIELDS.map((k) => r[k] ?? 0))]);
+  const sig = (f: any) => JSON.stringify([f.title, f.active !== false, showsFin(f), f.financingMonths ?? null, f.financingRate ?? null, (f.rows ?? []).map((r: any) => ROW_FIELDS.map((k) => r[k] ?? 0))]);
   const before = new Map<string, any>((plaza.priceListFormulas ?? []).map((f: any) => [f._key, f]));
   const parts: string[] = [];
   for (const f of clean) {

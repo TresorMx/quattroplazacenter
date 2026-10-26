@@ -44,6 +44,9 @@ export interface PriceListFormula {
   title: string;
   /** Muestra la columna Financiamiento en el PDF. */
   showFinancing: boolean;
+  /** Plazo e interés anual (%) del financiamiento directo; los usa el cotizador. */
+  financingMonths: number | null;
+  financingRate: number | null;
   rows: PriceListFormulaRow[];
 }
 
@@ -71,7 +74,7 @@ const QUERY = `*[_type == "plaza" && slug.current in $slugs]{
   "schemes1": quoterSchemes.level1[]{enganche, diferido, entrega, descuento},
   "schemes2": quoterSchemes.level2[]{enganche, diferido, entrega, descuento},
   "footnote": priceListFootnote, deliveryWindow, _updatedAt,
-  "formulas": priceListFormulas[coalesce(active, true) == true]{title, showFinancing, rows[]{enganche, mensualidades, entrega, financiamiento, descuento}},
+  "formulas": priceListFormulas[coalesce(active, true) == true]{title, showFinancing, financingMonths, financingRate, rows[]{enganche, mensualidades, entrega, financiamiento, descuento}},
   "formulasNote": priceListFormulasNote,
   "units": *[_type == "unit" && plazaSlug == ^.slug.current]{
     _id, code, level, m2, price, delivery, status, "quotable": coalesce(quotable, false), _updatedAt
@@ -106,6 +109,8 @@ export async function getInventory(): Promise<InventoryPlaza[]> {
             // Fórmulas guardadas antes de existir el interruptor: se muestra si
             // alguna opción trae financiamiento.
             showFinancing: f.showFinancing ?? f.rows.some((r: any) => (r.financiamiento ?? 0) > 0),
+            financingMonths: typeof f.financingMonths === 'number' ? f.financingMonths : null,
+            financingRate: typeof f.financingRate === 'number' ? f.financingRate : null,
             rows: f.rows.map((r: any) => ({
               enganche: r.enganche ?? 0,
               mensualidades: r.mensualidades ?? 0,
@@ -135,13 +140,29 @@ export function toProyecto(p: InventoryPlaza): Proyecto {
     entrega: u.delivery ?? p.deliveryWindow ?? '',
     status: u.status !== 'vendido' && u.quotable ? 'disponible' : u.status,
   }));
+  // Opciones con financiamiento directo: salen de las Fórmulas de pago activas
+  // que tienen plazo y tasa capturados (hoy solo Long Island). Se agregan a los
+  // esquemas de ambos niveles, después de los esquemas normales.
+  const financiados: Esquema[] = p.formulas.flatMap((f) =>
+    f.financingMonths && f.financingRate != null
+      ? f.rows
+          .filter((r) => r.financiamiento > 0)
+          .map((r) => ({
+            enganche: r.enganche,
+            diferido: r.mensualidades,
+            entrega: r.entrega,
+            descuento: r.descuento,
+            financiamiento: { pct: r.financiamiento, meses: f.financingMonths!, tasaAnual: f.financingRate!, titulo: f.title },
+          }))
+      : [],
+  );
   return {
     slug: p.slug,
     nombre: p.name,
     ubicacion: p.quoterAddress,
     apartadoDefault: p.apartadoDefault,
     bank: p.bank,
-    esquemas: p.schemes,
+    esquemas: { 1: [...p.schemes[1], ...financiados], 2: [...p.schemes[2], ...financiados] },
     unidades,
   };
 }

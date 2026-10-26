@@ -249,6 +249,8 @@ export default defineType({
         fields: [
           { name: 'title',  title: 'Título', type: 'string', description: 'Ej: Fórmula Premium ( Entrega Marzo 2027 )', validation: (r: any) => r.required() },
           { name: 'active', title: 'Activa (se muestra en el PDF)', type: 'boolean', initialValue: true },
+          { name: 'financingMonths', title: 'Financiamiento: meses', type: 'number', description: 'Plazo del financiamiento directo (ej. 12). Lo usa el cotizador de asesores.', validation: (r: any) => r.min(1).max(120).integer() },
+          { name: 'financingRate', title: 'Financiamiento: interés anual %', type: 'number', description: 'Ej. 9.95. Amortización sobre saldos insolutos.', validation: (r: any) => r.min(0).max(100) },
           { name: 'showFinancing', title: 'Mostrar columna de Financiamiento', type: 'boolean', initialValue: false, description: 'Solo controla si la columna sale en el PDF. Si está apagada, el financiamiento capturado se conserva y cuenta en la suma.' },
           {
             name: 'rows', title: 'Opciones', type: 'array',

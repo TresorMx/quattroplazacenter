@@ -39,6 +39,14 @@ const s = StyleSheet.create({
   obsTitle: { fontFamily: 'Helvetica-Bold', fontSize: 8, marginBottom: 3 },
   obsText: { fontSize: 7.5, color: '#444', lineHeight: 1.4 },
   disclaimer: { marginTop: 8, fontSize: 6.5, color: '#888', lineHeight: 1.35 },
+  finBox: { marginTop: 9, borderWidth: 0.5, borderColor: '#e0e0e0', borderRadius: 4 },
+  finHead: { backgroundColor: INK, paddingVertical: 6, paddingHorizontal: 8 },
+  finTitle: { color: '#fff', fontFamily: 'Helvetica-Bold', fontSize: 8.5 },
+  finSub: { color: '#bbb', fontSize: 6.8, marginTop: 2 },
+  fRow: { flexDirection: 'row', paddingVertical: 2.6, paddingHorizontal: 8, borderBottomWidth: 0.5, borderBottomColor: '#eee' },
+  fNum: { width: '8%' },
+  fFecha: { width: '18%' },
+  fMoney: { width: '18.5%', textAlign: 'right' },
 });
 
 interface Props {
@@ -59,7 +67,8 @@ export default function CotizadorPdf(p: Props) {
   const { cot } = p;
   return (
     <Document>
-      <Page size="A4" wrap={false} style={s.page}>
+      {/* Con financiamiento directo la tabla crece: se permite pasar a una segunda hoja. */}
+      <Page size="A4" wrap={!!cot.financiamiento} style={s.page}>
         {/* Header */}
         <View style={s.header}>
           {/* eslint-disable-next-line jsx-a11y/alt-text */}
@@ -89,6 +98,9 @@ export default function CotizadorPdf(p: Props) {
           <View style={s.splitBox}><Text style={s.splitLabel}>Enganche</Text><Text style={s.splitVal}>{fmtMXN(cot.enganche)}</Text></View>
           <View style={s.splitBox}><Text style={s.splitLabel}>Diferido</Text><Text style={s.splitVal}>{fmtMXN(cot.diferido)}</Text></View>
           <View style={s.splitBox}><Text style={s.splitLabel}>Entrega</Text><Text style={s.splitVal}>{fmtMXN(cot.entrega)}</Text></View>
+          {cot.financiamiento ? (
+            <View style={s.splitBox}><Text style={s.splitLabel}>Financiado</Text><Text style={s.splitVal}>{fmtMXN(cot.financiamiento.capital)}</Text></View>
+          ) : null}
         </View>
 
         {/* Tabla */}
@@ -120,12 +132,50 @@ export default function CotizadorPdf(p: Props) {
           <Text style={s.cConcepto}>IVA Aplicable 12.8% *</Text>
           <Text style={s.cImporte}>{fmtMXN(cot.iva)}</Text>
         </View>
+        {cot.financiamiento ? (
+          <View style={s.ivaRow}>
+            <Text style={s.cNum}></Text>
+            <Text style={s.cFecha}></Text>
+            <Text style={s.cConcepto}>Intereses del financiamiento (incluidos en el total)</Text>
+            <Text style={s.cImporte}>{fmtMXN(cot.financiamiento.intereses)}</Text>
+          </View>
+        ) : null}
         <View style={s.granRow}>
           <Text style={[{ fontFamily: 'Helvetica-Bold' }, s.cNum]}></Text>
           <Text style={[{ fontFamily: 'Helvetica-Bold' }, s.cFecha]}></Text>
           <Text style={[{ fontFamily: 'Helvetica-Bold' }, s.cConcepto]}>Gran Total</Text>
           <Text style={[{ fontFamily: 'Helvetica-Bold', color: YELLOW }, s.cImporte]}>{fmtMXN(cot.granTotal)}</Text>
         </View>
+
+        {/* Financiamiento directo: tabla de amortización */}
+        {cot.financiamiento ? (
+          <View style={s.finBox} wrap={false}>
+            <View style={s.finHead}>
+              <Text style={s.finTitle}>Financiamiento directo · {cot.financiamiento.meses} meses al {cot.financiamiento.tasaAnual}% anual</Text>
+              <Text style={s.finSub}>
+                Capital {fmtMXN(cot.financiamiento.capital)} · mensualidad {fmtMXN(cot.financiamiento.mensualidad)} · intereses {fmtMXN(cot.financiamiento.intereses)} · amortización sobre saldos insolutos
+              </Text>
+            </View>
+            <View style={[s.fRow, { backgroundColor: '#FBF7EC' }]}>
+              <Text style={[s.fNum, s.rBold]}>#</Text>
+              <Text style={[s.fFecha, s.rBold]}>Fecha</Text>
+              <Text style={[s.fMoney, s.rBold]}>Mensualidad</Text>
+              <Text style={[s.fMoney, s.rBold]}>Capital</Text>
+              <Text style={[s.fMoney, s.rBold]}>Interés</Text>
+              <Text style={[s.fMoney, s.rBold]}>Saldo</Text>
+            </View>
+            {cot.financiamiento.tabla.map((f) => (
+              <View style={s.fRow} key={f.n}>
+                <Text style={s.fNum}>{f.n}</Text>
+                <Text style={s.fFecha}>{f.fecha || '—'}</Text>
+                <Text style={s.fMoney}>{fmtMXN(f.pago)}</Text>
+                <Text style={s.fMoney}>{fmtMXN(f.capital)}</Text>
+                <Text style={s.fMoney}>{fmtMXN(f.interes)}</Text>
+                <Text style={s.fMoney}>{fmtMXN(f.saldo)}</Text>
+              </View>
+            ))}
+          </View>
+        ) : null}
 
         {/* Banco */}
         <View style={s.bank}>

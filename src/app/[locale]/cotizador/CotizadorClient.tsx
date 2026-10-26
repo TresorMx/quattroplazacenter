@@ -84,7 +84,7 @@ export default function CotizadorClient({ proyectos }: { proyectos: Proyecto[] }
   }, [unidad, esquema, usaAdic, adic, montoApartado, numMens, fechas]);
 
   const esquemaTxt = esquema
-    ? `${esquema.enganche}/${esquema.diferido}/${esquema.entrega}, ${esquema.descuento}% desc${usaAdic && adic.valor > 0 ? (adic.tipo === 'pct' ? ` + ${adic.valor}% desc adicional` : ` + ${fmtMXN(adic.valor)} desc adicional`) : ''}`
+    ? `${esquema.enganche}/${esquema.diferido}/${esquema.entrega}${esquema.financiamiento ? ` + ${esquema.financiamiento.pct}% financiamiento directo a ${esquema.financiamiento.meses} meses al ${esquema.financiamiento.tasaAnual}% anual` : ''}, ${esquema.descuento}% desc${usaAdic && adic.valor > 0 ? (adic.tipo === 'pct' ? ` + ${adic.valor}% desc adicional` : ` + ${fmtMXN(adic.valor)} desc adicional`) : ''}`
     : '—';
 
   const fechaCotTxt = fechaCotizacion.split('-').reverse().join('/');
@@ -267,8 +267,8 @@ export default function CotizadorClient({ proyectos }: { proyectos: Proyecto[] }
                     <p>Precio con descuento: <b>{fmtMXN(cot.precioConDescuento)}</b></p>
                   </div>
 
-                  <div className="mb-4 grid grid-cols-3 gap-2">
-                    {[['Enganche', cot.enganche], ['Diferido', cot.diferido], ['Entrega', cot.entrega]].map(([l, v]) => (
+                  <div className={`mb-4 grid gap-2 ${cot.financiamiento ? 'grid-cols-2 sm:grid-cols-4' : 'grid-cols-3'}`}>
+                    {[['Enganche', cot.enganche], ['Diferido', cot.diferido], ['Entrega', cot.entrega], ...(cot.financiamiento ? [['Financiado', cot.financiamiento.capital]] : [])].map(([l, v]) => (
                       <div key={l as string} className="flex items-center justify-between rounded-lg bg-ink px-3 py-2.5">
                         <span className="text-[11px] font-bold text-white">{l}</span>
                         <span className="text-[11px] font-bold text-[#FAB413]">{fmtMXN(v as number)}</span>
@@ -299,11 +299,46 @@ export default function CotizadorClient({ proyectos }: { proyectos: Proyecto[] }
                       <span className="w-[75%]">IVA Aplicable 12.8% *</span>
                       <span className="w-[25%] text-right">{fmtMXN(cot.iva)}</span>
                     </div>
+                    {cot.financiamiento && (
+                      <div className="flex bg-gray-50 px-3 py-2 text-ink-2">
+                        <span className="w-[75%]">Intereses del financiamiento (incluidos en el total)</span>
+                        <span className="w-[25%] text-right">{fmtMXN(cot.financiamiento.intereses)}</span>
+                      </div>
+                    )}
                     <div className="flex bg-[#FBF7EC] px-3 py-2 font-bold text-ink">
                       <span className="w-[75%]">Gran Total</span>
                       <span className="w-[25%] text-right text-[#FAB413]">{fmtMXN(cot.granTotal)}</span>
                     </div>
                   </div>
+
+                  {cot.financiamiento && (
+                    <div className="mt-4 overflow-hidden rounded-lg border border-line text-[12px]">
+                      <div className="bg-ink px-3 py-2 text-white">
+                        <p className="font-bold">Financiamiento directo · {cot.financiamiento.meses} meses al {cot.financiamiento.tasaAnual}% anual</p>
+                        <p className="text-[11px] text-white/60">
+                          Capital {fmtMXN(cot.financiamiento.capital)} · mensualidad {fmtMXN(cot.financiamiento.mensualidad)} · intereses {fmtMXN(cot.financiamiento.intereses)} · amortización sobre saldos insolutos
+                        </p>
+                      </div>
+                      <div className="flex bg-[#FBF7EC] px-3 py-1.5 font-bold text-ink">
+                        <span className="w-[8%]">#</span>
+                        <span className="w-[18%]">Fecha</span>
+                        <span className="w-[19%] text-right">Mensualidad</span>
+                        <span className="w-[19%] text-right">Capital</span>
+                        <span className="w-[17%] text-right">Interés</span>
+                        <span className="w-[19%] text-right">Saldo</span>
+                      </div>
+                      {cot.financiamiento.tabla.map((f) => (
+                        <div key={f.n} className="flex border-b border-line px-3 py-1 text-ink-2">
+                          <span className="w-[8%]">{f.n}</span>
+                          <span className="w-[18%]">{f.fecha || '—'}</span>
+                          <span className="w-[19%] text-right">{fmtMXN(f.pago)}</span>
+                          <span className="w-[19%] text-right">{fmtMXN(f.capital)}</span>
+                          <span className="w-[17%] text-right">{fmtMXN(f.interes)}</span>
+                          <span className="w-[19%] text-right">{fmtMXN(f.saldo)}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
 
                   <div className="mt-4 flex justify-between rounded-lg bg-gray-50 p-4 text-[12px] text-ink-2">
                     <div>

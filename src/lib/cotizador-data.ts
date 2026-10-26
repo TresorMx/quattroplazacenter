@@ -30,6 +30,9 @@ export interface Esquema {
   diferido: number;   // %
   entrega: number;    // %
   descuento: number;  // %
+  /** Financiamiento directo después de la entrega (hoy solo Long Island, desde
+   *  las "Fórmulas de pago" de Sanity). enganche + diferido + entrega + pct = 100. */
+  financiamiento?: { pct: number; meses: number; tasaAnual: number; titulo: string };
 }
 
 export interface Proyecto {
@@ -48,7 +51,9 @@ export interface Proyecto {
 // solo conserva los tipos y el motor de cálculo del cotizador.
 
 export const esquemaLabel = (e: Esquema) =>
-  `${e.descuento}% desc · ${e.enganche}/${e.diferido}/${e.entrega}`;
+  e.financiamiento
+    ? `${e.descuento}% desc · ${e.enganche}/${e.diferido}/${e.entrega} + ${e.financiamiento.pct}% financiado (${e.financiamiento.meses} meses al ${e.financiamiento.tasaAnual}%)`
+    : `${e.descuento}% desc · ${e.enganche}/${e.diferido}/${e.entrega}`;
 
 /* ─────────── Motor de cálculo ─────────── */
 export interface CotizarInput {
@@ -72,6 +77,24 @@ export interface FilaPago {
   importe: number;
 }
 
+export interface FilaFinanciamiento {
+  n: number;
+  fecha: string;
+  pago: number;
+  capital: number;
+  interes: number;
+  saldo: number;
+}
+
+export interface Financiamiento {
+  capital: number;      // monto financiado (pct del precio con descuento)
+  meses: number;
+  tasaAnual: number;    // %
+  mensualidad: number;
+  intereses: number;    // total de intereses
+  tabla: FilaFinanciamiento[];
+}
+
 export interface Cotizacion {
   precioLista: number;
   descuentoEsquema: number;
@@ -81,9 +104,11 @@ export interface Cotizacion {
   diferido: number;
   entrega: number;
   filas: FilaPago[];
+  /** suma de los pagos (precio con descuento + intereses del financiamiento) */
   total: number;
   iva: number;
   granTotal: number;
+  financiamiento?: Financiamiento;
 }
 
 const round2 = (n: number) => Math.round(n * 100) / 100;
@@ -100,11 +125,13 @@ function addMonths(iso: string | undefined, months: number): string {
   if (!iso) return '';
   const [y, m, d] = iso.split('-').map(Number);
   if (!y || !m || !d) return '';
-  const base = new Date(y, m - 1, d);
-  base.setMonth(base.getMonth() + months);
-  const dd = String(base.getDate()).padStart(2, '0');
-  const mm = String(base.getMonth() + 1).padStart(2, '0');
-  return `${dd}/${mm}/${base.getFullYear()}`;
+  // Mismo día del mes destino; si no existe (30 de febrero), el último día de
+  // ese mes. Antes se desbordaba al mes siguiente (30/01 + 1 → 01/03).
+  const target = new Date(y, m - 1 + months, 1);
+  const lastDay = new Date(target.getFullYear(), target.getMonth() + 1, 0).getDate();
+  const dd = String(Math.min(d, lastDay)).padStart(2, '0');
+  const mm = String(target.getMonth() + 1).padStart(2, '0');
+  return `${dd}/${mm}/${target.getFullYear()}`;
 }
 
 export function cotizar(input: CotizarInput): Cotizacion {
@@ -149,11 +176,42 @@ export function cotizar(input: CotizarInput): Cotizacion {
     }
   }
 
-  filas.push({ n: n++, fecha: fmtFecha(fechas.entrega), concepto: 'Entrega física', importe: entrega });
+  filas.push({ n: n++, fecha: fmtFecha(fechas.entrega), concepto: esquema.financiamiento ? 'Entrega de posesión' : 'Entrega física', importe: entrega });
+
+  // Financiamiento directo: amortización sobre saldos insolutos (mensualidad
+  // fija; el interés de cada mes es la tasa anual / 12 sobre el saldo). Los
+  // pagos empiezan un mes después de la entrega de posesión.
+  let financiamiento: Financiamiento | undefined;
+  if (esquema.financiamiento && esquema.financiamiento.pct > 0 && esquema.financiamiento.meses > 0) {
+    const { meses, tasaAnual } = esquema.financiamiento;
+    // El capital cierra el precio: lo que no cubren enganche, diferido y entrega.
+    const capital = round2(precioConDescuento - enganche - diferido - entrega);
+    const r = tasaAnual / 100 / 12;
+    const mensualidad = round2(r > 0 ? (capital * r) / (1 - Math.pow(1 + r, -meses)) : capital / meses);
+    const tabla: FilaFinanciamiento[] = [];
+    let saldo = capital;
+    for (let i = 1; i <= meses; i++) {
+      const interes = round2(saldo * r);
+      const ultimo = i === meses;
+      const abono = ultimo ? saldo : round2(mensualidad - interes);
+      const pago = ultimo ? round2(abono + interes) : mensualidad;
+      saldo = round2(saldo - abono);
+      tabla.push({ n: i, fecha: addMonths(fechas.entrega, i), pago, capital: abono, interes, saldo });
+      filas.push({ n: n++, fecha: addMonths(fechas.entrega, i), concepto: `Financiamiento directo ${i} de ${meses}`, importe: pago });
+    }
+    financiamiento = {
+      capital,
+      meses,
+      tasaAnual,
+      mensualidad,
+      intereses: round2(tabla.reduce((s, f) => s + f.interes, 0)),
+      tabla,
+    };
+  }
 
   const total = round2(filas.reduce((s, f) => s + f.importe, 0));
   const iva = round2(precioConDescuento * IVA_RATE);
-  const granTotal = round2(precioConDescuento + iva);
+  const granTotal = round2(precioConDescuento + (financiamiento?.intereses ?? 0) + iva);
 
   return {
     precioLista,
@@ -167,6 +225,7 @@ export function cotizar(input: CotizarInput): Cotizacion {
     total,
     iva,
     granTotal,
+    financiamiento,
   };
 }
 

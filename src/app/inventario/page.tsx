@@ -39,6 +39,8 @@ export default async function InventarioPage() {
       title: f.title ?? '',
       active: f.active !== false,
       showFinancing: f.showFinancing ?? (f.rows ?? []).some((r: any) => (r.financiamiento ?? 0) > 0),
+      financingMonths: typeof f.financingMonths === 'number' ? f.financingMonths : null,
+      financingRate: typeof f.financingRate === 'number' ? f.financingRate : null,
       rows: (f.rows ?? []).map((r: any) => ({
         enganche: r.enganche ?? 0, mensualidades: r.mensualidades ?? 0, entrega: r.entrega ?? 0,
         financiamiento: r.financiamiento ?? 0, descuento: r.descuento ?? 0,
