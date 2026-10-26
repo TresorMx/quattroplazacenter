@@ -251,7 +251,7 @@ export default function CotizadorClient({ proyectos }: { proyectos: Proyecto[] }
 
       {/* ═══ Preview ═══ */}
       <main className="bg-bg-soft px-4 py-6 lg:px-10">
-        <div className="mx-auto max-w-3xl">
+        <div className="mx-auto max-w-4xl">
           <div className="mb-4 flex items-center justify-between">
             <span className="text-[12px] font-semibold uppercase tracking-[0.25em] text-ink-3">Vista previa</span>
             {cot && customValido && unidad && (
@@ -313,11 +313,13 @@ export default function CotizadorClient({ proyectos }: { proyectos: Proyecto[] }
                     <p>Precio con descuento: <b>{fmtMXN(cot.precioConDescuento)}</b></p>
                   </div>
 
-                  <div className={`mb-4 grid gap-2 ${cot.financiamiento ? 'grid-cols-2 xl:grid-cols-4' : 'grid-cols-3'}`}>
-                    {[['Enganche', cot.enganche], ['Diferido', cot.diferido], ['Entrega', cot.entrega], ...(cot.financiamiento ? [['Financiado', cot.financiamiento.capital]] : [])].map(([l, v]) => (
-                      <div key={l as string} className="flex items-center justify-between rounded-lg bg-ink px-3 py-2.5">
-                        <span className="text-[11px] font-bold text-white">{l}</span>
-                        <span className="text-[11px] font-bold text-[#FAB413]">{fmtMXN(v as number)}</span>
+                  {/* Cada recuadro ocupa lo que necesita su texto y nunca se parte en dos líneas;
+                      si no caben todos en una fila, el último baja completo. */}
+                  <div className="mb-4 flex flex-wrap gap-2">
+                    {cot.bloques.map((b) => (
+                      <div key={b.label} className="flex flex-1 basis-auto items-center justify-between gap-3 whitespace-nowrap rounded-lg bg-ink px-3 py-2.5 text-[11px] font-bold">
+                        <span className="text-white">{b.label} <span className="font-semibold text-white/80">{b.pct}%</span></span>
+                        <span className="text-[#FAB413]">{fmtMXN(b.monto)}</span>
                       </div>
                     ))}
                   </div>

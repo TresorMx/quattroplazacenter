@@ -12,7 +12,7 @@ export const IVA_RATE = 0.128;
 
    FINANCIAMIENTO_DESGLOSADO (26/oct/2026: false, pedido por David porque el
    detalle confundía a los asesores):
-     false → una sola fila "Monto a financiar sin IVA" en el mes siguiente a la
+     false → una sola fila "Financiamiento Directo" por el monto a financiar (sin IVA) en el mes siguiente a la
              entrega; total = precio, sin intereses; sin tabla de amortización.
      true  → 12 mensualidades con intereses (saldos insolutos) en el calendario,
              total = precio + intereses y tabla de amortización.
@@ -118,6 +118,13 @@ export interface Financiamiento {
   tabla: FilaFinanciamiento[];
 }
 
+/** Un recuadro del resumen: concepto, % del esquema y monto. */
+export interface Bloque {
+  label: string;
+  pct: number;
+  monto: number;
+}
+
 export interface Cotizacion {
   precioLista: number;
   descuentoEsquema: number;
@@ -136,6 +143,8 @@ export interface Cotizacion {
   financiamientoDesglosado: boolean;
   granTotal: number;
   financiamiento?: Financiamiento;
+  /** Recuadros del resumen (Enganche, Diferido, Entrega y, si aplica, Financiado) con su %. */
+  bloques: Bloque[];
 }
 
 const round2 = (n: number) => Math.round(n * 100) / 100;
@@ -244,7 +253,7 @@ export function cotizar(input: CotizarInput): Cotizacion {
       filas.push({
         n: n++,
         fecha: addMonths(fechas.entrega, 1),
-        concepto: `Monto a financiar sin IVA (${meses} meses al ${tasaAnual}% anual)`,
+        concepto: `Financiamiento Directo (${meses} meses al ${tasaAnual}% anual)`,
         importe: capital,
       });
     }
@@ -279,6 +288,12 @@ export function cotizar(input: CotizarInput): Cotizacion {
     ivaIncluyeIntereses,
     financiamientoDesglosado: FINANCIAMIENTO_DESGLOSADO && !!financiamiento,
     granTotal,
+    bloques: [
+      { label: 'Enganche', pct: esquema.enganche, monto: enganche },
+      { label: 'Diferido', pct: esquema.diferido, monto: diferido },
+      { label: 'Entrega', pct: esquema.entrega, monto: entrega },
+      ...(financiamiento && esquema.financiamiento ? [{ label: 'Financiado', pct: esquema.financiamiento.pct, monto: financiamiento.capital }] : []),
+    ],
     financiamiento,
   };
 }

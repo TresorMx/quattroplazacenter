@@ -98,12 +98,17 @@ export default function CotizadorPdf(p: Props) {
 
         {/* Split */}
         <View style={s.splitRow}>
-          <View style={s.splitBox}><Text style={s.splitLabel}>Enganche</Text><Text style={s.splitVal}>{fmtMXN(cot.enganche)}</Text></View>
-          <View style={s.splitBox}><Text style={s.splitLabel}>Diferido</Text><Text style={s.splitVal}>{fmtMXN(cot.diferido)}</Text></View>
-          <View style={s.splitBox}><Text style={s.splitLabel}>Entrega</Text><Text style={s.splitVal}>{fmtMXN(cot.entrega)}</Text></View>
-          {cot.financiamiento ? (
-            <View style={s.splitBox}><Text style={s.splitLabel}>Financiado</Text><Text style={s.splitVal}>{fmtMXN(cot.financiamiento.capital)}</Text></View>
-          ) : null}
+          {/* Con 4 recuadros se baja un punto la letra y el relleno para que nada se parta en dos líneas. */}
+          {cot.bloques.map((b) => {
+            const four = cot.bloques.length > 3;
+            const fs = four ? 7.2 : 8;
+            return (
+              <View key={b.label} style={[s.splitBox, four ? { padding: 6 } : {}]}>
+                <Text style={[s.splitLabel, { fontSize: fs }]}>{b.label} <Text style={{ fontFamily: 'Helvetica', color: '#ddd' }}>{b.pct}%</Text></Text>
+                <Text style={[s.splitVal, { fontSize: fs }]}>{fmtMXN(b.monto)}</Text>
+              </View>
+            );
+          })}
         </View>
 
         {/* Tabla */}
