@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from 'react';
 import { saveFormulas, type FormulaInput, type FormulaRowInput } from './actions';
+import NumInput from './NumInput';
 
 // Editor de la hoja "Fórmulas de pago" de la lista de precios en PDF. Guarda
 // todas las fórmulas de la plaza de una vez (con validación en el servidor y
@@ -17,37 +18,6 @@ const FIELDS: { k: keyof FormulaRowInput; label: string }[] = [
 
 const cell = 'rounded-md border border-white/10 bg-white/[0.04] px-2 py-1.5 text-[13px] text-white outline-none focus:border-[#FAB413]/60';
 const emptyRow = (): FormulaRowInput => ({ enganche: 0, mensualidades: 0, entrega: 0, financiamiento: 0, descuento: 0 });
-// Campo numérico que guarda lo que se está tecleando: con un input controlado
-// por número, "2." se convertía en 2 y no se podían escribir decimales (2.5 %, 9.95 %).
-function NumInput({ value, onChange, className, decimals = true }: {
-  value: number | null;
-  onChange: (v: number | null) => void;
-  className: string;
-  decimals?: boolean;
-}) {
-  const show = (v: number | null) => (v == null ? '' : String(v));
-  const [txt, setTxt] = useState(show(value));
-  const [prev, setPrev] = useState(value);
-  if (value !== prev) {
-    // Cambio desde fuera (Deshacer, otra fórmula): se refleja si no es lo que ya se tecleó.
-    setPrev(value);
-    if ((txt === '' ? null : Number(txt)) !== value) setTxt(show(value));
-  }
-  return (
-    <input
-      inputMode={decimals ? 'decimal' : 'numeric'}
-      className={className}
-      value={txt}
-      onChange={(e) => {
-        let raw = e.target.value.replace(decimals ? /[^0-9.]/g : /[^0-9]/g, '');
-        if (decimals) raw = raw.replace(/(\..*)\./g, '$1'); // un solo punto
-        setTxt(raw);
-        onChange(raw === '' || raw === '.' ? null : Number(raw));
-      }}
-    />
-  );
-}
-
 const sumOf = (r: FormulaRowInput) => r.enganche + r.mensualidades + r.entrega + r.financiamiento;
 // En el panel la columna se ve si sale en el PDF o si ya trae valores (aunque
 // esté oculta en el PDF, el financiamiento cuenta en la suma y debe poder editarse).

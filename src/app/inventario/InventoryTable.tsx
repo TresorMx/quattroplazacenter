@@ -4,6 +4,7 @@ import { useMemo, useState, useTransition } from 'react';
 import type { InventoryUnit } from '@/lib/inventory';
 import type { Status } from '@/lib/cotizador-data';
 import { saveUnit, type UnitPatch, type FormulaInput } from './actions';
+import NumInput from './NumInput';
 import FormulasEditor from './FormulasEditor';
 
 type Plaza = { slug: string; name: string; updated: string; units: InventoryUnit[]; formulas: FormulaInput[]; formulasNote: string };
@@ -50,7 +51,7 @@ function Row({ u }: { u: InventoryUnit }) {
   return (
     <tr className={`border-b border-white/5 ${dirty ? 'bg-[#FAB413]/[0.06]' : ''}`}>
       <td className="py-2 pl-3 pr-2 font-semibold">{u.code}</td>
-      <td className="px-2"><input inputMode="decimal" className={`${cell} w-20 text-right`} value={draft.m2 ?? ''} onChange={numIn('m2')} /></td>
+      <td className="px-2"><NumInput className={`${cell} w-20 text-right`} value={draft.m2 ?? null} onChange={(v) => setDraft({ ...draft, m2: v })} /></td>
       <td className="px-2"><input inputMode="numeric" className={`${cell} w-36 text-right`} value={draft.price != null ? draft.price.toLocaleString('en-US') : ''} onChange={numIn('price')} placeholder="—" /></td>
       <td className="px-2"><input className={`${cell} w-28 uppercase`} value={draft.delivery ?? ''} onChange={(e) => setDraft({ ...draft, delivery: e.target.value || null })} placeholder="DIC 2026" /></td>
       <td className="px-2">
