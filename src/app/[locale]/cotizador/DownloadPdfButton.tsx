@@ -13,6 +13,7 @@ interface Props {
   unidadLabel: string;
   m2: number;
   esquemaTxt: string;
+  planNombre: string;
   fechaCotizacion: string;
   cot: Cotizacion;
   bank: Bank;

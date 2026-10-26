@@ -52,6 +52,12 @@ export interface Esquema {
   financiamiento?: { pct: number; meses: number; tasaAnual: number; titulo: string };
 }
 
+/** Plan de pago con sus opciones (ej. "Fórmula Premium ( Entrega Marzo 2027 )" → 10/10/80, 20/10/70…). */
+export interface Plan {
+  nombre: string;
+  esquemas: Esquema[];
+}
+
 export interface Proyecto {
   slug: 'gardens' | 'long-island';
   nombre: string;
@@ -59,8 +65,8 @@ export interface Proyecto {
   apartadoDefault: number;
   bank: Bank;
   unidades: Unidad[];
-  /** esquemas disponibles según nivel */
-  esquemas: { 1: Esquema[]; 2: Esquema[] };
+  /** planes de pago disponibles según nivel; el asesor elige plan y luego opción */
+  planes: { 1: Plan[]; 2: Plan[] };
 }
 
 // Los proyectos, unidades, esquemas y cuentas ya NO viven aquí: la fuente

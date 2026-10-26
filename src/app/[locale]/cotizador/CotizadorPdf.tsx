@@ -57,6 +57,8 @@ interface Props {
   unidadLabel: string;
   m2: number;
   esquemaTxt: string;
+  /** nombre del plan (va arriba de la descripción en "Forma de pago") */
+  planNombre?: string;
   fechaCotizacion: string;
   cot: Cotizacion;
   bank: Bank;
@@ -89,7 +91,8 @@ export default function CotizadorPdf(p: Props) {
           <Text style={s.rLine}>Cliente: <Text style={s.rBold}>{p.cliente || '—'}</Text></Text>
           <Text style={s.rLine}>Unidad: <Text style={s.rBold}>{p.unidadLabel} - {p.m2} m²</Text></Text>
           <Text style={s.rLine}>Precio de lista: <Text style={s.rBold}>{fmtMXN(cot.precioLista)}</Text></Text>
-          <Text style={s.rLine}>Forma de pago: <Text style={s.rBold}>{p.esquemaTxt}</Text></Text>
+          <Text style={s.rLine}>Forma de pago: <Text style={s.rBold}>{p.planNombre || p.esquemaTxt}</Text></Text>
+          {p.planNombre ? <Text style={[s.rLine, { paddingLeft: 58 }]}>{p.esquemaTxt}</Text> : null}
           <Text style={s.rLine}>Precio con descuento: <Text style={s.rBold}>{fmtMXN(cot.precioConDescuento)}</Text></Text>
         </View>
 

@@ -1,6 +1,6 @@
 import 'server-only';
 import { createClient } from 'next-sanity';
-import type { Proyecto, Unidad, Status, Esquema } from './cotizador-data';
+import type { Proyecto, Unidad, Status, Esquema, Plan } from './cotizador-data';
 
 /* ────────────────────────────────────────────────────────────
    Inventario de Quattro — FUENTE ÚNICA: Sanity.
@@ -140,29 +140,31 @@ export function toProyecto(p: InventoryPlaza): Proyecto {
     entrega: u.delivery ?? p.deliveryWindow ?? '',
     status: u.status !== 'vendido' && u.quotable ? 'disponible' : u.status,
   }));
-  // Opciones con financiamiento directo: salen de las Fórmulas de pago activas
-  // que tienen plazo y tasa capturados (hoy solo Long Island). Se agregan a los
-  // esquemas de ambos niveles, después de los esquemas normales.
-  const financiados: Esquema[] = p.formulas.flatMap((f) =>
-    f.financingMonths && f.financingRate != null
-      ? f.rows
-          .filter((r) => r.financiamiento > 0)
-          .map((r) => ({
-            enganche: r.enganche,
-            diferido: r.mensualidades,
-            entrega: r.entrega,
-            descuento: r.descuento,
-            financiamiento: { pct: r.financiamiento, meses: f.financingMonths!, tasaAnual: f.financingRate!, titulo: f.title },
-          }))
-      : [],
-  );
+  // Planes de pago del cotizador. Si la plaza tiene Fórmulas de pago activas en
+  // /inventario (hoy Long Island), los planes son esas fórmulas —las mismas de la
+  // hoja del PDF— para los dos niveles. Si no tiene (Gardens), se usan los
+  // esquemas por nivel de siempre (quoterSchemes) como un solo plan por nivel.
+  const planesFormulas: Plan[] = p.formulas
+    .map((f) => ({
+      nombre: f.title,
+      esquemas: f.rows.flatMap((r): Esquema[] => {
+        const base = { enganche: r.enganche, diferido: r.mensualidades, entrega: r.entrega, descuento: r.descuento };
+        if (r.financiamiento <= 0) return [base];
+        // Una opción con financiamiento necesita plazo y tasa; sin ellos no se ofrece.
+        if (!f.financingMonths || f.financingRate == null) return [];
+        return [{ ...base, financiamiento: { pct: r.financiamiento, meses: f.financingMonths, tasaAnual: f.financingRate, titulo: f.title } }];
+      }),
+    }))
+    .filter((pl) => pl.esquemas.length > 0);
+  const planesNivel = (lvl: 1 | 2): Plan[] =>
+    planesFormulas.length > 0 ? planesFormulas : p.schemes[lvl].length ? [{ nombre: `Esquemas Nivel ${lvl}`, esquemas: p.schemes[lvl] }] : [];
   return {
     slug: p.slug,
     nombre: p.name,
     ubicacion: p.quoterAddress,
     apartadoDefault: p.apartadoDefault,
     bank: p.bank,
-    esquemas: { 1: [...p.schemes[1], ...financiados], 2: [...p.schemes[2], ...financiados] },
+    planes: { 1: planesNivel(1), 2: planesNivel(2) },
     unidades,
   };
 }

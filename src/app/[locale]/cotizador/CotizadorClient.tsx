@@ -9,7 +9,7 @@ import {
 } from 'lucide-react';
 import {
   esquemaLabel, cotizar, fmtMXN, mesesEntre,
-  type Esquema, type Unidad, type Proyecto,
+  type Esquema, type Unidad, type Proyecto, type Plan,
 } from '@/lib/cotizador-data';
 
 const DownloadPdfButton = dynamic(() => import('./DownloadPdfButton'), {
@@ -47,6 +47,7 @@ export default function CotizadorClient({ proyectos }: { proyectos: Proyecto[] }
   const [proyectoSlug, setProyectoSlug] = useState('');
   const [unidadId, setUnidadId] = useState('');
   const [modoEsq, setModoEsq] = useState<'pre' | 'custom'>('pre');
+  const [planIdx, setPlanIdx] = useState('');
   const [esqIdx, setEsqIdx] = useState('');
   const [custom, setCustom] = useState({ desc: 0, eng: 0, dif: 0, ent: 0 });
   const [usaAdic, setUsaAdic] = useState(false);
@@ -60,7 +61,9 @@ export default function CotizadorClient({ proyectos }: { proyectos: Proyecto[] }
   const proyecto = getProyecto(proyectoSlug);
   const unidades = proyecto?.unidades.filter((x) => x.status === 'disponible' && x.precio != null) ?? [];
   const unidad: Unidad | undefined = unidades.find((x) => x.id === unidadId);
-  const esquemasDisp: Esquema[] = proyecto && unidad ? proyecto.esquemas[unidad.nivel] : [];
+  const planesDisp: Plan[] = proyecto && unidad ? proyecto.planes[unidad.nivel] : [];
+  const plan: Plan | undefined = planIdx === '' ? undefined : planesDisp[Number(planIdx)];
+  const esquemasDisp: Esquema[] = plan?.esquemas ?? [];
 
   const esquema: Esquema | null = useMemo(() => {
     if (modoEsq === 'custom') return { descuento: custom.desc, enganche: custom.eng, diferido: custom.dif, entrega: custom.ent };
@@ -93,8 +96,19 @@ export default function CotizadorClient({ proyectos }: { proyectos: Proyecto[] }
     });
   }, [unidad, esquema, faltanFechasFin, usaAdic, adic, montoApartado, mensualidades, fechas]);
 
+  // Resumen: nombre del plan arriba y su descripción abajo.
+  const planNombre = modoEsq === 'custom' ? 'Esquema personalizado' : plan?.nombre ?? '';
   const esquemaTxt = esquema
-    ? `${esquema.enganche}/${esquema.diferido}/${esquema.entrega}${esquema.financiamiento ? ` + ${esquema.financiamiento.pct}% financiamiento directo a ${esquema.financiamiento.meses} meses al ${esquema.financiamiento.tasaAnual}% anual` : ''}, ${esquema.descuento}% desc${usaAdic && adic.valor > 0 ? (adic.tipo === 'pct' ? ` + ${adic.valor}% desc adicional` : ` + ${fmtMXN(adic.valor)} desc adicional`) : ''}`
+    ? [
+        `Enganche ${esquema.enganche}%`,
+        `Mensualidades ${esquema.diferido}%`,
+        `Entrega ${esquema.entrega}%`,
+        ...(esquema.financiamiento
+          ? [`Financiamiento directo ${esquema.financiamiento.pct}% a ${esquema.financiamiento.meses} meses al ${esquema.financiamiento.tasaAnual}% anual`]
+          : []),
+        `Descuento ${esquema.descuento}%`,
+        ...(usaAdic && adic.valor > 0 ? [adic.tipo === 'pct' ? `Descuento adicional ${adic.valor}%` : `Descuento adicional ${fmtMXN(adic.valor)}`] : []),
+      ].join(' · ')
     : '—';
 
   const fechaCotTxt = fechaCotizacion.split('-').reverse().join('/');
@@ -130,7 +144,7 @@ export default function CotizadorClient({ proyectos }: { proyectos: Proyecto[] }
 
         <Section n={3} icon={LayoutPanelLeft} title="Proyecto">
           <label className={labelCls}>Proyecto *</label>
-          <select className={selectCls} style={chevronBg} value={proyectoSlug} onChange={(e) => { const p = getProyecto(e.target.value); setProyectoSlug(e.target.value); setUnidadId(''); setEsqIdx(''); if (p) setMontoApartado(p.apartadoDefault); }}>
+          <select className={selectCls} style={chevronBg} value={proyectoSlug} onChange={(e) => { const p = getProyecto(e.target.value); setProyectoSlug(e.target.value); setUnidadId(''); setPlanIdx(''); setEsqIdx(''); if (p) setMontoApartado(p.apartadoDefault); }}>
             <option value="">Selecciona proyecto</option>
             {proyectos.map((p) => <option key={p.slug} value={p.slug}>{p.nombre}</option>)}
           </select>
@@ -138,7 +152,7 @@ export default function CotizadorClient({ proyectos }: { proyectos: Proyecto[] }
 
         <Section n={4} icon={DollarSign} title="Unidad">
           <label className={labelCls}>Unidad disponible *</label>
-          <select className={selectCls} style={chevronBg} value={unidadId} onChange={(e) => { setUnidadId(e.target.value); setEsqIdx(''); }} disabled={!proyecto}>
+          <select className={selectCls} style={chevronBg} value={unidadId} onChange={(e) => { setUnidadId(e.target.value); setPlanIdx(''); setEsqIdx(''); }} disabled={!proyecto}>
             <option value="">{proyecto ? 'Selecciona unidad' : 'Elige proyecto primero'}</option>
             {unidades.map((x) => (
               <option key={x.id} value={x.id}>{x.label} · {x.m2} m²</option>
@@ -156,9 +170,14 @@ export default function CotizadorClient({ proyectos }: { proyectos: Proyecto[] }
           </div>
           {modoEsq === 'pre' ? (
             <>
-              <label className={labelCls}>Esquema de descuento *</label>
-              <select className={selectCls} style={chevronBg} value={esqIdx} onChange={(e) => setEsqIdx(e.target.value)} disabled={!unidad}>
-                <option value="">{unidad ? 'Selecciona esquema' : 'Selecciona primero una unidad'}</option>
+              <label className={labelCls}>Plan de pago *</label>
+              <select className={selectCls} style={chevronBg} value={planIdx} onChange={(e) => { setPlanIdx(e.target.value); setEsqIdx(''); }} disabled={!unidad}>
+                <option value="">{unidad ? 'Selecciona plan' : 'Selecciona primero una unidad'}</option>
+                {planesDisp.map((pl, i) => <option key={i} value={i}>{pl.nombre}</option>)}
+              </select>
+              <label className={`${labelCls} mt-3`}>Esquema *</label>
+              <select className={selectCls} style={chevronBg} value={esqIdx} onChange={(e) => setEsqIdx(e.target.value)} disabled={!plan}>
+                <option value="">{plan ? 'Selecciona esquema' : 'Selecciona primero un plan'}</option>
                 {esquemasDisp.map((e, i) => <option key={i} value={i}>{esquemaLabel(e)}</option>)}
               </select>
             </>
@@ -244,6 +263,7 @@ export default function CotizadorClient({ proyectos }: { proyectos: Proyecto[] }
                 unidadLabel={unidad.label}
                 m2={unidad.m2}
                 esquemaTxt={esquemaTxt}
+                planNombre={planNombre}
                 fechaCotizacion={fechaCotTxt}
                 cot={cot}
                 bank={proyecto!.bank}
@@ -288,7 +308,8 @@ export default function CotizadorClient({ proyectos }: { proyectos: Proyecto[] }
                     <p>Cliente: <b>{cliente || '—'}</b></p>
                     <p>Unidad: <b>{unidad!.label} - {unidad!.m2} m²</b></p>
                     <p>Precio de lista: <b>{fmtMXN(cot.precioLista)}</b></p>
-                    <p>Forma de pago: <b>{esquemaTxt}</b></p>
+                    <p>Forma de pago: <b>{planNombre || esquemaTxt}</b></p>
+                    {planNombre && <p className="pl-[92px] text-ink-2">{esquemaTxt}</p>}
                     <p>Precio con descuento: <b>{fmtMXN(cot.precioConDescuento)}</b></p>
                   </div>
 
