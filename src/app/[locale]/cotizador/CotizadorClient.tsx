@@ -292,7 +292,7 @@ export default function CotizadorClient({ proyectos }: { proyectos: Proyecto[] }
                     <p>Precio con descuento: <b>{fmtMXN(cot.precioConDescuento)}</b></p>
                   </div>
 
-                  <div className={`mb-4 grid gap-2 ${cot.financiamiento ? 'grid-cols-2 sm:grid-cols-4' : 'grid-cols-3'}`}>
+                  <div className={`mb-4 grid gap-2 ${cot.financiamiento ? 'grid-cols-2 xl:grid-cols-4' : 'grid-cols-3'}`}>
                     {[['Enganche', cot.enganche], ['Diferido', cot.diferido], ['Entrega', cot.entrega], ...(cot.financiamiento ? [['Financiado', cot.financiamiento.capital]] : [])].map(([l, v]) => (
                       <div key={l as string} className="flex items-center justify-between rounded-lg bg-ink px-3 py-2.5">
                         <span className="text-[11px] font-bold text-white">{l}</span>
@@ -324,12 +324,6 @@ export default function CotizadorClient({ proyectos }: { proyectos: Proyecto[] }
                       <span className="w-[75%]">IVA Aplicable 12.8% *</span>
                       <span className="w-[25%] text-right">{fmtMXN(cot.iva)}</span>
                     </div>
-                    {cot.financiamiento && (
-                      <div className="flex bg-gray-50 px-3 py-2 text-ink-2">
-                        <span className="w-[75%]">Intereses del financiamiento (incluidos en el total)</span>
-                        <span className="w-[25%] text-right">{fmtMXN(cot.financiamiento.intereses)}</span>
-                      </div>
-                    )}
                     <div className="flex bg-[#FBF7EC] px-3 py-2 font-bold text-ink">
                       <span className="w-[75%]">Gran Total</span>
                       <span className="w-[25%] text-right text-[#FAB413]">{fmtMXN(cot.granTotal)}</span>
@@ -362,6 +356,13 @@ export default function CotizadorClient({ proyectos }: { proyectos: Proyecto[] }
                           <span className="w-[19%] text-right">{fmtMXN(f.saldo)}</span>
                         </div>
                       ))}
+                      <div className="flex bg-[#FBF7EC] px-3 py-1.5 font-bold text-ink">
+                        <span className="w-[26%]">Total</span>
+                        <span className="w-[19%] text-right">{fmtMXN(cot.financiamiento.capital + cot.financiamiento.intereses)}</span>
+                        <span className="w-[19%] text-right">{fmtMXN(cot.financiamiento.capital)}</span>
+                        <span className="w-[17%] text-right">{fmtMXN(cot.financiamiento.intereses)}</span>
+                        <span className="w-[19%]" />
+                      </div>
                     </div>
                   )}
 

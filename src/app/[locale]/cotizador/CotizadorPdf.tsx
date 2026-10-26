@@ -132,14 +132,6 @@ export default function CotizadorPdf(p: Props) {
           <Text style={s.cConcepto}>IVA Aplicable 12.8% *</Text>
           <Text style={s.cImporte}>{fmtMXN(cot.iva)}</Text>
         </View>
-        {cot.financiamiento ? (
-          <View style={s.ivaRow}>
-            <Text style={s.cNum}></Text>
-            <Text style={s.cFecha}></Text>
-            <Text style={s.cConcepto}>Intereses del financiamiento (incluidos en el total)</Text>
-            <Text style={s.cImporte}>{fmtMXN(cot.financiamiento.intereses)}</Text>
-          </View>
-        ) : null}
         <View style={s.granRow}>
           <Text style={[{ fontFamily: 'Helvetica-Bold' }, s.cNum]}></Text>
           <Text style={[{ fontFamily: 'Helvetica-Bold' }, s.cFecha]}></Text>
@@ -174,6 +166,13 @@ export default function CotizadorPdf(p: Props) {
                 <Text style={s.fMoney}>{fmtMXN(f.saldo)}</Text>
               </View>
             ))}
+            <View style={[s.fRow, { backgroundColor: '#FBF7EC', borderBottomWidth: 0 }]}>
+              <Text style={[{ width: '26%' }, s.rBold]}>Total</Text>
+              <Text style={[s.fMoney, s.rBold]}>{fmtMXN(cot.financiamiento.capital + cot.financiamiento.intereses)}</Text>
+              <Text style={[s.fMoney, s.rBold]}>{fmtMXN(cot.financiamiento.capital)}</Text>
+              <Text style={[s.fMoney, s.rBold]}>{fmtMXN(cot.financiamiento.intereses)}</Text>
+              <Text style={s.fMoney}></Text>
+            </View>
           </View>
         ) : null}
 
