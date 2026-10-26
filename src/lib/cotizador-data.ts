@@ -6,12 +6,22 @@
 
 export const IVA_RATE = 0.128;
 
-/* ⚠️ DECISIÓN COMERCIAL QUE PUEDE CAMBIAR (26/oct/2026, pedida por David):
-   en los planes con financiamiento directo, el IVA se calcula sobre el precio
-   con descuento MÁS los intereses del financiamiento. Para regresar a IVA solo
-   sobre el precio, cambia esto a `false` (no hay que tocar nada más: cálculo,
-   vista previa y PDF leen `ivaIncluyeIntereses` de la cotización). */
-export const IVA_INCLUYE_INTERESES = true;
+/* ⚠️ DECISIONES COMERCIALES QUE PUEDEN CAMBIAR — planes con financiamiento
+   directo (Long Island). Cálculo, vista previa y PDF leen el resultado de
+   cotizar(); para cambiar de criterio basta con estos dos valores.
+
+   FINANCIAMIENTO_DESGLOSADO (26/oct/2026: false, pedido por David porque el
+   detalle confundía a los asesores):
+     false → una sola fila "Monto a financiar sin IVA" en el mes siguiente a la
+             entrega; total = precio, sin intereses; sin tabla de amortización.
+     true  → 12 mensualidades con intereses (saldos insolutos) en el calendario,
+             total = precio + intereses y tabla de amortización.
+
+   IVA_INCLUYE_INTERESES (solo aplica con FINANCIAMIENTO_DESGLOSADO = true):
+     true → IVA sobre precio + intereses; false → IVA solo sobre el precio.
+     Se probó true el 26/oct/2026 y se regresó a false el mismo día. */
+export const FINANCIAMIENTO_DESGLOSADO = false;
+export const IVA_INCLUYE_INTERESES = false;
 
 export interface Bank {
   beneficiario: string;
@@ -116,6 +126,8 @@ export interface Cotizacion {
   iva: number;
   /** true si el IVA se calculó sobre precio + intereses (ver IVA_INCLUYE_INTERESES) */
   ivaIncluyeIntereses: boolean;
+  /** true = calendario con mensualidades e intereses y tabla de amortización (ver FINANCIAMIENTO_DESGLOSADO) */
+  financiamientoDesglosado: boolean;
   granTotal: number;
   financiamiento?: Financiamiento;
 }
@@ -200,7 +212,8 @@ export function cotizar(input: CotizarInput): Cotizacion {
 
   // Financiamiento directo: amortización sobre saldos insolutos (mensualidad
   // fija; el interés de cada mes es la tasa anual / 12 sobre el saldo). Los
-  // pagos empiezan un mes después de la entrega de posesión.
+  // pagos empiezan un mes después de la entrega de posesión. La tabla se calcula
+  // siempre; si va al calendario o no lo decide FINANCIAMIENTO_DESGLOSADO.
   let financiamiento: Financiamiento | undefined;
   if (esquema.financiamiento && esquema.financiamiento.pct > 0 && esquema.financiamiento.meses > 0) {
     const { meses, tasaAnual } = esquema.financiamiento;
@@ -217,7 +230,17 @@ export function cotizar(input: CotizarInput): Cotizacion {
       const pago = ultimo ? round2(abono + interes) : mensualidad;
       saldo = round2(saldo - abono);
       tabla.push({ n: i, fecha: addMonths(fechas.entrega, i), pago, capital: abono, interes, saldo });
-      filas.push({ n: n++, fecha: addMonths(fechas.entrega, i), concepto: `Financiamiento directo ${i} de ${meses}`, importe: pago });
+      if (FINANCIAMIENTO_DESGLOSADO) {
+        filas.push({ n: n++, fecha: addMonths(fechas.entrega, i), concepto: `Financiamiento directo ${i} de ${meses}`, importe: pago });
+      }
+    }
+    if (!FINANCIAMIENTO_DESGLOSADO) {
+      filas.push({
+        n: n++,
+        fecha: addMonths(fechas.entrega, 1),
+        concepto: `Monto a financiar sin IVA (${meses} meses al ${tasaAnual}% anual)`,
+        importe: capital,
+      });
     }
     financiamiento = {
       capital,
@@ -230,7 +253,8 @@ export function cotizar(input: CotizarInput): Cotizacion {
   }
 
   const total = round2(filas.reduce((s, f) => s + f.importe, 0));
-  const intereses = financiamiento?.intereses ?? 0;
+  // Sin desglose, los intereses no entran al total ni al IVA.
+  const intereses = FINANCIAMIENTO_DESGLOSADO ? (financiamiento?.intereses ?? 0) : 0;
   const ivaIncluyeIntereses = IVA_INCLUYE_INTERESES && intereses > 0;
   const iva = round2((precioConDescuento + (ivaIncluyeIntereses ? intereses : 0)) * IVA_RATE);
   const granTotal = round2(precioConDescuento + intereses + iva);
@@ -247,6 +271,7 @@ export function cotizar(input: CotizarInput): Cotizacion {
     total,
     iva,
     ivaIncluyeIntereses,
+    financiamientoDesglosado: FINANCIAMIENTO_DESGLOSADO && !!financiamiento,
     granTotal,
     financiamiento,
   };

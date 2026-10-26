@@ -68,7 +68,7 @@ export default function CotizadorPdf(p: Props) {
   return (
     <Document>
       {/* Con financiamiento directo la tabla crece: se permite pasar a una segunda hoja. */}
-      <Page size="A4" wrap={!!cot.financiamiento} style={s.page}>
+      <Page size="A4" wrap={cot.financiamientoDesglosado} style={s.page}>
         {/* Header */}
         <View style={s.header}>
           {/* eslint-disable-next-line jsx-a11y/alt-text */}
@@ -140,7 +140,7 @@ export default function CotizadorPdf(p: Props) {
         </View>
 
         {/* Financiamiento directo: tabla de amortización */}
-        {cot.financiamiento ? (
+        {cot.financiamiento && cot.financiamientoDesglosado ? (
           <View style={s.finBox} wrap={false}>
             <View style={s.finHead}>
               <Text style={s.finTitle}>Financiamiento directo · {cot.financiamiento.meses} meses al {cot.financiamiento.tasaAnual}% anual</Text>

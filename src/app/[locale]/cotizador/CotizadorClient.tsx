@@ -330,7 +330,7 @@ export default function CotizadorClient({ proyectos }: { proyectos: Proyecto[] }
                     </div>
                   </div>
 
-                  {cot.financiamiento && (
+                  {cot.financiamiento && cot.financiamientoDesglosado && (
                     <div className="mt-4 overflow-hidden rounded-lg border border-line text-[12px]">
                       <div className="bg-ink px-3 py-2 text-white">
                         <p className="font-bold">Financiamiento directo · {cot.financiamiento.meses} meses al {cot.financiamiento.tasaAnual}% anual</p>
