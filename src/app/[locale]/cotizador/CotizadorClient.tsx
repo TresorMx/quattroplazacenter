@@ -72,9 +72,12 @@ export default function CotizadorClient({ proyectos }: { proyectos: Proyecto[] }
   const customValido = modoEsq === 'pre' || sumaCustom === 100;
 
   // Con financiamiento directo, las mensualidades del diferido van del mes de
-  // inicio de pagos diferidos al mes de la entrega de posesión (inclusive); el
-  // financiamiento empieza el mes siguiente. El número no se captura: se calcula.
-  const mensAuto = esquema?.financiamiento ? mesesEntre(fechas.inicioDiferidos, fechas.entrega) : null;
+  // inicio de pagos diferidos al mes ANTERIOR a la entrega de posesión; el mes de
+  // la entrega no lleva mensualidad y el financiamiento empieza el mes siguiente
+  // (entrega jun 2027 → última mensualidad may 2027, financiamiento desde jul 2027).
+  // El número no se captura: se calcula.
+  const mesesHastaEntrega = esquema?.financiamiento ? mesesEntre(fechas.inicioDiferidos, fechas.entrega) : null;
+  const mensAuto = mesesHastaEntrega && mesesHastaEntrega > 1 ? mesesHastaEntrega - 1 : null;
   const mensualidades = mensAuto ?? numMens;
   const faltanFechasFin = !!esquema?.financiamiento && esquema.diferido > 0 && !mensAuto;
 
@@ -203,8 +206,8 @@ export default function CotizadorClient({ proyectos }: { proyectos: Proyecto[] }
               <input type="number" className={`${inputCls} opacity-70`} value={mensAuto ?? ''} readOnly placeholder="Se calcula con las fechas" />
               <p className="mt-1.5 text-[11.5px] leading-snug text-white/50">
                 {mensAuto
-                  ? `De la fecha de inicio de pagos diferidos al mes de entrega (${mensAuto} ${mensAuto === 1 ? 'mensualidad' : 'mensualidades'}). El financiamiento directo empieza el mes siguiente a la entrega.`
-                  : 'Captura la fecha de inicio de pagos diferidos y la fecha de entrega: las mensualidades van de una a otra y el financiamiento empieza el mes siguiente.'}
+                  ? `Del inicio de pagos diferidos al mes anterior a la entrega (${mensAuto} ${mensAuto === 1 ? 'mensualidad' : 'mensualidades'}). El mes de entrega no lleva mensualidad; el financiamiento directo empieza el mes siguiente a la entrega.`
+                  : 'Captura la fecha de inicio de pagos diferidos y la fecha de entrega (al menos un mes después): las mensualidades terminan el mes anterior a la entrega y el financiamiento empieza el mes siguiente.'}
               </p>
             </>
           ) : (
@@ -275,7 +278,7 @@ export default function CotizadorClient({ proyectos }: { proyectos: Proyecto[] }
                     {!customValido
                       ? 'La suma del esquema personalizado debe ser 100%.'
                       : faltanFechasFin
-                        ? 'Con financiamiento directo, captura la fecha de inicio de pagos diferidos y la fecha de entrega: las mensualidades van de una a otra y el financiamiento empieza el mes siguiente.'
+                        ? 'Con financiamiento directo, captura la fecha de inicio de pagos diferidos y la fecha de entrega: las mensualidades terminan el mes anterior a la entrega y el financiamiento empieza el mes siguiente.'
                         : 'Completa proyecto, unidad y esquema para ver el calendario.'}
                   </p>
                 </div>
