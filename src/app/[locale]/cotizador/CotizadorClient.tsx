@@ -16,6 +16,9 @@ const DownloadPdfButton = dynamic(() => import('./DownloadPdfButton'), {
   ssr: false,
   loading: () => <span className="text-[12px] text-ink-3">Cargando PDF…</span>,
 });
+const DownloadFinanciamientoButton = dynamic(() => import('./DownloadPdfButton').then((m) => m.DownloadFinanciamientoButton), {
+  ssr: false,
+});
 
 const todayISO = () => new Date().toISOString().slice(0, 10);
 
@@ -253,6 +256,20 @@ export default function CotizadorClient({ proyectos }: { proyectos: Proyecto[] }
           <div className="mb-4 flex items-center justify-between">
             <span className="text-[12px] font-semibold uppercase tracking-[0.25em] text-ink-3">Vista previa</span>
             {cot && customValido && unidad && (
+              <div className="flex flex-wrap items-center justify-end gap-2">
+              {cot.financiamiento && (
+                <DownloadFinanciamientoButton
+                  proyecto={proyecto!.nombre}
+                  asesor={asesor}
+                  broker={esBroker ? broker : ''}
+                  cliente={cliente}
+                  unidadLabel={unidad.label}
+                  m2={unidad.m2}
+                  fechaCotizacion={fechaCotTxt}
+                  fin={cot.financiamiento}
+                  fileName={`Tabla de financiamiento ${unidad.label} - ${cliente || 'cliente'}.pdf`}
+                />
+              )}
               <DownloadPdfButton
                 proyecto={proyecto!.nombre}
                 asesor={asesor}
@@ -268,6 +285,7 @@ export default function CotizadorClient({ proyectos }: { proyectos: Proyecto[] }
                 observaciones={obs}
                 fileName={`Cotizacion ${unidad.label} - ${cliente || 'cliente'}.pdf`}
               />
+              </div>
             )}
           </div>
 

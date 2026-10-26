@@ -5,6 +5,8 @@
    ──────────────────────────────────────────────────────────── */
 
 export const IVA_RATE = 0.128;
+/** IVA sobre los intereses del financiamiento directo (tabla de financiamiento aparte). */
+export const IVA_INTERESES_RATE = 0.16;
 
 /* ⚠️ DECISIONES COMERCIALES QUE PUEDEN CAMBIAR — planes con financiamiento
    directo (Long Island). Cálculo, vista previa y PDF leen el resultado de
@@ -13,7 +15,9 @@ export const IVA_RATE = 0.128;
    FINANCIAMIENTO_DESGLOSADO (26/oct/2026: false, pedido por David porque el
    detalle confundía a los asesores):
      false → una sola fila "Financiamiento Directo" por el monto a financiar (sin IVA) en el mes siguiente a la
-             entrega; total = precio, sin intereses; sin tabla de amortización.
+             entrega; total = precio, sin intereses; sin tabla de amortización en la cotización.
+             La tabla va en un PDF aparte (botón "Tabla de financiamiento", FinanciamientoPdf.tsx),
+             con el interés de cada mes + IVA 16% (IVA_INTERESES_RATE).
      true  → 12 mensualidades con intereses (saldos insolutos) en el calendario,
              total = precio + intereses y tabla de amortización.
 
@@ -106,6 +110,10 @@ export interface FilaFinanciamiento {
   pago: number;
   capital: number;
   interes: number;
+  /** interés + IVA 16% */
+  interesConIva: number;
+  /** capital + interés con IVA */
+  pagoConIva: number;
   saldo: number;
 }
 
@@ -115,6 +123,7 @@ export interface Financiamiento {
   tasaAnual: number;    // %
   mensualidad: number;
   intereses: number;    // total de intereses
+  interesesConIva: number;
   tabla: FilaFinanciamiento[];
 }
 
@@ -244,7 +253,8 @@ export function cotizar(input: CotizarInput): Cotizacion {
       const abono = ultimo ? saldo : round2(mensualidad - interes);
       const pago = ultimo ? round2(abono + interes) : mensualidad;
       saldo = round2(saldo - abono);
-      tabla.push({ n: i, fecha: addMonths(fechas.entrega, i), pago, capital: abono, interes, saldo });
+      const interesConIva = round2(interes * (1 + IVA_INTERESES_RATE));
+      tabla.push({ n: i, fecha: addMonths(fechas.entrega, i), pago, capital: abono, interes, interesConIva, pagoConIva: round2(abono + interesConIva), saldo });
       if (FINANCIAMIENTO_DESGLOSADO) {
         filas.push({ n: n++, fecha: addMonths(fechas.entrega, i), concepto: `Financiamiento directo ${i} de ${meses}`, importe: pago });
       }
@@ -263,6 +273,7 @@ export function cotizar(input: CotizarInput): Cotizacion {
       tasaAnual,
       mensualidad,
       intereses: round2(tabla.reduce((s, f) => s + f.interes, 0)),
+      interesesConIva: round2(tabla.reduce((s, f) => s + f.interesConIva, 0)),
       tabla,
     };
   }

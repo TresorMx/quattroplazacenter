@@ -7,7 +7,7 @@ plazas **Gardens** y **Long Island**). Además del sitio público, aquí viven l
 
 | Ruta | Qué es | Quién la usa |
 |---|---|---|
-| `/inventario` | Panel para editar m², precio, entrega, estatus y "Cotizable" de cada local, y las **Fórmulas de pago** de la hoja aparte del PDF (no las usa el cotizador) | Equipo comercial (contraseña `INVENTARIO_PASSWORD`) |
+| `/inventario` | Panel para editar m², precio, entrega, estatus y "Cotizable" de cada local, y las **Fórmulas de pago** (hoja aparte del PDF y planes del cotizador interno) | Equipo comercial (contraseña `INVENTARIO_PASSWORD`) |
 | `/lista-precios/gardens.pdf`, `/lista-precios/long-island.pdf` | Listas de precios generadas en vivo | Asesores y brokers |
 | `/cotizador` | Cotizador interno con esquemas por nivel | Asesores y brokers. **Abierto a propósito**, sin contraseña, pero noindex |
 | `/[locale]/plazas/[slug]` | Ficha pública de cada plaza con plano interactivo | Público |
@@ -37,6 +37,9 @@ En local: `~/Desktop/ORGANICA/tresor-web/docs/`.
 - `src/lib/inventory-auth.ts`: login del panel (cookie HMAC `qinv`, 12 h).
 - `src/lib/pricelist/PriceListPdf.tsx` + `src/app/lista-precios/[file]/route.ts`: PDF de lista de precios.
 - `src/lib/cotizador-data.ts`: tipos, cálculo de la cotización e IVA (12.8 % = 16 % sobre el 80 % de construcción).
+  Con financiamiento directo la cotización lleva una sola fila "Financiamiento Directo"; la tabla de amortización
+  se descarga en un PDF aparte (`cotizador/FinanciamientoPdf.tsx`, botón "Tabla de financiamiento", sin datos
+  bancarios) con el interés + IVA 16 %.
 - `sanity/schemas/{unit,plaza,inventoryLog}.ts`: `unit.m2`, `unit.quotable`; en `plaza`, la pestaña
   "📄 Lista de precios y cotizador" (`quoterSchemes`, `bank`, `apartadoDefault`, `quoterAddress`, `priceListFootnote`).
 - `src/middleware.ts`: el matcher excluye `inventario` y `lista-precios` del i18n.
