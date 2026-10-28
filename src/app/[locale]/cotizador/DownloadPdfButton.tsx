@@ -20,6 +20,7 @@ interface Props {
   bank: Bank;
   observaciones: string;
   fileName: string;
+  locales?: { label: string; m2: number; precio: number }[];
 }
 
 export default function DownloadPdfButton(props: Props) {

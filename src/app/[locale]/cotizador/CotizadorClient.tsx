@@ -71,6 +71,8 @@ export default function CotizadorClient({ proyectos }: { proyectos: Proyecto[] }
   const [cliente, setCliente] = useState('');
   const [proyectoSlug, setProyectoSlug] = useState('');
   const [unidadId, setUnidadId] = useState('');
+  // Cotización multilocal: hasta 2 locales más, del MISMO nivel (locales pegados).
+  const [extraIds, setExtraIds] = useState<string[]>([]);
   const [modoEsq, setModoEsq] = useState<'pre' | 'custom'>('pre');
   const [planIdx, setPlanIdx] = useState('');
   const [esqIdx, setEsqIdx] = useState('');
@@ -87,6 +89,23 @@ export default function CotizadorClient({ proyectos }: { proyectos: Proyecto[] }
   const proyecto = getProyecto(proyectoSlug);
   const unidades = proyecto?.unidades.filter((x) => x.status === 'disponible' && x.precio != null) ?? [];
   const unidad: Unidad | undefined = unidades.find((x) => x.id === unidadId);
+  const extras: Unidad[] = extraIds.map((id) => unidades.find((x) => x.id === id)).filter((x): x is Unidad => !!x && x.nivel === unidad?.nivel);
+  const seleccion: Unidad[] = unidad ? [unidad, ...extras] : [];
+  const multi = seleccion.length > 1;
+  // Para cotizar, los locales se suman en uno solo (precio y m² totales).
+  const combo: Unidad | undefined = !unidad
+    ? undefined
+    : !multi
+      ? unidad
+      : {
+          ...unidad,
+          id: seleccion.map((x) => x.id).join('+'),
+          label: `NIVEL ${unidad.nivel} - ${seleccion.map((x) => x.id).join(' + ')}`,
+          m2: Math.round(seleccion.reduce((t, x) => t + x.m2, 0) * 100) / 100,
+          precio: seleccion.reduce((t, x) => t + (x.precio ?? 0), 0),
+        };
+  const disponiblesExtra = unidad ? unidades.filter((x) => x.nivel === unidad.nivel && !seleccion.some((y) => y.id === x.id)) : [];
+  const localesDesglose = multi ? seleccion.map((x) => ({ label: x.label, m2: x.m2, precio: x.precio ?? 0 })) : undefined;
   const planesDisp: Plan[] = proyecto && unidad ? proyecto.planes[unidad.nivel] : [];
   const plan: Plan | undefined = planIdx === '' ? undefined : planesDisp[Number(planIdx)];
   const esquemasDisp: Esquema[] = plan?.esquemas ?? [];
@@ -116,16 +135,16 @@ export default function CotizadorClient({ proyectos }: { proyectos: Proyecto[] }
   const faltanFechasFin = tieneDiferido && !mensAuto;
 
   const cot = useMemo(() => {
-    if (!unidad?.precio || !esquema || faltanFechasFin) return null;
+    if (!combo?.precio || !esquema || faltanFechasFin) return null;
     return cotizar({
-      precioLista: unidad.precio,
+      precioLista: combo.precio,
       esquema,
       descAdicional: usaAdic ? adic : undefined,
       montoApartado,
       numMensualidades: mensualidades,
       fechas,
     });
-  }, [unidad, esquema, faltanFechasFin, usaAdic, adic, montoApartado, mensualidades, fechas]);
+  }, [combo, esquema, faltanFechasFin, usaAdic, adic, montoApartado, mensualidades, fechas]);
 
   // Resumen: nombre del plan arriba y su descripción abajo.
   const planNombre = modoEsq === 'custom' ? 'Esquema personalizado' : plan?.nombre ?? '';
@@ -175,7 +194,7 @@ export default function CotizadorClient({ proyectos }: { proyectos: Proyecto[] }
 
         <Section n={3} icon={LayoutPanelLeft} title="Proyecto">
           <label className={labelCls}>Proyecto *</label>
-          <select className={selectCls} style={chevronBg} value={proyectoSlug} onChange={(e) => { const p = getProyecto(e.target.value); setProyectoSlug(e.target.value); setUnidadId(''); setPlanIdx(''); setEsqIdx(''); if (p) setMontoApartado(p.apartadoDefault); }}>
+          <select className={selectCls} style={chevronBg} value={proyectoSlug} onChange={(e) => { const p = getProyecto(e.target.value); setProyectoSlug(e.target.value); setUnidadId(''); setExtraIds([]); setPlanIdx(''); setEsqIdx(''); if (p) setMontoApartado(p.apartadoDefault); }}>
             <option value="">Selecciona proyecto</option>
             {proyectos.map((p) => <option key={p.slug} value={p.slug}>{p.nombre}</option>)}
           </select>
@@ -183,7 +202,7 @@ export default function CotizadorClient({ proyectos }: { proyectos: Proyecto[] }
 
         <Section n={4} icon={DollarSign} title="Unidad">
           <label className={labelCls}>Unidad disponible *</label>
-          <select className={selectCls} style={chevronBg} value={unidadId} onChange={(e) => { setUnidadId(e.target.value); setPlanIdx(''); setEsqIdx(''); }} disabled={!proyecto}>
+          <select className={selectCls} style={chevronBg} value={unidadId} onChange={(e) => { setUnidadId(e.target.value); setExtraIds([]); setPlanIdx(''); setEsqIdx(''); }} disabled={!proyecto}>
             <option value="">{proyecto ? 'Selecciona unidad' : 'Elige proyecto primero'}</option>
             {unidades.map((x) => (
               <option key={x.id} value={x.id}>{x.label} · {x.m2} m²</option>
@@ -191,6 +210,35 @@ export default function CotizadorClient({ proyectos }: { proyectos: Proyecto[] }
           </select>
           {unidad?.precio && (
             <p className="mt-2 text-[12px] text-white/70">Área: {unidad.m2} m² · <span className="font-bold text-[#FAB413]">{fmtMXN(unidad.precio)}</span></p>
+          )}
+          {/* Multilocal: locales pegados del mismo nivel, hasta 3 en total */}
+          {extras.map((x) => (
+            <div key={x.id} className="mt-2 flex items-center justify-between gap-2 rounded-[10px] border border-white/10 bg-white/[0.04] px-3.5 py-2.5 text-[13px] text-white">
+              <span>
+                {x.label} · {x.m2} m² · <span className="font-bold text-[#FAB413]">{fmtMXN(x.precio ?? 0)}</span>
+              </span>
+              <button type="button" onClick={() => setExtraIds((ids) => ids.filter((id) => id !== x.id))} className="text-white/50 hover:text-white" aria-label={`Quitar ${x.label}`}>
+                ×
+              </button>
+            </div>
+          ))}
+          {unidad && seleccion.length < 3 && disponiblesExtra.length > 0 && (
+            <select
+              className={`${selectCls} mt-2`}
+              style={chevronBg}
+              value=""
+              onChange={(e) => e.target.value && setExtraIds((ids) => [...ids, e.target.value])}
+            >
+              <option value="">+ Agregar otro local del nivel {unidad.nivel} (multilocal)</option>
+              {disponiblesExtra.map((x) => (
+                <option key={x.id} value={x.id}>{x.label} · {x.m2} m²</option>
+              ))}
+            </select>
+          )}
+          {multi && combo?.precio && (
+            <p className="mt-2 text-[12px] text-white/70">
+              {seleccion.length} locales · {combo.m2} m² · Total <span className="font-bold text-[#FAB413]">{fmtMXN(combo.precio)}</span>
+            </p>
           )}
         </Section>
 
@@ -317,7 +365,7 @@ export default function CotizadorClient({ proyectos }: { proyectos: Proyecto[] }
         <div className="mx-auto max-w-4xl">
           <div className="mb-4 flex items-center justify-between">
             <span className="text-[12px] font-semibold uppercase tracking-[0.25em] text-ink-3">Vista previa</span>
-            {cot && customValido && unidad && (
+            {cot && customValido && combo && (
               <div className="flex flex-wrap items-center justify-end gap-2">
               {cot.financiamiento && (
                 <DownloadFinanciamientoButton
@@ -325,11 +373,11 @@ export default function CotizadorClient({ proyectos }: { proyectos: Proyecto[] }
                   asesor={asesor}
                   broker={esBroker ? broker : ''}
                   cliente={cliente}
-                  unidadLabel={unidad.label}
-                  m2={unidad.m2}
+                  unidadLabel={combo.label}
+                  m2={combo.m2}
                   fechaCotizacion={fechaCotTxt}
                   fin={cot.financiamiento}
-                  fileName={`Tabla de financiamiento ${unidad.label} - ${cliente || 'cliente'}.pdf`}
+                  fileName={`Tabla de financiamiento ${combo.label} - ${cliente || 'cliente'}.pdf`}
                 />
               )}
               <DownloadPdfButton
@@ -337,15 +385,16 @@ export default function CotizadorClient({ proyectos }: { proyectos: Proyecto[] }
                 asesor={asesor}
                 broker={esBroker ? broker : ''}
                 cliente={cliente}
-                unidadLabel={unidad.label}
-                m2={unidad.m2}
+                unidadLabel={combo.label}
+                m2={combo.m2}
+                locales={localesDesglose}
                 esquemaTxt={esquemaTxt}
                 planNombre={planNombre}
                 fechaCotizacion={fechaCotTxt}
                 cot={cot}
                 bank={proyecto!.bank}
                 observaciones={obs}
-                fileName={`Cotizacion ${unidad.label} - ${cliente || 'cliente'}.pdf`}
+                fileName={`Cotizacion ${combo.label} - ${cliente || 'cliente'}.pdf`}
               />
               </div>
             )}
@@ -359,7 +408,7 @@ export default function CotizadorClient({ proyectos }: { proyectos: Proyecto[] }
                 <p><span className="text-white/50">Proyecto:</span> <b>{proyecto?.nombre ?? '—'}</b></p>
                 <p><span className="text-white/50">Asesor:</span> <b>{asesor || '—'}</b></p>
                 {esBroker && <p><span className="text-white/50">Broker:</span> <b>{broker || '—'}</b></p>}
-                <p><span className="text-white/50">Unidad:</span> <b>{unidad?.label ?? '—'}</b></p>
+                <p><span className="text-white/50">Unidad:</span> <b>{combo?.label ?? '—'}</b></p>
                 <p><span className="text-white/50">Fecha:</span> <b className="text-[#FAB413]">{fechaCotTxt}</b></p>
               </div>
             </div>
@@ -370,8 +419,8 @@ export default function CotizadorClient({ proyectos }: { proyectos: Proyecto[] }
               {!cot ? (
                 <div className="rounded-lg border-l-4 border-[#FAB413] bg-[#FBF7EC] p-5 text-[13px] text-ink-2">
                   <p>Cliente: <b>{cliente || '—'}</b></p>
-                  <p>Unidad: <b>{unidad ? `${unidad.label} - ${unidad.m2} m²` : '—'}</b></p>
-                  <p>Precio de lista: <b>{unidad?.precio ? fmtMXN(unidad.precio) : '—'}</b></p>
+                  <p>{multi ? 'Locales' : 'Unidad'}: <b>{combo ? `${combo.label} - ${combo.m2} m²` : '—'}</b></p>
+                  <p>Precio de lista{multi ? ' total' : ''}: <b>{combo?.precio ? fmtMXN(combo.precio) : '—'}</b></p>
                   <p className="mt-2 text-[12px] text-ink-3">
                     {!customValido
                       ? 'La suma del esquema personalizado debe ser 100%.'
@@ -384,8 +433,17 @@ export default function CotizadorClient({ proyectos }: { proyectos: Proyecto[] }
                 <>
                   <div className="mb-4 rounded-lg border-l-4 border-[#FAB413] bg-[#FBF7EC] p-4 text-[13px] text-ink-2">
                     <p>Cliente: <b>{cliente || '—'}</b></p>
-                    <p>Unidad: <b>{unidad!.label} - {unidad!.m2} m²</b></p>
-                    <p>Precio de lista: <b>{fmtMXN(cot.precioLista)}</b></p>
+                    <p>{multi ? 'Locales' : 'Unidad'}: <b>{combo!.label} - {combo!.m2} m²</b></p>
+                    {localesDesglose && (
+                      <div className="my-1.5 ml-4 text-[12px]">
+                        {localesDesglose.map((l) => (
+                          <p key={l.label}>
+                            {l.label} · {l.m2} m² · <b>{fmtMXN(l.precio)}</b>
+                          </p>
+                        ))}
+                      </div>
+                    )}
+                    <p>Precio de lista{multi ? ' total' : ''}: <b>{fmtMXN(cot.precioLista)}</b></p>
                     <p>Forma de pago: <b>{planNombre || esquemaTxt}</b></p>
                     {planNombre && <FitLine className="pl-[92px] text-ink-2" text={esquemaTxt} />}
                     <p>Precio con descuento: <b>{fmtMXN(cot.precioConDescuento)}</b></p>
@@ -476,7 +534,7 @@ export default function CotizadorClient({ proyectos }: { proyectos: Proyecto[] }
                     </div>
                     <div className="text-right">
                       <p>CLABE: <b>{proyecto!.bank.clabe}</b></p>
-                      <p>Referencia: <b>{unidad!.label}</b></p>
+                      <p>Referencia: <b>{combo!.label}</b></p>
                     </div>
                   </div>
 

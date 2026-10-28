@@ -69,6 +69,8 @@ interface Props {
   cot: Cotizacion;
   bank: Bank;
   observaciones: string;
+  /** cotización multilocal: desglose de cada local (mismo nivel) */
+  locales?: { label: string; m2: number; precio: number }[];
 }
 
 export default function CotizadorPdf(p: Props) {
@@ -95,8 +97,13 @@ export default function CotizadorPdf(p: Props) {
         {/* Resumen */}
         <View style={s.resumen}>
           <Text style={s.rLine}>Cliente: <Text style={s.rBold}>{p.cliente || '—'}</Text></Text>
-          <Text style={s.rLine}>Unidad: <Text style={s.rBold}>{p.unidadLabel} - {p.m2} m²</Text></Text>
-          <Text style={s.rLine}>Precio de lista: <Text style={s.rBold}>{fmtMXN(cot.precioLista)}</Text></Text>
+          <Text style={s.rLine}>{p.locales ? 'Locales' : 'Unidad'}: <Text style={s.rBold}>{p.unidadLabel} - {p.m2} m²</Text></Text>
+          {p.locales?.map((l) => (
+            <Text key={l.label} style={[s.rLine, { paddingLeft: 12, fontSize: 7.5 }]}>
+              {l.label} · {l.m2} m² · <Text style={s.rBold}>{fmtMXN(l.precio)}</Text>
+            </Text>
+          ))}
+          <Text style={s.rLine}>Precio de lista{p.locales ? ' total' : ''}: <Text style={s.rBold}>{fmtMXN(cot.precioLista)}</Text></Text>
           <Text style={s.rLine}>Forma de pago: <Text style={s.rBold}>{p.planNombre || p.esquemaTxt}</Text></Text>
           {p.planNombre ? <Text style={[s.rLine, { paddingLeft: 58, fontSize: fitFont(p.esquemaTxt, DESC_WIDTH) }]}>{p.esquemaTxt}</Text> : null}
           <Text style={s.rLine}>Precio con descuento: <Text style={s.rBold}>{fmtMXN(cot.precioConDescuento)}</Text></Text>
