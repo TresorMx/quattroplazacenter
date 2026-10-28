@@ -211,7 +211,7 @@ export default function CotizadorClient({ proyectos }: { proyectos: Proyecto[] }
           {unidad?.precio && (
             <p className="mt-2 text-[12px] text-white/70">Área: {unidad.m2} m² · <span className="font-bold text-[#FAB413]">{fmtMXN(unidad.precio)}</span></p>
           )}
-          {/* Multilocal: locales pegados del mismo nivel, hasta 3 en total */}
+          {/* Multilocal: locales pegados del mismo nivel, hasta 4 en total */}
           {extras.map((x) => (
             <div key={x.id} className="mt-2 flex items-center justify-between gap-2 rounded-[10px] border border-white/10 bg-white/[0.04] px-3.5 py-2.5 text-[13px] text-white">
               <span>
@@ -222,7 +222,7 @@ export default function CotizadorClient({ proyectos }: { proyectos: Proyecto[] }
               </button>
             </div>
           ))}
-          {unidad && seleccion.length < 3 && disponiblesExtra.length > 0 && (
+          {unidad && seleccion.length < 4 && disponiblesExtra.length > 0 && (
             <select
               className={`${selectCls} mt-2`}
               style={chevronBg}

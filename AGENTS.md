@@ -42,7 +42,7 @@ En local: `~/Desktop/ORGANICA/tresor-web/docs/`.
   bancarios) con el interés + IVA 16 %.
   En **esquema personalizado** se puede **diferir el enganche** de 1 a 12 meses (`Esquema.engancheMeses`): el enganche
   menos el apartado se reparte en mensualidades iguales desde la fecha de enganche ("Enganche diferido 1 de N").
-  **Multilocal** (`CotizadorClient.tsx`): de 2 a 3 locales, solo del mismo nivel (son locales pegados). Se cotiza la suma
+  **Multilocal** (`CotizadorClient.tsx`): de 2 a 4 locales, solo del mismo nivel (son locales pegados). Se cotiza la suma
   de precios y m² como un solo conjunto con un solo apartado; el resumen (pantalla y PDF) desglosa cada local.
 - `sanity/schemas/{unit,plaza,inventoryLog}.ts`: `unit.m2`, `unit.quotable`; en `plaza`, la pestaña
   "📄 Lista de precios y cotizador" (`quoterSchemes`, `bank`, `apartadoDefault`, `quoterAddress`, `priceListFootnote`).
