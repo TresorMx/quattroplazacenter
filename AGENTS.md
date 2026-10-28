@@ -40,6 +40,8 @@ En local: `~/Desktop/ORGANICA/tresor-web/docs/`.
   Con financiamiento directo la cotización lleva una sola fila "Financiamiento Directo"; la tabla de amortización
   se descarga en un PDF aparte (`cotizador/FinanciamientoPdf.tsx`, botón "Tabla de financiamiento", sin datos
   bancarios) con el interés + IVA 16 %.
+  En **esquema personalizado** se puede **diferir el enganche** de 1 a 12 meses (`Esquema.engancheMeses`): el enganche
+  menos el apartado se reparte en mensualidades iguales desde la fecha de enganche ("Enganche diferido 1 de N").
 - `sanity/schemas/{unit,plaza,inventoryLog}.ts`: `unit.m2`, `unit.quotable`; en `plaza`, la pestaña
   "📄 Lista de precios y cotizador" (`quoterSchemes`, `bank`, `apartadoDefault`, `quoterAddress`, `priceListFootnote`).
 - `src/middleware.ts`: el matcher excluye `inventario` y `lista-precios` del i18n.

@@ -75,6 +75,8 @@ export default function CotizadorClient({ proyectos }: { proyectos: Proyecto[] }
   const [planIdx, setPlanIdx] = useState('');
   const [esqIdx, setEsqIdx] = useState('');
   const [custom, setCustom] = useState({ desc: 0, eng: 0, dif: 0, ent: 0 });
+  // Enganche diferido (solo personalizado): de 1 a 12 meses.
+  const [engDif, setEngDif] = useState({ on: false, meses: 3 });
   const [usaAdic, setUsaAdic] = useState(false);
   const [adic, setAdic] = useState<{ tipo: 'pct' | 'mxn'; valor: number }>({ tipo: 'pct', valor: 0 });
   const [fechas, setFechas] = useState({ apartado: '', enganche: '', inicioDiferidos: '', entrega: '' });
@@ -90,12 +92,16 @@ export default function CotizadorClient({ proyectos }: { proyectos: Proyecto[] }
   const esquemasDisp: Esquema[] = plan?.esquemas ?? [];
 
   const esquema: Esquema | null = useMemo(() => {
-    if (modoEsq === 'custom') return { descuento: custom.desc, enganche: custom.eng, diferido: custom.dif, entrega: custom.ent };
+    if (modoEsq === 'custom')
+      return { descuento: custom.desc, enganche: custom.eng, diferido: custom.dif, entrega: custom.ent, ...(engDif.on ? { engancheMeses: engDif.meses } : {}) };
     const i = Number(esqIdx);
     return esquemasDisp[i] ?? null;
-  }, [modoEsq, custom, esqIdx, esquemasDisp]);
+  }, [modoEsq, custom, engDif, esqIdx, esquemasDisp]);
 
   const sumaCustom = custom.eng + custom.dif + custom.ent;
+  // Si los diferidos arrancan dentro de los meses del enganche diferido, se empalman.
+  const mesesEngAInicio = engDif.on ? mesesEntre(fechas.enganche, fechas.inicioDiferidos) : null;
+  const engSeEmpalma = modoEsq === 'custom' && engDif.on && custom.dif > 0 && mesesEngAInicio != null && mesesEngAInicio <= engDif.meses;
   const customValido = modoEsq === 'pre' || sumaCustom === 100;
 
   // En TODOS los esquemas, el número de mensualidades del diferido lo dicta la
@@ -125,7 +131,7 @@ export default function CotizadorClient({ proyectos }: { proyectos: Proyecto[] }
   const planNombre = modoEsq === 'custom' ? 'Esquema personalizado' : plan?.nombre ?? '';
   const esquemaTxt = esquema
     ? [
-        `Enganche ${esquema.enganche}%`,
+        `Enganche ${esquema.enganche}%${esquema.engancheMeses && esquema.engancheMeses > 1 ? ` diferido a ${esquema.engancheMeses} meses` : ''}`,
         `Mensualidades ${esquema.diferido}%`,
         `Entrega ${esquema.entrega}%`,
         ...(esquema.financiamiento
@@ -212,6 +218,40 @@ export default function CotizadorClient({ proyectos }: { proyectos: Proyecto[] }
                 <div key={k}>
                   <label className={labelCls}>{lbl}</label>
                   <input type="number" className={inputCls} value={(custom as any)[k] || ''} onChange={(e) => setCustom((c) => ({ ...c, [k]: Number(e.target.value) }))} />
+                  {k === 'eng' && (
+                    <div className="mt-2 rounded-lg bg-white/[0.04] p-2.5">
+                      <label className="flex items-center gap-2 text-[12px] text-white/70">
+                        <input type="checkbox" checked={engDif.on} onChange={(e) => setEngDif((d) => ({ ...d, on: e.target.checked }))} />
+                        Diferir enganche
+                      </label>
+                      {engDif.on && (
+                        <div className="mt-2">
+                          <label className={labelCls}>Número de meses a diferir (1 a 12)</label>
+                          <div className="flex items-center gap-2">
+                            <button type="button" onClick={() => setEngDif((d) => ({ ...d, meses: Math.max(1, d.meses - 1) }))} className="h-10 w-10 shrink-0 rounded-[10px] border border-white/10 text-lg text-white hover:border-[#FAB413]/60" aria-label="Menos meses">−</button>
+                            <input
+                              type="number"
+                              min={1}
+                              max={12}
+                              step={1}
+                              className={`${inputCls} text-center`}
+                              value={engDif.meses}
+                              onChange={(e) => setEngDif((d) => ({ ...d, meses: Math.min(12, Math.max(1, Math.round(Number(e.target.value) || 1))) }))}
+                            />
+                            <button type="button" onClick={() => setEngDif((d) => ({ ...d, meses: Math.min(12, d.meses + 1) }))} className="h-10 w-10 shrink-0 rounded-[10px] border border-white/10 text-lg text-white hover:border-[#FAB413]/60" aria-label="Más meses">+</button>
+                          </div>
+                          <p className="mt-1.5 text-[11.5px] leading-snug text-white/50">
+                            El enganche (menos el apartado) se paga en {engDif.meses} {engDif.meses === 1 ? 'mensualidad' : 'mensualidades'} iguales a partir de la fecha de pago de enganche.
+                          </p>
+                          {engSeEmpalma && (
+                            <p className="mt-1.5 text-[11.5px] font-semibold leading-snug text-[#FAB413]">
+                              Ojo: los pagos diferidos empiezan antes de que termine el enganche diferido; se van a empalmar. Ajusta la fecha de inicio de pagos diferidos.
+                            </p>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
               ))}
               <p className={`text-[12px] font-semibold ${sumaCustom === 100 ? 'text-green-400' : 'text-[#FAB413]'}`}>

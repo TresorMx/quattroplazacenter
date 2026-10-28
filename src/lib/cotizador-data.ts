@@ -51,6 +51,9 @@ export interface Esquema {
   diferido: number;   // %
   entrega: number;    // %
   descuento: number;  // %
+  /** Enganche diferido (solo esquema personalizado): el enganche, menos el
+   *  apartado, se paga en N mensualidades (1 a 12) desde la fecha de enganche. */
+  engancheMeses?: number;
   /** Financiamiento directo después de la entrega (hoy solo Long Island, desde
    *  las "Fórmulas de pago" de Sanity). enganche + diferido + entrega + pct = 100. */
   financiamiento?: { pct: number; meses: number; tasaAnual: number; titulo: string };
@@ -215,7 +218,21 @@ export function cotizar(input: CotizarInput): Cotizacion {
   let n = 1;
 
   filas.push({ n: n++, fecha: fmtFecha(fechas.apartado), concepto: 'Apartado', importe: round2(montoApartado) });
-  filas.push({ n: n++, fecha: fmtFecha(fechas.enganche), concepto: 'Enganche (menos apartado)', importe: round2(enganche - montoApartado) });
+  const engMeses = Math.min(12, Math.max(1, Math.round(esquema.engancheMeses ?? 1)));
+  if (engMeses > 1) {
+    // Enganche diferido: lo que queda del enganche tras el apartado, en partes
+    // iguales mes a mes desde la fecha de enganche (la última absorbe el redondeo).
+    const resto = round2(enganche - montoApartado);
+    const per = round2(resto / engMeses);
+    let acc = 0;
+    for (let i = 0; i < engMeses; i++) {
+      const importe = i < engMeses - 1 ? per : round2(resto - acc);
+      acc += per;
+      filas.push({ n: n++, fecha: addMonths(fechas.enganche, i), concepto: `Enganche diferido ${i + 1} de ${engMeses}`, importe });
+    }
+  } else {
+    filas.push({ n: n++, fecha: fmtFecha(fechas.enganche), concepto: 'Enganche (menos apartado)', importe: round2(enganche - montoApartado) });
+  }
 
   if (esquema.diferido > 0 && numMensualidades > 0) {
     const per = round2(diferido / numMensualidades);
