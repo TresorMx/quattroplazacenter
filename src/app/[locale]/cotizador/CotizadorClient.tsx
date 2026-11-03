@@ -79,6 +79,8 @@ export default function CotizadorClient({ proyectos }: { proyectos: Proyecto[] }
   const [custom, setCustom] = useState({ desc: 0, eng: 0, dif: 0, ent: 0 });
   // Enganche diferido (solo personalizado): de 1 a 12 meses.
   const [engDif, setEngDif] = useState({ on: false, meses: 3 });
+  // Mensualidades manuales (solo personalizado): ej. el diferido en 1 o 2 pagos.
+  const [mensManual, setMensManual] = useState({ on: false, n: 1 });
   const [usaAdic, setUsaAdic] = useState(false);
   const [adic, setAdic] = useState<{ tipo: 'pct' | 'mxn'; valor: number }>({ tipo: 'pct', valor: 0 });
   const [fechas, setFechas] = useState({ apartado: '', enganche: '', inicioDiferidos: '', entrega: '' });
@@ -131,8 +133,12 @@ export default function CotizadorClient({ proyectos }: { proyectos: Proyecto[] }
   const tieneDiferido = !!esquema && esquema.diferido > 0;
   const mesesHastaEntrega = tieneDiferido ? mesesEntre(fechas.inicioDiferidos, fechas.entrega) : null;
   const mensAuto = mesesHastaEntrega && mesesHastaEntrega > 1 ? mesesHastaEntrega - 1 : null;
-  const mensualidades = mensAuto ?? 0;
-  const faltanFechasFin = tieneDiferido && !mensAuto;
+  // En esquema personalizado el asesor puede fijar el número a mano (1 a 36).
+  const manual = modoEsq === 'custom' && mensManual.on && tieneDiferido;
+  const mensualidades = manual ? mensManual.n : mensAuto ?? 0;
+  const faltanFechasFin = tieneDiferido && !manual && !mensAuto;
+  // Aviso: con más mensualidades que meses antes de la entrega, el último pago cae en la entrega o después.
+  const manualPasaEntrega = manual && mesesHastaEntrega != null && mensManual.n > Math.max(0, mesesHastaEntrega - 1);
 
   const cot = useMemo(() => {
     if (!combo?.precio || !esquema || faltanFechasFin) return null;
@@ -332,10 +338,34 @@ export default function CotizadorClient({ proyectos }: { proyectos: Proyecto[] }
         </Section>
 
         <Section n={7} icon={Hash} title="Mensualidades">
-          <label className={labelCls}>Número de mensualidades</label>
-          <input type="number" className={`${inputCls} opacity-70`} value={tieneDiferido ? (mensAuto ?? '') : 0} readOnly placeholder="Se calcula con las fechas" />
+          {modoEsq === 'custom' && tieneDiferido && (
+            <label className="mb-2 flex items-center gap-2 text-[12px] text-white/70">
+              <input type="checkbox" checked={mensManual.on} onChange={(e) => setMensManual((m) => ({ ...m, on: e.target.checked }))} />
+              Capturar número de mensualidades manualmente
+            </label>
+          )}
+          <label className={labelCls}>Número de mensualidades{manual ? ' (1 a 36)' : ''}</label>
+          {manual ? (
+            <div className="flex items-center gap-2">
+              <button type="button" onClick={() => setMensManual((m) => ({ ...m, n: Math.max(1, m.n - 1) }))} className="h-10 w-10 shrink-0 rounded-[10px] border border-white/10 text-lg text-white hover:border-[#FAB413]/60" aria-label="Menos mensualidades">−</button>
+              <input
+                type="number"
+                min={1}
+                max={36}
+                step={1}
+                className={`${inputCls} text-center`}
+                value={mensManual.n}
+                onChange={(e) => setMensManual((m) => ({ ...m, n: Math.min(36, Math.max(1, Math.round(Number(e.target.value) || 1))) }))}
+              />
+              <button type="button" onClick={() => setMensManual((m) => ({ ...m, n: Math.min(36, m.n + 1) }))} className="h-10 w-10 shrink-0 rounded-[10px] border border-white/10 text-lg text-white hover:border-[#FAB413]/60" aria-label="Más mensualidades">+</button>
+            </div>
+          ) : (
+            <input type="number" className={`${inputCls} opacity-70`} value={tieneDiferido ? (mensAuto ?? '') : 0} readOnly placeholder="Se calcula con las fechas" />
+          )}
           <p className="mt-1.5 text-[11.5px] leading-snug text-white/50">
-            {!esquema
+            {manual
+              ? `El diferido se paga en ${mensManual.n} ${mensManual.n === 1 ? 'mensualidad' : 'mensualidades'} iguales a partir de la fecha de inicio de pagos diferidos.`
+              : !esquema
               ? 'Se calcula con la fecha de inicio de pagos diferidos y la fecha de entrega.'
               : !tieneDiferido
                 ? 'Este esquema no lleva mensualidades.'
@@ -343,6 +373,11 @@ export default function CotizadorClient({ proyectos }: { proyectos: Proyecto[] }
                   ? `Del inicio de pagos diferidos al mes anterior a la entrega (${mensAuto} ${mensAuto === 1 ? 'mensualidad' : 'mensualidades'}). El mes de entrega no lleva mensualidad${esquema.financiamiento ? '; el financiamiento directo empieza el mes siguiente' : ''}.`
                   : 'Captura la fecha de inicio de pagos diferidos y la fecha de entrega (al menos un mes después): las mensualidades terminan el mes anterior a la entrega.'}
           </p>
+          {manualPasaEntrega && (
+            <p className="mt-1.5 text-[11.5px] font-semibold leading-snug text-[#FAB413]">
+              Ojo: con {mensManual.n} mensualidades el último pago cae en el mes de entrega o después. Antes de la entrega caben {Math.max(0, (mesesHastaEntrega ?? 1) - 1)}.
+            </p>
+          )}
         </Section>
 
         <Section n={8} icon={Wallet} title="Apartado">
