@@ -252,7 +252,7 @@ export default function ArticlePage() {
                 <li>30 locales desde 40 m²</li>
                 <li>Desde $2,650,000 MXN + IVA</li>
                 <li>120 m lineales de frente comercial</li>
-                <li>Entrega DIC 2026–MAR 2027</li>
+                <li>Entrega MAR 2027</li>
                 <li>Entrega más próxima del mercado</li>
               </ul>
             </div>

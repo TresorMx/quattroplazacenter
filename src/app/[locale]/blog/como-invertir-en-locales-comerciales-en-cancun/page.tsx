@@ -233,7 +233,7 @@ export default function ArticlePage() {
           </p>
           <ul className="space-y-3 mb-6 text-ink-2">
             <li className="flex gap-2"><span className="text-accent font-bold">→</span> <span><Link href="/plazas/gardens" className="text-accent hover:underline font-semibold">Gardens</Link>: 32 locales desde 32 m², con áreas verdes y diseño premium. Entrega JUN–SEP 2027.</span></li>
-            <li className="flex gap-2"><span className="text-accent font-bold">→</span> <span><Link href="/plazas/long-island" className="text-accent hover:underline font-semibold">Long Island</Link>: 30 locales desde 40 m², 120 m lineales de frente comercial. Entrega DIC 2026–MAR 2027.</span></li>
+            <li className="flex gap-2"><span className="text-accent font-bold">→</span> <span><Link href="/plazas/long-island" className="text-accent hover:underline font-semibold">Long Island</Link>: 30 locales desde 40 m², 120 m lineales de frente comercial. Entrega MAR 2027.</span></li>
           </ul>
           <p className="text-ink-2 leading-relaxed mb-8">
             Ambos proyectos están diseñados para maximizar el tráfico peatonal, con una mezcla de giros complementarios y financiamiento accesible desde $147,000 MXN de enganche.

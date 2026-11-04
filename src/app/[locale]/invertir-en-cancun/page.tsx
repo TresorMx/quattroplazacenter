@@ -302,7 +302,7 @@ export default function InvertirEnCancun() {
                 slug: 'long-island',
                 render: '/renders/long-island/02.jpg',
                 badge: 'Preventa · Entrega próxima',
-                stats: ['30 locales', 'Desde 40 m²', 'Desde $2,650,000 MXN*', 'Entrega DIC 2026–MAR 2027'],
+                stats: ['30 locales', 'Desde 40 m²', 'Desde $2,650,000 MXN*', 'Entrega MAR 2027'],
                 desc: '120 m lineales de frente comercial. Entrega más próxima, ideal para rentar cuanto antes.',
               },
             ].map((p) => (

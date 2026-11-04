@@ -42,10 +42,10 @@ const PLAZAS = [
       { label: 'Locales', value: '30 unidades' },
       { label: 'Desde', value: '40 m²' },
       { label: 'Precio desde', value: '$2,650,000 MXN*' },
-      { label: 'Entrega', value: 'DIC 2026–MAR 2027' },
+      { label: 'Entrega', value: 'MAR 2027' },
     ],
     disponibles: 11,
-    highlights: ['120 m frente comercial', '2 niveles', '+80 estacionamientos', 'Entrega próxima DIC 2026'],
+    highlights: ['120 m frente comercial', '2 niveles', '+80 estacionamientos', 'Entrega próxima MAR 2027'],
     href: '/plazas/long-island',
     color: '#0E0E0E',
   },
@@ -75,7 +75,7 @@ const FAQS = [
   },
   {
     q: '¿Cuándo es la entrega de los locales?',
-    a: 'Plaza Gardens tiene entrega estimada de JUN a SEP 2027. Plaza Long Island tiene entrega estimada de DIC 2026 a MAR 2027 — las unidades de Long Island son ideales para quienes buscan entrega próxima.',
+    a: 'Plaza Gardens tiene entrega estimada de JUN a SEP 2027. Plaza Long Island tiene entrega estimada de MAR 2027 — las unidades de Long Island son ideales para quienes buscan entrega próxima.',
   },
   {
     q: '¿Puedo rentar el local en lugar de usarlo yo mismo?',
@@ -83,7 +83,7 @@ const FAQS = [
   },
   {
     q: '¿Qué diferencia hay entre Gardens y Long Island?',
-    a: 'Gardens está ubicado en Cancún con locales desde 32 m². Long Island también en Cancún con locales desde 40 m² y entrega más próxima desde DIC 2026.',
+    a: 'Gardens está ubicado en Cancún con locales desde 32 m². Long Island también en Cancún con locales desde 40 m² y entrega más próxima en MAR 2027.',
   },
   {
     q: '¿El precio incluye IVA?',
@@ -124,7 +124,7 @@ const JSONLD = {
           item: {
             '@type': 'RealEstateListing',
             name: 'Quattro Plaza Center Long Island — Locales Comerciales Cancún',
-            description: 'Locales comerciales en venta en Cancún desde 40 m². 120 m frente comercial, +80 estacionamientos. Entrega DIC 2026.',
+            description: 'Locales comerciales en venta en Cancún desde 40 m². 120 m frente comercial, +80 estacionamientos. Entrega MAR 2027.',
             url: 'https://www.quattroplaza.mx/plazas/long-island',
             image: 'https://www.quattroplaza.mx/renders/long-island/02.jpg',
             offers: { '@type': 'Offer', price: 2650000, priceCurrency: 'MXN', availability: 'https://schema.org/InStock' },
