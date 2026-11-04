@@ -1,3 +1,4 @@
+import { randomUUID } from 'crypto';
 import { sanityClient } from './client';
 
 interface LeadData {
@@ -18,6 +19,8 @@ export async function saveLeadToSanity(data: LeadData): Promise<void> {
   if (!process.env.SANITY_API_TOKEN) return;
   try {
     await sanityClient.create({
+      // Con "private." la API pública de Sanity no puede leerlo (solo con token).
+      _id: `private.lead.${randomUUID()}`,
       _type: 'lead',
       ...data,
       createdAt: new Date().toISOString(),
