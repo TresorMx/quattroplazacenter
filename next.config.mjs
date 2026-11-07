@@ -32,6 +32,8 @@ const nextConfig = {
       // Cotizador: se puede embeber dentro del CRM (GHL)
       { source: '/cotizador', headers: [...base, cotizadorCsp] },
       { source: '/:locale/cotizador', headers: [...base, cotizadorCsp] },
+      // Base de los master plan: no debe indexarse. La versión con bolitas ya lleva noindex en su ruta.
+      { source: '/master-plan-base/:path*', headers: [{ key: 'X-Robots-Tag', value: 'noindex' }] },
       // Todo lo demás: bloquea framing (anti-clickjacking)
       {
         source: '/((?!.*cotizador).*)',

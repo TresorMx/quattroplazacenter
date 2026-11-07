@@ -9,6 +9,7 @@ plazas **Gardens** y **Long Island**). Además del sitio público, aquí viven l
 |---|---|---|
 | `/inventario` | Panel para editar m², precio, entrega, estatus y "Cotizable" de cada local, y las **Fórmulas de pago** (hoja aparte del PDF y planes del cotizador interno) | Equipo comercial (contraseña `INVENTARIO_PASSWORD`) |
 | `/lista-precios/gardens.pdf`, `/lista-precios/long-island.pdf` | Listas de precios generadas en vivo | Asesores y brokers |
+| `/master-plan/gardens.pdf`, `/master-plan/long-island.pdf` | Master plan con bolitas de estatus, generado en vivo sobre `public/master-plan-base/` | Asesores y brokers |
 | `/cotizador` | Cotizador interno con esquemas por nivel | Asesores y brokers. **Abierto a propósito**, sin contraseña, pero noindex |
 | `/[locale]/plazas/[slug]` | Ficha pública de cada plaza con plano interactivo | Público |
 | `/[locale]/cotizar/[slug]` | Cotizador público (QuoteWizard) | Público |
@@ -36,6 +37,7 @@ En local: `~/Desktop/ORGANICA/tresor-web/docs/`.
 - `src/app/inventario/actions.ts`: guardado validado en el servidor, bitácora (`inventoryLog`) y revalidación de los dos sitios.
 - `src/lib/inventory-auth.ts`: login del panel (cookie HMAC `qinv`, 12 h).
 - `src/lib/pricelist/PriceListPdf.tsx` + `src/app/lista-precios/[file]/route.ts`: PDF de lista de precios.
+- `src/app/master-plan/[file]/route.ts` + `src/lib/masterplan/pins.ts`: pinta el estatus de cada local sobre la base con `pdf-lib`. Usa el estatus público, no "Cotizable". Las coordenadas están en `pins.ts`: si cambia el plano base, hay que volver a sacarlas.
 - `src/lib/cotizador-data.ts`: tipos, cálculo de la cotización e IVA (12.8 % = 16 % sobre el 80 % de construcción).
   Con financiamiento directo la cotización lleva una sola fila "Financiamiento Directo"; la tabla de amortización
   se descarga en un PDF aparte (`cotizador/FinanciamientoPdf.tsx`, botón "Tabla de financiamiento", sin datos
@@ -60,7 +62,7 @@ En local: `~/Desktop/ORGANICA/tresor-web/docs/`.
 5. Verificar con `npx tsc --noEmit` + `pnpm build`, luego commit y push a `main`.
 6. "Libera el local X solo en el cotizador" = marcar **Cotizable**, sin cambiar su estatus público.
 7. Gardens y Long Island **no** están sobre Av. Huayacán.
-8. `/cotizador` y `/lista-precios/*` son **abiertos a propósito** (se comparten con brokers) y **no indexables**: meta
+8. `/cotizador`, `/lista-precios/*` y `/master-plan/*` son **abiertos a propósito** (se comparten con brokers) y **no indexables**: meta
    `noindex, nofollow` en el cotizador y header `X-Robots-Tag: noindex` en los PDF. No bloquearlos en robots.txt
    (Google dejaría de ver el noindex) y no ponerles contraseña sin que David lo pida.
 

@@ -101,6 +101,7 @@ export default function InventoryTable({ plazas }: { plazas: Plaza[] }) {
         ))}
         <div className="ml-auto flex flex-wrap gap-2 text-[12.5px]">
           <a href={`/lista-precios/${plaza.slug}.pdf`} target="_blank" className="rounded-full border border-[#FAB413]/50 px-3 py-1.5 text-[#FAB413] hover:bg-[#FAB413]/10">Lista de precios PDF ↗</a>
+          <a href={`/master-plan/${plaza.slug}.pdf`} target="_blank" className="rounded-full border border-[#FAB413]/50 px-3 py-1.5 text-[#FAB413] hover:bg-[#FAB413]/10">Master plan PDF ↗</a>
           <a href="/cotizador" target="_blank" className="rounded-full border border-white/15 px-3 py-1.5 text-white/70 hover:border-white/40">Cotizador ↗</a>
         </div>
       </div>
